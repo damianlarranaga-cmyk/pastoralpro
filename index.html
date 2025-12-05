@@ -3,21 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>PastoralFlow Pro</title>
+    <title>PastoralFlow Ultimate</title>
     
-    <!-- PWA / Mobile Capable Tags -->
+    <!-- PWA MANIFEST INYECTADO (Data URI) -->
+    <link rel="manifest" id="my-manifest-placeholder">
+    
+    <!-- Meta Tags para iOS y Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#2563EB">
-    <meta name="application-name" content="PastoralFlow">
-    <meta name="apple-mobile-web-app-title" content="PastoralFlow">
     <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐑</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background:white;%22><text y=%22.9em%22 font-size=%2290%22>🐑</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background:white; padding:10px;%22><text y=%22.8em%22 font-size=%2280%22>🐑</text></svg>">
+
+    <script>
+        // GENERACIÓN DINÁMICA DEL MANIFEST PARA INSTALACIÓN
+        const manifest = {
+            "name": "PastoralFlow",
+            "short_name": "PastoralFlow",
+            "start_url": ".",
+            "display": "standalone",
+            "background_color": "#F3F4F6",
+            "theme_color": "#2563EB",
+            "orientation": "portrait-primary",
+            "icons": [{
+                "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%232563EB%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>🐑</text></svg>",
+                "sizes": "192x192",
+                "type": "image/svg+xml"
+            }]
+        };
+        const stringManifest = JSON.stringify(manifest);
+        const blob = new Blob([stringManifest], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(blob);
+        document.querySelector('#my-manifest-placeholder').setAttribute('href', manifestURL);
+    </script>
 
     <style>
         /* * ===============================================
-         * SYNTHWEAVER DESIGN SYSTEM 2.0 (Neuro-Optimized)
+         * SYNTHWEAVER DESIGN SYSTEM 3.0 (Responsive & Touch)
          * ===============================================
          */
         :root {
@@ -33,7 +56,7 @@
             --text-muted: #6B7280;
             --border: #E5E7EB;
             --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --safe-area-bottom: env(safe-area-inset-bottom);
         }
 
@@ -54,12 +77,10 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--background);
             color: var(--text-main);
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; /* App-like feel */
+            display: flex; flex-direction: column;
+            overflow: hidden;
         }
 
         /* --- LAYOUT --- */
@@ -69,18 +90,15 @@
             padding-top: max(1rem, env(safe-area-inset-top));
             box-shadow: var(--shadow);
             z-index: 20;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
         }
 
         h1 { font-size: 1.25rem; margin: 0; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
 
         #app-view {
-            flex: 1;
-            overflow-y: auto;
+            flex: 1; overflow-y: auto;
             padding: 1rem;
-            padding-bottom: calc(80px + var(--safe-area-bottom));
+            padding-bottom: calc(90px + var(--safe-area-bottom));
             scroll-behavior: smooth;
         }
 
@@ -88,8 +106,7 @@
         nav {
             background: var(--surface);
             border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
+            display: flex; justify-content: space-around;
             padding: 0.5rem 0;
             padding-bottom: max(0.5rem, var(--safe-area-bottom));
             position: fixed; bottom: 0; width: 100%;
@@ -103,32 +120,29 @@
             display: flex; flex-direction: column; align-items: center;
             padding: 8px 12px;
             border-radius: 8px;
-            transition: all 0.2s;
             cursor: pointer;
+            width: 25%; /* Touch target optimization */
         }
         .nav-btn svg { width: 24px; height: 24px; margin-bottom: 4px; }
-        .nav-btn.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+        .nav-btn.active { color: var(--primary); font-weight: 600; }
+        .nav-btn.active svg { fill: var(--primary-light); }
 
         /* --- COMPONENTS --- */
         .card {
             background: var(--surface);
             border-radius: var(--radius);
-            padding: 1rem;
-            margin-bottom: 1rem;
+            padding: 1rem; margin-bottom: 1rem;
             border: 1px solid var(--border);
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .btn {
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
+            padding: 0.8rem 1rem;
+            border-radius: 8px; font-weight: 600;
+            border: none; cursor: pointer;
             width: 100%;
             display: flex; justify-content: center; align-items: center; gap: 8px;
-            font-size: 1rem;
-            transition: transform 0.1s;
+            font-size: 1rem; transition: transform 0.1s;
         }
         .btn:active { transform: scale(0.98); }
         .btn-primary { background: var(--primary); color: white; }
@@ -146,36 +160,50 @@
             z-index: 25; border: none; cursor: pointer;
         }
 
-        /* --- FORMS --- */
+        /* --- FORMS & INPUTS --- */
+        .input-group { position: relative; margin-bottom: 1rem; }
+        .input-wrapper { display: flex; gap: 8px; }
+        
         input, select, textarea {
-            width: 100%;
-            padding: 12px;
+            width: 100%; padding: 12px;
             border: 1px solid var(--border);
             border-radius: 8px;
             background: var(--surface);
             color: var(--text-main);
-            font-size: 16px; /* Prevents zoom on iOS */
-            margin-bottom: 1rem;
+            font-size: 16px; /* Important for iOS zoom prevention */
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
         label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Contact Picker Button Specifics */
+        .btn-contact-picker {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0 15px;
+            white-space: nowrap;
+        }
 
         /* --- LISTS --- */
         .list-item {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 12px; border-bottom: 1px solid var(--border);
+            padding: 14px; border-bottom: 1px solid var(--border);
             background: var(--surface);
         }
         .list-item:first-child { border-top-left-radius: var(--radius); border-top-right-radius: var(--radius); }
         .list-item:last-child { border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius); border-bottom: none; }
         
-        .tag { padding: 2px 8px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .tag { padding: 3px 8px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
         .tag-red { background: #FEE2E2; color: var(--danger); }
         .tag-green { background: #D1FAE5; color: var(--success); }
         .tag-blue { background: var(--primary-light); color: var(--primary); }
 
         /* --- TABS --- */
-        .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 1rem; }
-        .tab { white-space: nowrap; padding: 6px 16px; border-radius: 20px; background: var(--border); font-size: 0.9rem; border: none; color: var(--text-muted); cursor: pointer; }
+        .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 1rem; -webkit-overflow-scrolling: touch; }
+        .tab { white-space: nowrap; padding: 8px 16px; border-radius: 20px; background: var(--border); font-size: 0.9rem; border: none; color: var(--text-muted); cursor: pointer; }
         .tab.active { background: var(--text-main); color: var(--surface); }
 
         /* --- MODAL --- */
@@ -188,16 +216,22 @@
         .modal.open { display: flex; }
         .modal-content {
             background: var(--surface);
-            width: 90%; max-width: 500px;
-            max-height: 85vh; overflow-y: auto;
+            width: 95%; max-width: 500px;
+            max-height: 90vh; overflow-y: auto;
             border-radius: var(--radius);
             padding: 1.5rem;
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .hidden { display: none; }
+        @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .hidden { display: none !important; }
 
+        /* PC Optimization: Grid for larger screens */
+        @media (min-width: 768px) {
+            #app-view { max-width: 800px; margin: 0 auto; }
+            .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+            nav { max-width: 800px; left: 50%; transform: translateX(-50%); border-radius: 12px 12px 0 0; border: 1px solid var(--border); border-bottom: none; }
+        }
     </style>
 </head>
 <body>
@@ -205,13 +239,13 @@
     <header>
         <h1>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a9 9 0 1 0 9 9"></path><path d="M12 3v18"></path><path d="M12 8l4.2 2.8a2.1 2.1 0 0 1 0 3.6L12 17"></path></svg>
-            PastoralFlow <span style="font-size:0.5em; opacity:0.7; background:var(--primary-light); padding:2px 5px; border-radius:4px;">PRO</span>
+            PastoralFlow
         </h1>
         <button class="btn-sm btn-outline" onclick="app.showSettings()">⚙️</button>
     </header>
 
     <div id="app-view">
-        <!-- Content injects here -->
+        <!-- Contenido Dinámico -->
     </div>
 
     <!-- FAB -->
@@ -230,7 +264,7 @@
         </button>
         <button class="nav-btn" onclick="app.navigate('messages')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            Mensajes
+            Maná
         </button>
         <button class="nav-btn" onclick="app.navigate('groups')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
@@ -241,9 +275,9 @@
     <!-- GENERIC MODAL -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
-                <h2 id="modal-title" style="margin:0;">Título</h2>
-                <button onclick="app.closeModal()" style="background:none; border:none; font-size:1.2rem;">✕</button>
+            <div style="display:flex; justify-content:space-between; margin-bottom:1rem; align-items: center;">
+                <h2 id="modal-title" style="margin:0; font-size: 1.25rem;">Título</h2>
+                <button onclick="app.closeModal()" style="background:none; border:none; font-size:1.5rem; color: var(--text-muted); padding: 5px;">✕</button>
             </div>
             <div id="modal-body"></div>
         </div>
@@ -251,104 +285,81 @@
 
     <script>
         /**
-         * PASTORAL FLOW CORE ENGINE
-         * Diseñado para performance, flexibilidad y cero dependencias.
+         * PASTORAL FLOW CORE ENGINE v3.0
+         * - PWA Integration
+         * - Contact Picker API
+         * - CMS Logic
          */
         
-        const DB_NAME = 'pastoralflow_pro_db';
+        const DB_NAME = 'pastoralflow_ultimate_db';
         
-        // --- 1. SEED DATA (El gran banco de 160+ mensajes) ---
-        const SEED_DATA = {
-            members: [],
-            groups: [
-                { id: 'g1', name: 'Jóvenes' },
-                { id: 'g2', name: 'Matrimonios' },
-                { id: 'g3', name: 'Damas' },
-                { id: 'g4', name: 'Varones' },
-                { id: 'g5', name: 'Liderazgo' },
-                { id: 'g6', name: 'Nuevos Creyentes' },
-                { id: 'g7', name: 'General' }
-            ],
-            // Mensajes como objetos para ser editables
-            messages: [] 
-        };
-
-        // Función para generar los 160 mensajes si no existen
+        // --- 1. SEED DATA GENERATOR ---
         function generateSeedMessages() {
             const msgs = [];
             const add = (cat, text) => msgs.push({ id: 'msg_'+Date.now()+Math.random(), cat, text });
 
-            // 30 Bíblicos
-            const versiculos = [
-                "Josué 1:9 - Esfuérzate y sé valiente.", "Jeremías 29:11 - Planes de bienestar.", "Filipenses 4:13 - Todo lo puedo en Cristo.",
-                "Salmos 23:1 - Jehová es mi pastor.", "Isaías 40:31 - Nuevas fuerzas.", "Romanos 8:28 - Todo ayuda a bien.",
-                "Salmos 91:1 - Al abrigo del Altísimo.", "Proverbios 3:5 - Fíate de Jehová.", "Mateo 11:28 - Venid a mí los cansados.",
-                "Salmos 121:1 - Mi socorro viene de Jehová.", "2 Timoteo 1:7 - No espíritu de cobardía.", "Isaías 41:10 - No temas, yo estoy contigo.",
-                "Salmos 37:4 - Deléitate en Jehová.", "Lamentaciones 3:23 - Nuevas son sus misericordias.", "Juan 3:16 - De tal manera amó Dios al mundo.",
-                "Efesios 2:8 - Por gracia sois salvos.", "Gálatas 2:20 - Con Cristo estoy juntamente crucificado.", "1 Juan 4:4 - Mayor es el que está en vosotros.",
-                "Salmos 46:1 - Dios es nuestro amparo.", "Hebreos 11:1 - La fe es la certeza.", "Santiago 1:5 - Sabiduría de Dios.",
-                "1 Pedro 5:7 - Echando toda ansiedad.", "Mateo 6:33 - Buscad primeramente el reino.", "Proverbios 4:23 - Guarda tu corazón.",
-                "Salmos 119:105 - Lámpara es a mis pies.", "Isaías 54:17 - Ninguna arma forjada.", "Romanos 12:2 - Transformaos.",
-                "Filipenses 4:6 - Por nada estéis afanosos.", "Salmos 34:8 - Gustad y ved que es bueno Jehová.", "Juan 14:6 - Yo soy el camino."
+            // Generador masivo de mensajes (160+)
+            const verses = [
+                "Josué 1:9", "Filipenses 4:13", "Salmos 23:1", "Isaías 40:31", "Romanos 8:28", 
+                "Salmos 91:1", "Proverbios 3:5", "Mateo 11:28", "Salmos 121:1", "Isaías 41:10",
+                "Jeremías 29:11", "Salmos 37:4", "Juan 3:16", "Efesios 2:8", "Gálatas 2:20"
             ];
-            versiculos.forEach(v => add('Bíblico', `Hola {NOMBRE}, hoy meditaba en ${v}. ¡Espero que fortalezca tu espíritu!`));
+            
+            // Bíblicos
+            verses.forEach((v, i) => add('Bíblico', `Hola {NOMBRE}, medita hoy en ${v}. Dios tiene el control.`));
+            for(let i=0; i<15; i++) add('Bíblico', `Bendiciones {NOMBRE}, recuerda que Dios es fiel. (Ref #${i+1})`);
 
-            // 30 Ánimo
-            for(let i=1; i<=30; i++) add('Ánimo', `Hola {NOMBRE}, solo quería recordarte que eres un pilar importante en nuestra iglesia (Mensaje de ánimo #${i}). ¡No te rindas!`);
+            // Ánimo
+            for(let i=0; i<30; i++) add('Ánimo', `¡Ánimo {NOMBRE}! Eres importante para el Reino y para nosotros. Sigue adelante. (Mensaje ${i+1})`);
             
-            // 20 Familia
-            for(let i=1; i<=20; i++) add('Familia', `Bendiciones {NOMBRE}, ¿cómo está tu familia? Oramos para que la paz de Dios reine en tu hogar hoy.`);
+            // Familia
+            for(let i=0; i<25; i++) add('Familia', `Hola {NOMBRE}, oramos por tu casa y tu familia hoy. Que la paz de Dios reine en tu hogar.`);
             
-            // 20 Seguimiento/Faltas
-            for(let i=1; i<=20; i++) add('Seguimiento', `Hola {NOMBRE}, te extrañamos en la última reunión. Espero que todo esté bien. ¡Un abrazo!`);
+            // Seguimiento
+            for(let i=0; i<25; i++) add('Seguimiento', `Hola {NOMBRE}, ¿cómo has estado? Te extrañamos y queríamos saludarte.`);
             
-            // 15 Cumpleaños
-            for(let i=1; i<=15; i++) add('Cumpleaños', `¡Feliz cumpleaños {NOMBRE}! Damos gracias a Dios por un año más de tu vida. Salmo 139.`);
+            // Cumpleaños
+            for(let i=0; i<15; i++) add('Cumpleaños', `¡Feliz Cumpleaños {NOMBRE}! Que Dios te conceda muchos años más llenos de propósito.`);
             
-            // 15 Enfermedad/Salud
-            for(let i=1; i<=15; i++) add('Salud', `{NOMBRE}, supe que estás pasando por un tema de salud. Declaramos sanidad sobre tu cuerpo en el nombre de Jesús.`);
+            // Salud
+            for(let i=0; i<15; i++) add('Salud', `{NOMBRE}, declaramos sanidad y fortaleza sobre tu cuerpo en el nombre de Jesús.`);
             
-            // 15 Liderazgo
-            for(let i=1; i<=15; i++) add('Liderazgo', `Gracias {NOMBRE} por tu servicio y liderazgo. Tu trabajo en el Señor no es en vano.`);
-            
-            // 15 General/Agradecimiento
-            for(let i=1; i<=15; i++) add('General', `Saludos {NOMBRE}, deseando que tengas una semana llena de victorias.`);
+            // General
+            for(let i=0; i<20; i++) add('General', `Saludos {NOMBRE}, deseando que tengas una semana llena de victorias en Cristo.`);
 
             return msgs;
         }
 
+        const SEED_GROUPS = [
+            { id: 'g1', name: 'Jóvenes' }, { id: 'g2', name: 'Matrimonios' },
+            { id: 'g3', name: 'Damas' }, { id: 'g4', name: 'Varones' },
+            { id: 'g5', name: 'Liderazgo' }, { id: 'g6', name: 'Consolidación' },
+            { id: 'g7', name: 'General' }
+        ];
+
         // --- 2. DATA STORE ---
         const store = {
             data: null,
-            
             load() {
                 const raw = localStorage.getItem(DB_NAME);
                 if (raw) {
                     this.data = JSON.parse(raw);
-                    // Migración simple si faltan campos
-                    if (!this.data.messages || this.data.messages.length < 10) {
-                        this.data.messages = generateSeedMessages();
-                        this.save();
-                    }
+                    // Integridad de datos
+                    if(!this.data.messages || this.data.messages.length < 10) this.data.messages = generateSeedMessages();
+                    if(!this.data.groups) this.data.groups = SEED_GROUPS;
                 } else {
-                    this.data = SEED_DATA;
-                    this.data.messages = generateSeedMessages();
+                    this.data = { members: [], groups: SEED_GROUPS, messages: generateSeedMessages() };
                     this.save();
                 }
             },
-
-            save() {
-                localStorage.setItem(DB_NAME, JSON.stringify(this.data));
-            },
-
-            // Métodos CRUD
+            save() { localStorage.setItem(DB_NAME, JSON.stringify(this.data)); },
+            
+            // CRUD
             addMember(m) { this.data.members.push(m); this.save(); },
             updateMember(m) { const idx = this.data.members.findIndex(x=>x.id==m.id); if(idx>=0) this.data.members[idx]=m; this.save(); },
             deleteMember(id) { this.data.members = this.data.members.filter(x=>x.id!==id); this.save(); },
-            
             addGroup(name) { this.data.groups.push({id: 'g_'+Date.now(), name}); this.save(); },
             deleteGroup(id) { this.data.groups = this.data.groups.filter(x=>x.id!==id); this.save(); },
-            
             addMsg(msg) { this.data.messages.push(msg); this.save(); },
             updateMsg(msg) { const idx = this.data.messages.findIndex(x=>x.id==msg.id); if(idx>=0) this.data.messages[idx]=msg; this.save(); },
             deleteMsg(id) { this.data.messages = this.data.messages.filter(x=>x.id!==id); this.save(); }
@@ -361,11 +372,8 @@
             init() {
                 store.load();
                 this.navigate('dashboard');
-                
-                // Detectar instalación
-                if (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
-                    console.log('Running in App Mode');
-                }
+                // Check Contact Picker Support
+                this.hasContactPicker = ('contacts' in navigator && 'ContactsManager' in window);
             },
 
             navigate(viewName) {
@@ -375,10 +383,7 @@
                 const navMap = {'dashboard':0, 'members':1, 'messages':2, 'groups':3};
                 if(navMap[viewName] !== undefined) document.querySelectorAll('.nav-btn')[navMap[viewName]].classList.add('active');
 
-                // Toggle FAB
-                const fab = document.getElementById('fab');
-                fab.style.display = (viewName === 'members' || viewName === 'messages') ? 'flex' : 'none';
-
+                document.getElementById('fab').style.display = (viewName === 'members' || viewName === 'messages') ? 'flex' : 'none';
                 this.render();
             },
 
@@ -389,7 +394,7 @@
 
             render() {
                 const container = document.getElementById('app-view');
-                container.innerHTML = ''; // Clear
+                container.innerHTML = ''; 
 
                 switch(this.view) {
                     case 'dashboard': this.renderDashboard(container); break;
@@ -399,16 +404,14 @@
                 }
             },
 
-            // --- VISTAS ---
-
+            // --- VISTA DASHBOARD ---
             renderDashboard(container) {
-                // Lógica del "Buen Pastor" (Quién necesita contacto)
                 const now = new Date();
                 const dueMembers = store.data.members
                     .map(m => {
                         const last = new Date(m.lastContact || 0);
                         const daysAgo = Math.floor((now - last)/(1000*60*60*24));
-                        const urgency = daysAgo / m.freq; // >1 es urgente
+                        const urgency = daysAgo / m.freq; 
                         return {...m, daysAgo, urgency};
                     })
                     .sort((a,b) => b.urgency - a.urgency)
@@ -416,57 +419,73 @@
 
                 let html = `
                     <div class="card" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color:white; border:none;">
-                        <h2>👋 Hola Pastor</h2>
-                        <p style="opacity:0.9">Hoy es un buen día para pastorear corazones.</p>
-                        <div style="display:flex; gap:20px; margin-top:10px;">
-                            <div><strong>${store.data.members.length}</strong><br><small>Ovejas</small></div>
-                            <div><strong>${store.data.messages.length}</strong><br><small>Mensajes</small></div>
+                        <h2>👋 Panel Pastoral</h2>
+                        <p style="opacity:0.9; margin-top:5px;">${store.data.members.length} ovejas bajo cuidado.</p>
+                        <div style="display:flex; gap:10px; margin-top:15px;">
+                             <div style="background:rgba(255,255,255,0.2); padding:5px 10px; border-radius:8px;">
+                                <small>Hoy</small><br><strong>${new Date().toLocaleDateString()}</strong>
+                             </div>
                         </div>
                     </div>
-                    <h3>Prioridad de Contacto</h3>
+                    <h3>Requieren Atención</h3>
                 `;
 
                 if (dueMembers.length === 0) {
-                    html += `<div class="card text-center text-muted">Todo el rebaño está al día. ¡Descansa!</div>`;
+                    html += `<div class="card text-center text-muted" style="padding:2rem;">¡Aleluya! Todo el rebaño está al día.</div>`;
                 } else {
+                    html += `<div class="dashboard-grid">`;
                     dueMembers.forEach(m => {
                         html += `
-                        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <strong>${m.name}</strong><br>
-                                <small class="tag ${m.urgency > 1.2 ? 'tag-red' : 'tag-blue'}">Hace ${m.daysAgo} días</small>
-                                <small style="color:var(--text-muted)"> • ${store.data.groups.find(g=>g.id===m.groupId)?.name || 'General'}</small>
+                        <div class="card" style="border-left: 4px solid ${m.urgency > 1.2 ? 'var(--danger)' : 'var(--accent)'};">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <strong>${m.name}</strong>
+                                    <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
+                                        ${store.data.groups.find(g=>g.id===m.groupId)?.name || 'General'}
+                                    </div>
+                                    <span class="tag ${m.urgency > 1.2 ? 'tag-red' : 'tag-blue'}" style="margin-top:5px; display:inline-block;">Hace ${m.daysAgo} días</span>
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="app.contactFlow('${m.id}')">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                </button>
                             </div>
-                            <button class="btn btn-primary btn-sm" onclick="app.contactFlow('${m.id}')">Contactar</button>
                         </div>`;
                     });
+                    html += `</div>`;
                 }
                 container.innerHTML = html;
             },
 
+            // --- VISTA MIEMBROS ---
             renderMembers(container) {
+                store.data.members.sort((a,b) => a.name.localeCompare(b.name));
                 let html = `<input type="text" placeholder="🔍 Buscar oveja..." onkeyup="app.filterList(this, '.member-card')">`;
                 
                 if (store.data.members.length === 0) {
-                    html += `<div style="text-align:center; padding:2rem; color:var(--text-muted)">No hay miembros aún.<br>Toca el botón + para añadir.</div>`;
+                    html += `<div style="text-align:center; padding:3rem; color:var(--text-muted)">El libro está vacío.<br>Usa el botón + para añadir.</div>`;
                 }
 
-                store.data.members.sort((a,b) => a.name.localeCompare(b.name)).forEach(m => {
+                html += '<div class="member-list">';
+                store.data.members.forEach(m => {
                     const gName = store.data.groups.find(g=>g.id===m.groupId)?.name || '?';
                     html += `
                     <div class="list-item member-card" onclick="app.openMemberModal('${m.id}')">
-                        <div>
-                            <div style="font-weight:600; font-size:1.05rem;">${m.name}</div>
-                            <div style="font-size:0.85rem; color:var(--text-muted);">${gName}</div>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:40px; height:40px; background:var(--primary-light); color:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${m.name.charAt(0)}</div>
+                            <div>
+                                <div style="font-weight:600;">${m.name}</div>
+                                <div style="font-size:0.85rem; color:var(--text-muted);">${gName}</div>
+                            </div>
                         </div>
-                        <div style="color:var(--primary)">✎</div>
+                        <div style="color:var(--text-muted)">›</div>
                     </div>`;
                 });
+                html += '</div>';
                 container.innerHTML = html;
             },
 
+            // --- VISTA MENSAJES ---
             renderMessages(container) {
-                // Filtro Categorías
                 const cats = [...new Set(store.data.messages.map(m => m.cat))];
                 let html = `
                     <div class="tabs">
@@ -483,85 +502,134 @@
                         <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                             <span class="tag tag-blue">${m.cat}</span>
                         </div>
-                        <div style="font-style:italic; color:var(--text-muted)">"${m.text.substring(0, 60)}..."</div>
+                        <div style="font-style:italic; color:var(--text-muted); line-height:1.4;">"${m.text.substring(0, 80)}..."</div>
                     </div>`;
                 });
                 html += '</div>';
                 container.innerHTML = html;
             },
 
+            // --- VISTA GRUPOS ---
             renderGroups(container) {
                 let html = `
                     <div class="card">
-                        <h3>Gestión de Grupos</h3>
+                        <h3>Nuevo Grupo</h3>
                         <div style="display:flex; gap:8px;">
-                            <input type="text" id="new-group-name" placeholder="Nuevo grupo..." style="margin:0;">
-                            <button class="btn btn-primary btn-sm" onclick="app.addGroupAction()">+</button>
+                            <input type="text" id="new-group-name" placeholder="Nombre (Ej: Danza)..." style="margin:0;">
+                            <button class="btn btn-primary" style="width:auto;" onclick="app.addGroupAction()">+</button>
                         </div>
                     </div>
+                    <h3>Grupos Actuales</h3>
                 `;
                 store.data.groups.forEach(g => {
                     const count = store.data.members.filter(m => m.groupId === g.id).length;
                     html += `
                     <div class="list-item">
-                        <span>${g.name} <span class="tag tag-green">${count}</span></span>
-                        ${count === 0 ? `<button class="btn-sm btn-danger" onclick="store.deleteGroup('${g.id}'); app.render();">Borrar</button>` : ''}
+                        <span style="font-weight:500;">${g.name} <span class="tag tag-green" style="margin-left:5px;">${count}</span></span>
+                        ${count === 0 ? `<button class="btn-sm btn-danger" onclick="store.deleteGroup('${g.id}'); app.render();">Eliminar</button>` : ''}
                     </div>`;
                 });
                 container.innerHTML = html;
             },
 
-            // --- UTILS ---
+            // --- HELPERS ---
             filterList(input, selector) {
                 const term = input.value.toLowerCase();
                 document.querySelectorAll(selector).forEach(el => {
-                    el.style.display = el.innerText.toLowerCase().includes(term) ? 'block' : 'none';
+                    el.style.display = el.innerText.toLowerCase().includes(term) ? 'flex' : 'none';
                 });
             },
-
             filterMsgs(cat, btn) {
                 document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 document.querySelectorAll('.msg-card').forEach(el => {
-                    el.style.display = (cat === 'all' || el.dataset.cat === cat) ? 'block' : 'none';
+                    const elCat = el.getAttribute('data-cat');
+                    el.style.display = (cat === 'all' || elCat === cat) ? 'block' : 'none';
                 });
             },
 
-            // --- MODALS & ACTIONS ---
+            // --- MODALS & LOGIC ---
+            
+            // >>> FUNCIÓN CONTACT PICKER <<<
+            async pickContact() {
+                if (!this.hasContactPicker) return;
+                
+                try {
+                    const props = ['name', 'tel'];
+                    const opts = { multiple: false };
+                    const contacts = await navigator.contacts.select(props, opts);
+                    
+                    if (contacts.length) {
+                        const contact = contacts[0];
+                        // Asignar Nombre
+                        if (contact.name && contact.name.length) {
+                            document.querySelector('input[name="name"]').value = contact.name[0];
+                        }
+                        // Asignar Teléfono (Limpieza)
+                        if (contact.tel && contact.tel.length) {
+                            const raw = contact.tel[0];
+                            const clean = raw.replace(/[^0-9]/g, ''); // Solo números
+                            document.querySelector('input[name="phone"]').value = clean;
+                        }
+                    }
+                } catch (ex) {
+                    console.log("Picker cancelado o error", ex);
+                }
+            },
 
             openMemberModal(id = null) {
                 const m = id ? store.data.members.find(x => x.id === id) : { id: '', name: '', phone: '', groupId: store.data.groups[0]?.id, freq: 30, notes: '' };
                 const isEdit = !!id;
-
                 const groupOpts = store.data.groups.map(g => `<option value="${g.id}" ${m.groupId===g.id?'selected':''}>${g.name}</option>`).join('');
+                
+                // Botón de Contact Picker solo si es soportado
+                const pickerBtn = this.hasContactPicker 
+                    ? `<button type="button" class="btn btn-contact-picker" onclick="app.pickContact()">📒 Agenda</button>` 
+                    : '';
 
                 const html = `
                     <form onsubmit="app.saveMember(event, '${isEdit ? m.id : ''}')">
-                        <label>Nombre Completo</label>
-                        <input type="text" name="name" value="${m.name}" required>
+                        <div class="input-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" name="name" value="${m.name}" required placeholder="Hno. Juan Pérez">
+                        </div>
                         
-                        <label>WhatsApp (Ej: 521234567890)</label>
-                        <input type="tel" name="phone" value="${m.phone}" required>
+                        <div class="input-group">
+                            <label>WhatsApp (Sin símbolos)</label>
+                            <div class="input-wrapper">
+                                <input type="tel" name="phone" value="${m.phone}" required placeholder="521555555555">
+                                ${pickerBtn}
+                            </div>
+                            <small style="color:var(--text-muted); font-size:0.75rem;">Incluye código de país.</small>
+                        </div>
                         
-                        <label>Grupo Celular</label>
-                        <select name="groupId">${groupOpts}</select>
+                        <div class="input-group">
+                            <label>Grupo Celular</label>
+                            <select name="groupId">${groupOpts}</select>
+                        </div>
                         
-                        <label>Frecuencia de Contacto (Días)</label>
-                        <select name="freq">
-                            <option value="7" ${m.freq==7?'selected':''}>Semanal (7)</option>
-                            <option value="15" ${m.freq==15?'selected':''}>Quincenal (15)</option>
-                            <option value="30" ${m.freq==30?'selected':''}>Mensual (30)</option>
-                            <option value="60" ${m.freq==60?'selected':''}>Bimestral (60)</option>
-                        </select>
+                        <div class="input-group">
+                            <label>Frecuencia de Contacto</label>
+                            <select name="freq">
+                                <option value="7" ${m.freq==7?'selected':''}>Semanal (Líderes)</option>
+                                <option value="15" ${m.freq==15?'selected':''}>Quincenal (Cercanos)</option>
+                                <option value="30" ${m.freq==30?'selected':''}>Mensual (Estándar)</option>
+                                <option value="60" ${m.freq==60?'selected':''}>Bimestral (Mantenimiento)</option>
+                            </select>
+                        </div>
 
-                        <label>Notas</label>
-                        <textarea name="notes">${m.notes}</textarea>
+                        <div class="input-group">
+                            <label>Notas Pastorales</label>
+                            <textarea name="notes" rows="3">${m.notes}</textarea>
+                        </div>
 
-                        <button type="submit" class="btn btn-primary">${isEdit ? 'Guardar Cambios' : 'Registrar Oveja'}</button>
-                        ${isEdit ? `<button type="button" onclick="app.deleteMemberAction('${m.id}')" class="btn btn-danger" style="margin-top:10px;">Eliminar</button>` : ''}
+                        <div style="display:flex; gap:10px; margin-top:20px;">
+                            ${isEdit ? `<button type="button" onclick="app.deleteMemberAction('${m.id}')" class="btn btn-danger" style="width:auto;">🗑️</button>` : ''}
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
                     </form>
                 `;
-                this.showModal(isEdit ? 'Editar Miembro' : 'Nuevo Miembro', html);
+                this.showModal(isEdit ? 'Editar Oveja' : 'Nueva Oveja', html);
             },
 
             saveMember(e, id) {
@@ -576,35 +644,22 @@
                     notes: formData.get('notes'),
                     lastContact: id ? store.data.members.find(x=>x.id===id).lastContact : null
                 };
-                
-                if (id) store.updateMember(obj);
-                else store.addMember(obj);
-                
-                this.closeModal();
-                this.render();
+                if (id) store.updateMember(obj); else store.addMember(obj);
+                this.closeModal(); this.render();
             },
 
             deleteMemberAction(id) {
-                if(confirm('¿Seguro que deseas eliminar a este miembro?')) {
-                    store.deleteMember(id);
-                    this.closeModal();
-                    this.render();
-                }
+                if(confirm('¿Confirmas eliminar a este miembro?')) { store.deleteMember(id); this.closeModal(); this.render(); }
             },
 
             addGroupAction() {
                 const name = document.getElementById('new-group-name').value;
-                if(name) {
-                    store.addGroup(name);
-                    this.render();
-                }
+                if(name) { store.addGroup(name); this.render(); }
             },
 
             openMessageModal(id = null) {
                 const m = id ? store.data.messages.find(x => x.id === id) : { id: '', cat: 'General', text: '' };
                 const isEdit = !!id;
-                
-                // Categorías únicas existentes + algunas por defecto
                 const baseCats = ['Bíblico', 'Ánimo', 'Familia', 'Cumpleaños', 'Seguimiento', 'Salud', 'General'];
                 const allCats = [...new Set([...baseCats, ...store.data.messages.map(x=>x.cat)])];
                 
@@ -614,75 +669,62 @@
                         <input list="cats" name="cat" value="${m.cat}" required>
                         <datalist id="cats">${allCats.map(c=>`<option value="${c}">`).join('')}</datalist>
 
-                        <label>Mensaje (Usa {NOMBRE} para insertar el nombre)</label>
-                        <textarea name="text" rows="5" required>${m.text}</textarea>
+                        <label style="margin-top:1rem;">Mensaje</label>
+                        <small style="color:var(--text-muted)">Usa <strong>{NOMBRE}</strong> para personalizar.</small>
+                        <textarea name="text" rows="5" required style="margin-top:5px;">${m.text}</textarea>
 
-                        <button type="submit" class="btn btn-primary">${isEdit ? 'Guardar' : 'Crear'}</button>
-                        ${isEdit ? `<button type="button" onclick="app.deleteMsgAction('${m.id}')" class="btn btn-danger" style="margin-top:10px;">Eliminar</button>` : ''}
+                        <div style="display:flex; gap:10px; margin-top:20px;">
+                             ${isEdit ? `<button type="button" onclick="app.deleteMsgAction('${m.id}')" class="btn btn-danger" style="width:auto;">🗑️</button>` : ''}
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
                     </form>
                 `;
-                this.showModal(isEdit ? 'Editar Maná' : 'Nuevo Mensaje', html);
+                this.showModal(isEdit ? 'Editar Maná' : 'Nuevo Maná', html);
             },
 
             saveMessage(e, id) {
                 e.preventDefault();
                 const formData = new FormData(e.target);
-                const obj = {
-                    id: id || 'msg_'+Date.now(),
-                    cat: formData.get('cat'),
-                    text: formData.get('text')
-                };
-                if(id) store.updateMsg(obj);
-                else store.addMsg(obj);
-                this.closeModal();
-                this.render();
+                const obj = { id: id || 'msg_'+Date.now(), cat: formData.get('cat'), text: formData.get('text') };
+                if(id) store.updateMsg(obj); else store.addMsg(obj);
+                this.closeModal(); this.render();
             },
 
             deleteMsgAction(id) {
-                if(confirm('¿Borrar mensaje?')) {
-                    store.deleteMsg(id);
-                    this.closeModal();
-                    this.render();
-                }
+                if(confirm('¿Borrar mensaje?')) { store.deleteMsg(id); this.closeModal(); this.render(); }
             },
 
-            // --- FLUJO DE CONTACTO ---
             contactFlow(memberId) {
                 const m = store.data.members.find(x => x.id === memberId);
-                
-                // Seleccionar mensaje aleatorio de categoría relevante
-                // O dejar al usuario elegir categoría
                 const cats = [...new Set(store.data.messages.map(msg => msg.cat))];
                 
                 const html = `
-                    <p>Vas a escribirle a <strong>${m.name}</strong>.</p>
-                    <label>Elige una temática:</label>
-                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:15px;">
-                        ${cats.map(c => `<span class="tag tag-blue" style="cursor:pointer; padding:8px;" onclick="app.loadRandomMsg('${c}', '${m.id}')">${c}</span>`).join('')}
+                    <p>Contactando a <strong>${m.name}</strong></p>
+                    <label>Selecciona tema:</label>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:15px; margin-top:5px;">
+                        ${cats.map(c => `<span class="tag tag-blue" style="cursor:pointer; padding:8px 12px; font-size:0.8rem;" onclick="app.loadRandomMsg('${c}', '${m.id}')">${c}</span>`).join('')}
                     </div>
                     
-                    <textarea id="final-msg" rows="6"></textarea>
+                    <textarea id="final-msg" rows="6" style="font-family:sans-serif;"></textarea>
                     
                     <div style="display:flex; gap:10px; margin-top:10px;">
                         <button class="btn btn-outline" onclick="app.loadRandomMsg(null, '${m.id}')">🔄 Otro</button>
-                        <button class="btn btn-success" onclick="app.sendWhatsApp('${m.id}')">Enviar WhatsApp</button>
+                        <button class="btn btn-success" onclick="app.sendWhatsApp('${m.id}')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                             WhatsApp
+                        </button>
                     </div>
                 `;
                 this.showModal('Enviar Mensaje', html);
-                this.loadRandomMsg('Bíblico', m.id); // Default
+                this.loadRandomMsg('Bíblico', m.id);
             },
 
             loadRandomMsg(cat, memberId) {
                 const m = store.data.members.find(x => x.id === memberId);
-                const pool = cat 
-                    ? store.data.messages.filter(msg => msg.cat === cat)
-                    : store.data.messages;
-                
+                const pool = cat ? store.data.messages.filter(msg => msg.cat === cat) : store.data.messages;
                 if (pool.length === 0) return;
-                
                 const randomMsg = pool[Math.floor(Math.random() * pool.length)];
                 const finalText = randomMsg.text.replace(/{NOMBRE}/g, m.name.split(' ')[0]);
-                
                 document.getElementById('final-msg').value = finalText;
             },
 
@@ -691,33 +733,31 @@
                 const text = document.getElementById('final-msg').value;
                 const url = `https://wa.me/${m.phone}?text=${encodeURIComponent(text)}`;
                 
-                // Update Last Contact
                 m.lastContact = new Date().toISOString();
                 store.updateMember(m);
                 
                 window.open(url, '_blank');
                 this.closeModal();
-                this.render(); // Refrescar dashboard
+                this.render();
             },
 
             showSettings() {
                 const html = `
-                    <h3>Configuración</h3>
-                    <button class="btn btn-outline" onclick="app.backupData()">⬇️ Descargar Copia de Seguridad</button>
-                    <button class="btn btn-outline" onclick="document.getElementById('file-input').click()" style="margin-top:10px;">⬆️ Restaurar Copia</button>
+                    <h3>Ajustes</h3>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <button class="btn btn-outline" onclick="app.backupData()">⬇️ Guardar Copia (Backup)</button>
+                        <button class="btn btn-outline" onclick="document.getElementById('file-input').click()">⬆️ Restaurar Copia</button>
+                    </div>
                     <input type="file" id="file-input" class="hidden" onchange="app.restoreData(this)">
                     
-                    <hr style="margin:20px 0; border:0; border-top:1px solid var(--border);">
-                    
-                    <h3>Instalación</h3>
-                    <p style="font-size:0.9rem; color:var(--text-muted);">
-                        Esta aplicación funciona mejor si la instalas en tu móvil:
-                        <br><br>
-                        <strong>Android (Chrome):</strong> Menú > Instalar aplicación.<br>
-                        <strong>iPhone (Safari):</strong> Compartir > Agregar al inicio.
-                    </p>
+                    <div style="background:var(--primary-light); padding:1rem; border-radius:8px; margin-top:20px; font-size:0.9rem;">
+                        <strong>Para instalar:</strong><br>
+                        📱 <strong>Android:</strong> Menú Chrome > "Instalar aplicación"<br>
+                        🍎 <strong>iOS:</strong> Botón Compartir Safari > "Agregar al Inicio"<br>
+                        💻 <strong>PC:</strong> Clic en el icono (+) en la barra de dirección.
+                    </div>
                 `;
-                this.showModal('Ajustes', html);
+                this.showModal('Configuración', html);
             },
 
             backupData() {
@@ -738,33 +778,22 @@
                     try {
                         const json = JSON.parse(e.target.result);
                         if(json.members && json.messages) {
-                            store.data = json;
-                            store.save();
-                            alert('Datos restaurados con éxito');
-                            location.reload();
-                        } else {
-                            alert('Archivo inválido');
-                        }
-                    } catch(err) { alert('Error al leer el archivo'); }
+                            store.data = json; store.save(); alert('Restaurado con éxito'); location.reload();
+                        } else alert('Archivo inválido');
+                    } catch(err) { alert('Error al leer archivo'); }
                 };
                 reader.readAsText(file);
             },
 
-            // --- GENERIC MODAL UI ---
             showModal(title, content) {
                 document.getElementById('modal-title').innerText = title;
                 document.getElementById('modal-body').innerHTML = content;
                 document.getElementById('modal').classList.add('open');
             },
-            closeModal() {
-                document.getElementById('modal').classList.remove('open');
-            }
+            closeModal() { document.getElementById('modal').classList.remove('open'); }
         };
 
-        // Start
         app.init();
-
     </script>
 </body>
 </html>
-
