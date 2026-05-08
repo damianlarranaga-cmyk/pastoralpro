@@ -3,62 +3,3867 @@ html_content = '''<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<meta name="description" content="SermonCraft - La mejor aplicación para pastores. Crea predicaciones, sermones y mensajes para grupos pequeños de forma profesional.">
-<meta name="theme-color" content="#064c74">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="mobile-web-app-capable" content="yes">
-<title>SermonCraft – Herramienta Pastoral Profesional</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PastorTools - Gestión Pastoral</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* ============================================
-     VARIABLES CSS - Sistema de Diseño
-     Mobile-First con escalado progresivo
-     ============================================ */
-  :root {
-    --primary: #064c74;
-    --primary-light: #0a6fa8;
-    --primary-dark: #043a59;
-    --primary-ultra-light: #e8f4fd;
-    --accent: #f0a500;
-    --accent-light: #ffc947;
-    --success: #2ecc71;
-    --danger: #e74c3c;
-    --bg: #F4F6F8;
-    --bg-card: #ffffff;
-    --bg-sidebar: #ffffff;
-    --text-primary: #1a2332;
-    --text-secondary: #4a5568;
-    --text-muted: #718096;
-    --border: #e2e8f0;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-    --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
-    --shadow-xl: 0 20px 50px rgba(0,0,0,0.15);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
-    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    --header-h: 56px;
-    --sidebar-w: 0px;
-    --content-pad: 0.75rem;
-    --card-pad: 1rem;
-    --section-gap: 0.75rem;
-    --font-scale: 0.9375;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #064c74;
+  --primary-light: #0a6fa8;
+  --primary-dark: #043a59;
+  --accent: #1a9cd8;
+  --accent2: #e8a020;
+  --bg: #F4F6F8;
+  --card: #ffffff;
+  --card2: #f0f4f8;
+  --text: #1a2332;
+  --text2: #4a5568;
+  --text3: #8a9bb0;
+  --border: #dde3ea;
+  --success: #2ecc71;
+  --danger: #e74c3c;
+  --shadow: 0 2px 12px rgba(6,76,116,0.10);
+  --shadow2: 0 4px 24px rgba(6,76,116,0.15);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(6,76,116,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-logo {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.header-subtitle {
+  font-size: 11px;
+  opacity: 0.75;
+  font-weight: 400;
+}
+
+.header-date {
+  font-size: 13px;
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.app-layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+.sidebar {
+  width: 240px;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar-section {
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+
+.sidebar-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text3);
+  padding: 8px 12px 4px;
+}
+
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text2);
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.sidebar-btn:hover {
+  background: var(--card2);
+  color: var(--primary);
+}
+
+.sidebar-btn.active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+}
+
+.sidebar-btn .icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 12px 16px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 28px;
+  overflow-y: auto;
+}
+
+.page { display: none; }
+.page.active { display: block; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.5px;
+}
+
+.page-desc {
+  font-size: 14px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(6,76,116,0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(6,76,116,0.35);
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, var(--accent2) 0%, #f0b030 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(232,160,32,0.3);
+}
+
+.btn-accent:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(232,160,32,0.4);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #27ae60 0%, var(--success) 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(46,204,113,0.3);
+}
+
+.btn-success:hover {
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #c0392b 0%, var(--danger) 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(231,76,60,0.3);
+}
+
+.btn-danger:hover {
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 12px;
+}
+
+.btn-lg {
+  padding: 14px 28px;
+  font-size: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #f8fafc 0%, #f0f4f8 100%);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-body {
+  padding: 22px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+
+.form-label span {
+  color: var(--danger);
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--card);
+  transition: all 0.2s;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(26,156,216,0.12);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+.form-hint {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+.stat-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow2);
+}
+
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.stat-icon.blue { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+.stat-icon.green { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+.stat-icon.orange { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+.stat-icon.purple { background: linear-gradient(135deg, #f3e5f5, #e1bee7); }
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow2);
+  border-color: var(--accent);
+}
+
+.item-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-sermon { background: #e3f2fd; color: #1565c0; }
+.badge-celula { background: #e8f5e9; color: #2e7d32; }
+.badge-borrador { background: #fff3e0; color: #e65100; }
+.badge-completo { background: #e8f5e9; color: #2e7d32; }
+.badge-revision { background: #f3e5f5; color: #6a1b9a; }
+
+.item-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.item-meta {
+  font-size: 12px;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.item-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.item-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 16px;
+}
+
+.section-divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-divider-text {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text3);
+}
+
+.sermon-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.editor-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.editor-section-header {
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor-section-body {
+  padding: 20px;
+}
+
+.point-item {
+  background: var(--card2);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1.5px solid var(--border);
+  position: relative;
+}
+
+.point-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.point-remove {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--danger);
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.point-remove:hover {
+  background: #fde8e8;
+}
+
+.add-point-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text3);
+  transition: all 0.2s;
+}
+
+.add-point-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(26,156,216,0.05);
+}
+
+.week-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.week-day {
+  text-align: center;
+  padding: 10px 6px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.week-day:hover {
+  border-color: var(--accent);
+  background: rgba(26,156,216,0.05);
+}
+
+.week-day.active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-color: var(--primary);
+  color: white;
+}
+
+.week-day.has-content {
+  border-color: var(--success);
+}
+
+.week-day-name {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+
+.week-day-num {
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.week-day-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  margin: 4px auto 0;
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--card2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  transition: width 0.3s;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--card2);
+  color: var(--text2);
+  border: 1px solid var(--border);
+  margin: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tag:hover, .tag.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(6,76,116,0.4);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(6,76,116,0.3);
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background: var(--card2);
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.alert-info {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #bbdefb;
+}
+
+.alert-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.alert-warning {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffe0b2;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 32px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -26px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.timeline-content {
+  background: var(--card2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+}
+
+.timeline-date {
+  font-size: 11px;
+  color: var(--text3);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.timeline-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.timeline-desc {
+  font-size: 12px;
+  color: var(--text2);
+  margin-top: 4px;
+}
+
+.scripture-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  color: #1565c0;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 3px;
+}
+
+.scripture-ref button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1565c0;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  margin-left: 2px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+}
+
+.empty-state-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-state-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+
+.empty-state-desc {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--card2);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text3);
+  background: none;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background: var(--card);
+  color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  margin-bottom: 8px;
+  background: var(--card);
+  transition: all 0.2s;
+}
+
+.checklist-item:hover {
+  border-color: var(--accent);
+}
+
+.checklist-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.checklist-item.checked {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.checklist-item label {
+  font-size: 14px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.color-picker {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.color-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.color-dot.selected {
+  border-color: var(--text);
+  transform: scale(1.2);
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: none;
+}
+
+.search-bar span {
+  font-size: 18px;
+  color: var(--text3);
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filter-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-chip:hover, .filter-chip.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.export-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-radius: var(--radius);
+  padding: 28px;
+  color: white;
+  text-align: center;
+  margin-top: 24px;
+}
+
+.export-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.export-desc {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+.btn-export:hover {
+  background: rgba(255,255,255,0.3);
+  border-color: white;
+  transform: translateY(-2px);
+}
+
+.week-planner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.week-slot {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.week-slot:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.week-slot-header {
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f0f4f8 100%);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.week-slot-day {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.week-slot-body {
+  padding: 14px 16px;
+}
+
+.week-slot-empty {
+  font-size: 13px;
+  color: var(--text3);
+  font-style: italic;
+}
+
+.week-slot-content {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.week-slot-meta {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.richtext-toolbar {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--card2);
+  border: 1.5px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  flex-wrap: wrap;
+}
+
+.richtext-btn {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--card);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text2);
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.richtext-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.richtext-area {
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm) !important;
+  border-top: none !important;
+}
+
+.notification {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--primary);
+  color: white;
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow2);
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.notification.success { background: #27ae60; }
+.notification.error { background: var(--danger); }
+
+.dashboard-welcome {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  color: white;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-welcome::before {
+  content: '✝';
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 80px;
+  opacity: 0.1;
+}
+
+.dashboard-welcome h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.dashboard-welcome p {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.verse-of-day {
+  background: linear-gradient(135deg, #fff8e1, #fff3cd);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  border: 1px solid #ffe082;
+  margin-bottom: 24px;
+}
+
+.verse-text {
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.verse-ref {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent2);
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.quick-action {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  transition: all 0.2s;
+  box-shadow: var(--shadow);
+}
+
+.quick-action:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow2);
+  border-color: var(--accent);
+}
+
+.quick-action-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.quick-action-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text2);
+}
+
+.print-area {
+  display: none;
+}
+
+@media print {
+  .app-header, .sidebar, .page-header .btn, .item-actions, .modal-overlay, .notification { display: none !important; }
+  .app-layout { display: block; }
+  .main-content { padding: 0; }
+  .print-area { display: block; }
+  body { background: white; }
+}
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .grid-2, .grid-3, .grid-4, .quick-actions, .week-planner { grid-template-columns: 1fr; }
+}
+
+.celula-structure {
+  counter-reset: celula-step;
+}
+
+.celula-step {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.celula-step-header {
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f0f4f8 100%);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.celula-step-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.celula-step-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.celula-step-time {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text3);
+  font-weight: 600;
+}
+
+.celula-step-body {
+  padding: 16px 18px;
+}
+
+.resource-card {
+  background: var(--card2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.resource-icon {
+  font-size: 24px;
+  width: 40px;
+  text-align: center;
+}
+
+.resource-info {
+  flex: 1;
+}
+
+.resource-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.resource-desc {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.series-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.series-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow2);
+}
+
+.series-card-banner {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+.series-card-body {
+  padding: 16px;
+}
+
+.series-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.series-card-meta {
+  font-size: 12px;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+
+.series-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.series-progress-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-brand">
+    <div class="header-logo">✝</div>
+    <div>
+      <div class="header-title">PastorTools</div>
+      <div class="header-subtitle">Gestión Pastoral Integral</div>
+    </div>
+  </div>
+  <div class="header-date" id="headerDate"></div>
+</header>
+
+<div class="app-layout">
+  <nav class="sidebar">
+    <div class="sidebar-label">Principal</div>
+    <div class="sidebar-section">
+      <button class="sidebar-btn active" onclick="showPage('dashboard')">
+        <span class="icon">🏠</span> Panel Principal
+      </button>
+      <button class="sidebar-btn" onclick="showPage('planner')">
+        <span class="icon">📅</span> Planificador Semanal
+      </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Sermones</div>
+    <div class="sidebar-section">
+      <button class="sidebar-btn" onclick="showPage('sermons')">
+        <span class="icon">📖</span> Mis Sermones
+      </button>
+      <button class="sidebar-btn" onclick="showPage('sermon-editor')">
+        <span class="icon">✏️</span> Nuevo Sermón
+      </button>
+      <button class="sidebar-btn" onclick="showPage('series')">
+        <span class="icon">📚</span> Series de Mensajes
+      </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Grupos Celulares</div>
+    <div class="sidebar-section">
+      <button class="sidebar-btn" onclick="showPage('celulas')">
+        <span class="icon">👥</span> Mis Enseñanzas
+      </button>
+      <button class="sidebar-btn" onclick="showPage('celula-editor')">
+        <span class="icon">➕</span> Nueva Enseñanza
+      </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Recursos</div>
+    <div class="sidebar-section">
+      <button class="sidebar-btn" onclick="showPage('resources')">
+        <span class="icon">📋</span> Recursos Pastorales
+      </button>
+      <button class="sidebar-btn" onclick="showPage('history')">
+        <span class="icon">🕐</span> Historial
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page active">
+      <div class="dashboard-welcome">
+        <h2>¡Bienvenido, Pastor! 🙏</h2>
+        <p>Que la sabiduría de Dios guíe cada mensaje que prepares esta semana.</p>
+      </div>
+
+      <div class="verse-of-day">
+        <div class="verse-text" id="verseText">"Predica la palabra; insiste a tiempo y fuera de tiempo; redarguye, reprende, exhorta con toda paciencia y doctrina."</div>
+        <div class="verse-ref">📖 2 Timoteo 4:2</div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom:24px;">
+        <div class="stat-card">
+          <div class="stat-icon blue">📖</div>
+          <div>
+            <div class="stat-value" id="statSermons">0</div>
+            <div class="stat-label">Sermones</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">👥</div>
+          <div>
+            <div class="stat-value" id="statCelulas">0</div>
+            <div class="stat-label">Enseñanzas Celulares</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">📚</div>
+          <div>
+            <div class="stat-value" id="statSeries">0</div>
+            <div class="stat-label">Series Activas</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple">📅</div>
+          <div>
+            <div class="stat-value" id="statWeek">0</div>
+            <div class="stat-label">Esta Semana</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <div class="quick-action" onclick="showPage('sermon-editor'); resetSermonEditor();">
+          <div class="quick-action-icon">✍️</div>
+          <div class="quick-action-label">Nuevo Sermón</div>
+        </div>
+        <div class="quick-action" onclick="showPage('celula-editor'); resetCelulaEditor();">
+          <div class="quick-action-icon">👥</div>
+          <div class="quick-action-label">Nueva Enseñanza Celular</div>
+        </div>
+        <div class="quick-action" onclick="showPage('planner')">
+          <div class="quick-action-icon">📅</div>
+          <div class="quick-action-label">Planificar Semana</div>
+        </div>
+        <div class="quick-action" onclick="showPage('resources')">
+          <div class="quick-action-icon">📋</div>
+          <div class="quick-action-label">Recursos</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📖 Últimos Sermones</div>
+            <button class="btn btn-sm btn-outline" onclick="showPage('sermons')">Ver todos</button>
+          </div>
+          <div class="card-body" id="dashboardSermons">
+            <div class="empty-state" style="padding:30px 20px;">
+              <div class="empty-state-icon" style="font-size:40px;">📖</div>
+              <div class="empty-state-title" style="font-size:15px;">Sin sermones aún</div>
+              <div class="empty-state-desc" style="font-size:13px;">Crea tu primer sermón</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">👥 Últimas Enseñanzas</div>
+            <button class="btn btn-sm btn-outline" onclick="showPage('celulas')">Ver todas</button>
+          </div>
+          <div class="card-body" id="dashboardCelulas">
+            <div class="empty-state" style="padding:30px 20px;">
+              <div class="empty-state-icon" style="font-size:40px;">👥</div>
+              <div class="empty-state-title" style="font-size:15px;">Sin enseñanzas aún</div>
+              <div class="empty-state-desc" style="font-size:13px;">Crea tu primera enseñanza</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLANIFICADOR SEMANAL -->
+    <div id="page-planner" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">📅 Planificador Semanal</div>
+          <div class="page-desc">Organiza todos tus mensajes y enseñanzas de la semana</div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-outline" onclick="prevWeek()">← Anterior</button>
+          <button class="btn btn-primary" onclick="goToCurrentWeek()">Esta Semana</button>
+          <button class="btn btn-outline" onclick="nextWeek()">Siguiente →</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+          <div class="card-title" id="weekRangeTitle">📅 Semana actual</div>
+        </div>
+        <div class="card-body">
+          <div class="week-calendar" id="weekCalendar"></div>
+        </div>
+      </div>
+
+      <div class="week-planner" id="weekPlanner"></div>
+
+      <div class="export-section">
+        <div class="export-title">📤 Exportar Planificación Semanal</div>
+        <div class="export-desc">Descarga tu planificación completa de la semana en PDF</div>
+        <div class="export-buttons">
+          <button class="btn-export" onclick="exportWeekPDF()">📄 Exportar Semana a PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERMONES LIST -->
+    <div id="page-sermons" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">📖 Mis Sermones</div>
+          <div class="page-desc">Biblioteca completa de sermones preparados</div>
+        </div>
+        <button class="btn btn-primary" onclick="showPage('sermon-editor'); resetSermonEditor();">
+          ✏️ Nuevo Sermón
+        </button>
+      </div>
+
+      <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" placeholder="Buscar sermones por título, texto bíblico, tema..." id="sermonSearch" oninput="filterSermons()">
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-chip active" onclick="filterByStatus('all', this)">Todos</div>
+        <div class="filter-chip" onclick="filterByStatus('completo', this)">Completos</div>
+        <div class="filter-chip" onclick="filterByStatus('borrador', this)">Borradores</div>
+        <div class="filter-chip" onclick="filterByStatus('revision', this)">En Revisión</div>
+      </div>
+
+      <div class="item-list" id="sermonList">
+        <div class="empty-state">
+          <div class="empty-state-icon">📖</div>
+          <div class="empty-state-title">No hay sermones aún</div>
+          <div class="empty-state-desc">Comienza creando tu primer sermón</div>
+          <button class="btn btn-primary" onclick="showPage('sermon-editor'); resetSermonEditor();">✏️ Crear Sermón</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERMON EDITOR -->
+    <div id="page-sermon-editor" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="sermonEditorTitle">✏️ Nuevo Sermón</div>
+          <div class="page-desc">Prepara tu mensaje con estructura completa</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-outline" onclick="saveSermon('borrador')">💾 Guardar Borrador</button>
+          <button class="btn btn-success" onclick="saveSermon('completo')">✅ Guardar Completo</button>
+          <button class="btn btn-accent" onclick="exportSermonPDF()">📄 Exportar PDF</button>
+        </div>
+      </div>
+
+      <input type="hidden" id="editingSermonId" value="">
+
+      <div class="sermon-editor">
+        <div class="editor-section">
+          <div class="editor-section-header">📋 Información General</div>
+          <div class="editor-section-body">
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Título del Sermón <span>*</span></label>
+                <input type="text" class="form-control" id="sermonTitle" placeholder="Ej: El poder de la fe en tiempos difíciles">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Fecha de Predicación</label>
+                <input type="date" class="form-control" id="sermonDate">
+              </div>
+            </div>
+            <div class="grid-3">
+              <div class="form-group">
+                <label class="form-label">Texto Bíblico Principal</label>
+                <input type="text" class="form-control" id="sermonScripture" placeholder="Ej: Juan 3:16">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tipo de Mensaje</label>
+                <select class="form-control" id="sermonType">
+                  <option value="expositivo">Expositivo</option>
+                  <option value="tematico">Temático</option>
+                  <option value="narrativo">Narrativo</option>
+                  <option value="evangelistico">Evangelístico</option>
+                  <option value="doctrinal">Doctrinal</option>
+                  <option value="pastoral">Pastoral</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Serie (opcional)</label>
+                <select class="form-control" id="sermonSeries">
+                  <option value="">Sin serie</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tema Central / Propósito</label>
+              <input type="text" class="form-control" id="sermonTheme" placeholder="¿Cuál es el mensaje central que quieres comunicar?">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Audiencia Objetivo</label>
+              <div class="tags-container" id="audienceTags">
+                <span class="tag" onclick="toggleTag(this)">Toda la congregación</span>
+                <span class="tag" onclick="toggleTag(this)">Jóvenes</span>
+                <span class="tag" onclick="toggleTag(this)">Familias</span>
+                <span class="tag" onclick="toggleTag(this)">Nuevos creyentes</span>
+                <span class="tag" onclick="toggleTag(this)">Líderes</span>
+                <span class="tag" onclick="toggleTag(this)">Evangelístico</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">📖 Textos Bíblicos de Apoyo</div>
+          <div class="editor-section-body">
+            <div style="display:flex;gap:10px;margin-bottom:12px;">
+              <input type="text" class="form-control" id="newScriptureRef" placeholder="Ej: Romanos 8:28" style="flex:1;">
+              <button class="btn btn-primary" onclick="addScriptureRef()">+ Agregar</button>
+            </div>
+            <div id="scriptureRefs" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">🎯 Introducción</div>
+          <div class="editor-section-body">
+            <div class="form-group">
+              <label class="form-label">Gancho / Apertura</label>
+              <textarea class="form-control" id="sermonHook" rows="3" placeholder="Historia, pregunta, estadística o ilustración para captar la atención..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contexto Bíblico</label>
+              <textarea class="form-control" id="sermonContext" rows="3" placeholder="Contexto histórico, cultural y literario del pasaje..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Proposición / Tesis del Sermón</label>
+              <input type="text" class="form-control" id="sermonProposition" placeholder="La idea central en una oración clara y memorable...">
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">📝 Puntos Principales del Sermón</div>
+          <div class="editor-section-body">
+            <div id="sermonPoints"></div>
+            <button class="add-point-btn" onclick="addSermonPoint()">
+              ➕ Agregar Punto Principal
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">💡 Ilustraciones y Aplicaciones</div>
+          <div class="editor-section-body">
+            <div class="form-group">
+              <label class="form-label">Ilustraciones / Historias</label>
+              <textarea class="form-control" id="sermonIllustrations" rows="4" placeholder="Historias, anécdotas, ejemplos de la vida real que ilustren el mensaje..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Aplicación Práctica</label>
+              <textarea class="form-control" id="sermonApplication" rows="4" placeholder="¿Cómo pueden aplicar este mensaje en su vida diaria? Pasos concretos..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">🏁 Conclusión y Llamado</div>
+          <div class="editor-section-body">
+            <div class="form-group">
+              <label class="form-label">Conclusión</label>
+              <textarea class="form-control" id="sermonConclusion" rows="3" placeholder="Resumen poderoso que refuerce el mensaje central..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Llamado a la Acción / Invitación</label>
+              <textarea class="form-control" id="sermonCallToAction" rows="3" placeholder="¿Qué decisión o acción esperas que tome la congregación?"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Oración de Cierre</label>
+              <textarea class="form-control" id="sermonClosingPrayer" rows="3" placeholder="Guía de oración para cerrar el mensaje..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">📊 Notas del Predicador</div>
+          <div class="editor-section-body">
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Duración Estimada</label>
+                <select class="form-control" id="sermonDuration">
+                  <option value="20-30 min">20-30 minutos</option>
+                  <option value="30-40 min" selected>30-40 minutos</option>
+                  <option value="40-50 min">40-50 minutos</option>
+                  <option value="50-60 min">50-60 minutos</option>
+                  <option value="+60 min">Más de 60 minutos</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tono del Mensaje</label>
+                <select class="form-control" id="sermonTone">
+                  <option value="Exhortativo">Exhortativo</option>
+                  <option value="Consolador">Consolador</option>
+                  <option value="Evangelístico">Evangelístico</option>
+                  <option value="Doctrinal">Doctrinal</option>
+                  <option value="Celebratorio">Celebratorio</option>
+                  <option value="Profético">Profético</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Notas Personales / Recordatorios</label>
+              <textarea class="form-control" id="sermonNotes" rows="3" placeholder="Notas privadas, recordatorios, cosas a mejorar..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">✅ Lista de Verificación Pre-Sermón</div>
+          <div class="editor-section-body">
+            <div id="sermonChecklist">
+              <div class="checklist-item" id="chk1">
+                <input type="checkbox" id="c1" onchange="toggleChecklist('chk1')">
+                <label for="c1">Texto bíblico estudiado en profundidad</label>
+              </div>
+              <div class="checklist-item" id="chk2">
+                <input type="checkbox" id="c2" onchange="toggleChecklist('chk2')">
+                <label for="c2">Contexto histórico y cultural investigado</label>
+              </div>
+              <div class="checklist-item" id="chk3">
+                <input type="checkbox" id="c3" onchange="toggleChecklist('chk3')">
+                <label for="c3">Puntos principales claros y bien desarrollados</label>
+              </div>
+              <div class="checklist-item" id="chk4">
+                <input type="checkbox" id="c4" onchange="toggleChecklist('chk4')">
+                <label for="c4">Ilustraciones relevantes y apropiadas</label>
+              </div>
+              <div class="checklist-item" id="chk5">
+                <input type="checkbox" id="c5" onchange="toggleChecklist('chk5')">
+                <label for="c5">Aplicación práctica definida</label>
+              </div>
+              <div class="checklist-item" id="chk6">
+                <input type="checkbox" id="c6" onchange="toggleChecklist('chk6')">
+                <label for="c6">Sermón practicado en voz alta</label>
+              </div>
+              <div class="checklist-item" id="chk7">
+                <input type="checkbox" id="c7" onchange="toggleChecklist('chk7')">
+                <label for="c7">Tiempo de oración personal antes de predicar</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERIES -->
+    <div id="page-series" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">📚 Series de Mensajes</div>
+          <div class="page-desc">Organiza tus sermones en series temáticas</div>
+        </div>
+        <button class="btn btn-primary" onclick="openSeriesModal()">➕ Nueva Serie</button>
+      </div>
+
+      <div class="grid-3" id="seriesList">
+        <div class="empty-state" style="grid-column:1/-1;">
+          <div class="empty-state-icon">📚</div>
+          <div class="empty-state-title">No hay series aún</div>
+          <div class="empty-state-desc">Crea tu primera serie de mensajes</div>
+          <button class="btn btn-primary" onclick="openSeriesModal()">➕ Nueva Serie</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CELULAS LIST -->
+    <div id="page-celulas" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">👥 Enseñanzas para Grupos Celulares</div>
+          <div class="page-desc">Materiales completos para tus grupos pequeños</div>
+        </div>
+        <button class="btn btn-accent" onclick="showPage('celula-editor'); resetCelulaEditor();">
+          ➕ Nueva Enseñanza
+        </button>
+      </div>
+
+      <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" placeholder="Buscar enseñanzas..." id="celulaSearch" oninput="filterCelulas()">
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-chip active" onclick="filterCelulaStatus('all', this)">Todas</div>
+        <div class="filter-chip" onclick="filterCelulaStatus('completo', this)">Completas</div>
+        <div class="filter-chip" onclick="filterCelulaStatus('borrador', this)">Borradores</div>
+      </div>
+
+      <div class="item-list" id="celulaList">
+        <div class="empty-state">
+          <div class="empty-state-icon">👥</div>
+          <div class="empty-state-title">No hay enseñanzas aún</div>
+          <div class="empty-state-desc">Crea tu primera enseñanza para grupos celulares</div>
+          <button class="btn btn-accent" onclick="showPage('celula-editor'); resetCelulaEditor();">➕ Crear Enseñanza</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CELULA EDITOR -->
+    <div id="page-celula-editor" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="celulaEditorTitle">➕ Nueva Enseñanza Celular</div>
+          <div class="page-desc">Diseña una enseñanza completa para tu grupo pequeño</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-outline" onclick="saveCelula('borrador')">💾 Guardar Borrador</button>
+          <button class="btn btn-success" onclick="saveCelula('completo')">✅ Guardar Completa</button>
+          <button class="btn btn-accent" onclick="exportCelulaPDF()">📄 Exportar PDF</button>
+        </div>
+      </div>
+
+      <input type="hidden" id="editingCelulaId" value="">
+
+      <div class="sermon-editor">
+        <div class="editor-section">
+          <div class="editor-section-header">📋 Información General</div>
+          <div class="editor-section-body">
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Título de la Enseñanza <span>*</span></label>
+                <input type="text" class="form-control" id="celulaTitle" placeholder="Ej: Viviendo en comunidad como el primer siglo">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Fecha de la Reunión</label>
+                <input type="date" class="form-control" id="celulaDate">
+              </div>
+            </div>
+            <div class="grid-3">
+              <div class="form-group">
+                <label class="form-label">Texto Bíblico Base</label>
+                <input type="text" class="form-control" id="celulaScripture" placeholder="Ej: Hechos 2:42-47">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Duración Estimada</label>
+                <select class="form-control" id="celulaDuration">
+                  <option value="60 min">60 minutos</option>
+                  <option value="75 min" selected>75 minutos</option>
+                  <option value="90 min">90 minutos</option>
+                  <option value="120 min">2 horas</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nivel del Grupo</label>
+                <select class="form-control" id="celulaLevel">
+                  <option value="Principiantes">Principiantes</option>
+                  <option value="Intermedio" selected>Intermedio</option>
+                  <option value="Avanzado">Avanzado</option>
+                  <option value="Mixto">Mixto</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Objetivo de la Enseñanza</label>
+              <input type="text" class="form-control" id="celulaObjective" placeholder="¿Qué quieres que los participantes aprendan, sientan o hagan?">
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">🏗️ Estructura de la Reunión</div>
+          <div class="editor-section-body">
+            <div class="celula-structure">
+              <div class="celula-step">
+                <div class="celula-step-header">
+                  <div class="celula-step-num">1</div>
+                  <div class="celula-step-title">🙏 Bienvenida y Adoración</div>
+                  <div class="celula-step-time">10-15 min</div>
+                </div>
+                <div class="celula-step-body">
+                  <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label">Dinámica de Bienvenida</label>
+                    <textarea class="form-control" id="celulaWelcome" rows="2" placeholder="Actividad de integración, pregunta rompe-hielo, alabanza inicial..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="celula-step">
+                <div class="celula-step-header">
+                  <div class="celula-step-num">2</div>
+                  <div class="celula-step-title">📖 Lectura y Contexto Bíblico</div>
+                  <div class="celula-step-time">10 min</div>
+                </div>
+                <div class="celula-step-body">
+                  <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label">Introducción al Pasaje</label>
+                    <textarea class="form-control" id="celulaIntro" rows="3" placeholder="Contexto del pasaje, quién lo escribió, a quién, cuándo y por qué..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="celula-step">
+                <div class="celula-step-header">
+                  <div class="celula-step-num">3</div>
+                  <div class="celula-step-title">💡 Enseñanza Principal</div>
+                  <div class="celula-step-time">20-25 min</div>
+                </div>
+                <div class="celula-step-body">
+                  <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label">Contenido de la Enseñanza</label>
+                    <textarea class="form-control" id="celulaTeaching" rows="6" placeholder="Desarrolla aquí el contenido principal de la enseñanza. Incluye puntos clave, explicaciones, ilustraciones..."></textarea>
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Puntos Clave</label>
+                    <div id="celulaPoints"></div>
+                    <button class="add-point-btn" onclick="addCelulaPoint()">➕ Agregar Punto Clave</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="celula-step">
+                <div class="celula-step-header">
+                  <div class="celula-step-num">4</div>
+                  <div class="celula-step-title">💬 Preguntas de Discusión</div>
+                  <div class="celula-step-time">20 min</div>
+                </div>
+                <div class="celula-step-body">
+                  <div id="celulaQuestions"></div>
+                  <button class="add-point-btn" onclick="addCelulaQuestion()">➕ Agregar Pregunta</button>
+                </div>
+              </div>
+
+              <div class="celula-step">
+                <div class="celula-step-header">
+                  <div class="celula-step-num">5</div>
+                  <div class="celula-step-title">🎯 Aplicación Práctica</div>
+                  <div class="celula-step-time">10 min</div>
+                </div>
+                <div class="celula-step-body">
+                  <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label">Desafío de la Semana</label>
+                    <textarea class="form-control" id="celulaChallenge" rows="3" placeholder="¿Qué acción concreta pueden tomar esta semana para aplicar lo aprendido?"></textarea>
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Actividad Práctica (opcional)</label>
+                    <textarea class="form-control" id="celulaActivity" rows="2" placeholder="Dinámica, ejercicio o actividad grupal para reforzar la enseñanza..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="celula-step">
+                <div class="celula-step-header">
+                  <div class="celula-step-num">6</div>
+                  <div class="celula-step-title">🙌 Oración y Cierre</div>
+                  <div class="celula-step-time">10-15 min</div>
+                </div>
+                <div class="celula-step-body">
+                  <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label">Peticiones de Oración</label>
+                    <textarea class="form-control" id="celulaPrayer" rows="2" placeholder="Guía para el tiempo de oración grupal, peticiones específicas..."></textarea>
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Anuncios y Próxima Reunión</label>
+                    <textarea class="form-control" id="celulaAnnouncements" rows="2" placeholder="Anuncios importantes, fecha y tema de la próxima reunión..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">📚 Materiales y Recursos</div>
+          <div class="editor-section-body">
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Materiales Necesarios</label>
+                <textarea class="form-control" id="celulaMaterials" rows="3" placeholder="Biblias, hojas, bolígrafos, proyector, etc."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Lecturas Adicionales</label>
+                <textarea class="form-control" id="celulaReadings" rows="3" placeholder="Pasajes bíblicos adicionales, libros recomendados..."></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Notas para el Líder</label>
+              <textarea class="form-control" id="celulaLeaderNotes" rows="3" placeholder="Instrucciones especiales, advertencias, sugerencias para el líder del grupo..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-section">
+          <div class="editor-section-header">✅ Lista de Verificación Pre-Reunión</div>
+          <div class="editor-section-body">
+            <div class="checklist-item" id="cchk1">
+              <input type="checkbox" id="cc1" onchange="toggleChecklist('cchk1')">
+              <label for="cc1">Pasaje bíblico estudiado y preparado</label>
+            </div>
+            <div class="checklist-item" id="cchk2">
+              <input type="checkbox" id="cc2" onchange="toggleChecklist('cchk2')">
+              <label for="cc2">Preguntas de discusión revisadas</label>
+            </div>
+            <div class="checklist-item" id="cchk3">
+              <input type="checkbox" id="cc3" onchange="toggleChecklist('cchk3')">
+              <label for="cc3">Materiales preparados y disponibles</label>
+            </div>
+            <div class="checklist-item" id="cchk4">
+              <input type="checkbox" id="cc4" onchange="toggleChecklist('cchk4')">
+              <label for="cc4">Lugar de reunión confirmado</label>
+            </div>
+            <div class="checklist-item" id="cchk5">
+              <input type="checkbox" id="cc5" onchange="toggleChecklist('cchk5')">
+              <label for="cc5">Miembros del grupo notificados</label>
+            </div>
+            <div class="checklist-item" id="cchk6">
+              <input type="checkbox" id="cc6" onchange="toggleChecklist('cchk6')">
+              <label for="cc6">Tiempo de oración personal realizado</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECURSOS -->
+    <div id="page-resources" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">📋 Recursos Pastorales</div>
+          <div class="page-desc">Herramientas y referencias para tu ministerio</div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('tab-structures', this)">📐 Estructuras</button>
+        <button class="tab-btn" onclick="showTab('tab-verses', this)">📖 Versículos Clave</button>
+        <button class="tab-btn" onclick="showTab('tab-tips', this)">💡 Consejos</button>
+        <button class="tab-btn" onclick="showTab('tab-templates', this)">📄 Plantillas</button>
+      </div>
+
+      <div id="tab-structures" class="tab-content active">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">📐 Estructura Clásica de Sermón</div></div>
+            <div class="card-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Paso 1</div>
+                    <div class="timeline-title">Introducción (10%)</div>
+                    <div class="timeline-desc">Gancho, contexto, proposición</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Paso 2</div>
+                    <div class="timeline-title">Punto 1 (25%)</div>
+                    <div class="timeline-desc">Explicación, ilustración, aplicación</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Paso 3</div>
+                    <div class="timeline-title">Punto 2 (25%)</div>
+                    <div class="timeline-desc">Explicación, ilustración, aplicación</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Paso 4</div>
+                    <div class="timeline-title">Punto 3 (25%)</div>
+                    <div class="timeline-desc">Explicación, ilustración, aplicación</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Paso 5</div>
+                    <div class="timeline-title">Conclusión y Llamado (15%)</div>
+                    <div class="timeline-desc">Resumen, llamado a la acción, oración</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">👥 Estructura de Célula (Modelo 4W)</div></div>
+            <div class="card-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Welcome (Bienvenida)</div>
+                    <div class="timeline-title">Rompe-hielo y adoración</div>
+                    <div class="timeline-desc">15 minutos de integración</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Worship (Adoración)</div>
+                    <div class="timeline-title">Tiempo de alabanza</div>
+                    <div class="timeline-desc">15 minutos de adoración</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Word (Palabra)</div>
+                    <div class="timeline-title">Enseñanza y discusión</div>
+                    <div class="timeline-desc">30 minutos de estudio</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-date">Works (Obras)</div>
+                    <div class="timeline-title">Oración y misión</div>
+                    <div class="timeline-desc">15 minutos de intercesión</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-verses" class="tab-content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">📖 Versículos sobre Fe</div></div>
+            <div class="card-body">
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Hebreos 11:1</div><div class="resource-desc">"Es, pues, la fe la certeza de lo que se espera..."</div></div></div>
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Romanos 10:17</div><div class="resource-desc">"Así que la fe es por el oír..."</div></div></div>
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Marcos 11:24</div><div class="resource-desc">"Todo lo que pidiereis orando, creed que lo recibiréis..."</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">📖 Versículos sobre Amor</div></div>
+            <div class="card-body">
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Juan 3:16</div><div class="resource-desc">"Porque de tal manera amó Dios al mundo..."</div></div></div>
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">1 Corintios 13:4-7</div><div class="resource-desc">"El amor es sufrido, es benigno..."</div></div></div>
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">1 Juan 4:8</div><div class="resource-desc">"El que no ama, no ha conocido a Dios..."</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">📖 Versículos sobre Salvación</div></div>
+            <div class="card-body">
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Romanos 10:9</div><div class="resource-desc">"Si confesares con tu boca que Jesús es el Señor..."</div></div></div>
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Efesios 2:8-9</div><div class="resource-desc">"Porque por gracia sois salvos por medio de la fe..."</div></div></div>
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Juan 14:6</div><div class="resource-desc">"Yo soy el camino, y la verdad, y la vida..."</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">📖 Versículos sobre Oración</div></div>
+            <div class="card-body">
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Filipenses 4:6-7</div><div class="resource-desc">"Por nada estéis afanosos, sino sean conocidas vuestras peticiones..."</div></div></div>
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Mateo 6:9-13</div><div class="resource-desc">El Padre Nuestro - modelo de oración</div></div></div>
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">1 Tesalonicenses 5:17</div><div class="resource-desc">"Orad sin cesar"</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-tips" class="tab-content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">💡 Consejos para Predicar</div></div>
+            <div class="card-body">
+              <div class="resource-card"><div class="resource-icon">🎯</div><div class="resource-info"><div class="resource-name">Un mensaje, una idea</div><div class="resource-desc">Cada sermón debe tener una sola proposición central clara y memorable.</div></div></div>
+              <div class="resource-card"><div class="resource-icon">📖</div><div class="resource-info"><div class="resource-name">Deja que la Biblia hable</div><div class="resource-desc">El texto bíblico debe ser el fundamento, no solo el punto de partida.</div></div></div>
+              <div class="resource-card"><div class="resource-icon">❤️</div><div class="resource-info"><div class="resource-name">Predica a personas, no a masas</div><div class="resource-desc">Imagina a una persona específica mientras preparas el mensaje.</div></div></div>
+              <div class="resource-card"><div class="resource-icon">🔄</div><div class="resource-info"><div class="resource-name">Explica, ilustra, aplica</div><div class="resource-desc">Cada punto debe seguir este patrón para ser efectivo.</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">💡 Consejos para Grupos Celulares</div></div>
+            <div class="card-body">
+              <div class="resource-card"><div class="resource-icon">🤝</div><div class="resource-info"><div class="resource-name">Crea ambiente seguro</div><div class="resource-desc">Las personas comparten más cuando se sienten aceptadas y sin juicio.</div></div></div>
+              <div class="resource-card"><div class="resource-icon">❓</div><div class="resource-info"><div class="resource-name">Preguntas abiertas</div><div class="resource-desc">Usa preguntas que no se respondan con sí o no para generar discusión.</div></div></div>
+              <div class="resource-card"><div class="resource-icon">⏰</div><div class="resource-info"><div class="resource-name">Respeta el tiempo</div><div class="resource-desc">Comienza y termina a tiempo para generar confianza en el grupo.</div></div></div>
+              <div class="resource-card"><div class="resource-icon">🌱</div><div class="resource-info"><div class="resource-name">Enfócate en la aplicación</div><div class="resource-desc">El objetivo es transformación, no solo información bíblica.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-templates" class="tab-content">
+        <div class="alert alert-info">💡 Haz clic en cualquier plantilla para cargarla en el editor correspondiente</div>
+        <div class="grid-2">
+          <div class="card" style="cursor:pointer;" onclick="loadSermonTemplate('evangelistico')">
+            <div class="card-header"><div class="card-title">📖 Plantilla: Sermón Evangelístico</div></div>
+            <div class="card-body">
+              <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">Estructura optimizada para mensajes de salvación y evangelismo.</p>
+              <div class="item-badge badge-sermon">Sermón</div>
+              <div class="item-badge badge-completo" style="margin-left:6px;">Listo para usar</div>
+            </div>
+          </div>
+          <div class="card" style="cursor:pointer;" onclick="loadSermonTemplate('doctrinal')">
+            <div class="card-header"><div class="card-title">📖 Plantilla: Sermón Doctrinal</div></div>
+            <div class="card-body">
+              <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">Para enseñar verdades fundamentales de la fe cristiana.</p>
+              <div class="item-badge badge-sermon">Sermón</div>
+              <div class="item-badge badge-completo" style="margin-left:6px;">Listo para usar</div>
+            </div>
+          </div>
+          <div class="card" style="cursor:pointer;" onclick="loadCelulaTemplate('comunidad')">
+            <div class="card-header"><div class="card-title">👥 Plantilla: Célula sobre Comunidad</div></div>
+            <div class="card-body">
+              <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">Enseñanza sobre la vida en comunidad cristiana.</p>
+              <div class="item-badge badge-celula">Célula</div>
+              <div class="item-badge badge-completo" style="margin-left:6px;">Listo para usar</div>
+            </div>
+          </div>
+          <div class="card" style="cursor:pointer;" onclick="loadCelulaTemplate('oracion')">
+            <div class="card-header"><div class="card-title">👥 Plantilla: Célula sobre Oración</div></div>
+            <div class="card-body">
+              <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">Enseñanza práctica sobre la vida de oración.</p>
+              <div class="item-badge badge-celula">Célula</div>
+              <div class="item-badge badge-completo" style="margin-left:6px;">Listo para usar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div id="page-history" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">🕐 Historial de Mensajes</div>
+          <div class="page-desc">Registro cronológico de todos tus mensajes</div>
+        </div>
+      </div>
+      <div class="timeline" id="historyTimeline">
+        <div class="empty-state" style="padding-left:0;">
+          <div class="empty-state-icon">🕐</div>
+          <div class="empty-state-title">Sin historial aún</div>
+          <div class="empty-state-desc">Los mensajes guardados aparecerán aquí</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL NUEVA SERIE -->
+<div class="modal-overlay" id="seriesModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📚 Nueva Serie de Mensajes</div>
+      <button class="modal-close" onclick="closeModal('seriesModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Nombre de la Serie <span>*</span></label>
+        <input type="text" class="form-control" id="seriesName" placeholder="Ej: Fundamentos de la Fe">
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Fecha de Inicio</label>
+          <input type="date" class="form-control" id="seriesStart">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Número de Mensajes</label>
+          <input type="number" class="form-control" id="seriesCount" min="1" max="52" value="4">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-control" id="seriesDesc" rows="3" placeholder="¿De qué trata esta serie? ¿Cuál es su propósito?"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Color de la Serie</label>
+        <div class="color-picker" id="seriesColorPicker">
+          <div class="color-dot selected" style="background:#064c74;" data-color="#064c74" onclick="selectColor(this)"></div>
+          <div class="color-dot" style="background:#e8a020;" data-color="#e8a020" onclick="selectColor(this)"></div>
+          <div class="color-dot" style="background:#2ecc71;" data-color="#2ecc71" onclick="selectColor(this)"></div>
+          <div class="color-dot" style="background:#e74c3c;" data-color="#e74c3c" onclick="selectColor(this)"></div>
+          <div class="color-dot" style="background:#9b59b6;" data-color="#9b59b6" onclick="selectColor(this)"></div>
+          <div class="color-dot" style="background:#1abc9c;" data-color="#1abc9c" onclick="selectColor(this)"></div>
+          <div class="color-dot" style="background:#e67e22;" data-color="#e67e22" onclick="selectColor(this)"></div>
+          <div class="color-dot" style="background:#34495e;" data-color="#34495e" onclick="selectColor(this)"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ícono de la Serie</label>
+        <div class="tags-container">
+          <span class="tag selected" onclick="selectSeriesIcon(this)" data-icon="✝">✝ Cruz</span>
+          <span class="tag" onclick="selectSeriesIcon(this)" data-icon="📖">📖 Biblia</span>
+          <span class="tag" onclick="selectSeriesIcon(this)" data-icon="🕊">🕊 Paloma</span>
+          <span class="tag" onclick="selectSeriesIcon(this)" data-icon="🔥">🔥 Fuego</span>
+          <span class="tag" onclick="selectSeriesIcon(this)" data-icon="⭐">⭐ Estrella</span>
+          <span class="tag" onclick="selectSeriesIcon(this)" data-icon="🌊">🌊 Agua</span>
+          <span class="tag" onclick="selectSeriesIcon(this)" data-icon="🌱">🌱 Semilla</span>
+          <span class="tag" onclick="selectSeriesIcon(this)" data-icon="🏔">🏔 Montaña</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('seriesModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveSeries()">💾 Guardar Serie</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL VER SERMON -->
+<div class="modal-overlay" id="viewSermonModal">
+  <div class="modal" style="max-width:800px;">
+    <div class="modal-header">
+      <div class="modal-title" id="viewSermonTitle">Ver Sermón</div>
+      <button class="modal-close" onclick="closeModal('viewSermonModal')">✕</button>
+    </div>
+    <div class="modal-body" id="viewSermonBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('viewSermonModal')">Cerrar</button>
+      <button class="btn btn-primary" id="editSermonBtn">✏️ Editar</button>
+      <button class="btn btn-accent" id="exportSermonBtn">📄 Exportar PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL VER CELULA -->
+<div class="modal-overlay" id="viewCelulaModal">
+  <div class="modal" style="max-width:800px;">
+    <div class="modal-header">
+      <div class="modal-title" id="viewCelulaTitle">Ver Enseñanza</div>
+      <button class="modal-close" onclick="closeModal('viewCelulaModal')">✕</button>
+    </div>
+    <div class="modal-body" id="viewCelulaBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('viewCelulaModal')">Cerrar</button>
+      <button class="btn btn-accent" id="editCelulaBtn">✏️ Editar</button>
+      <button class="btn btn-primary" id="exportCelulaBtn">📄 Exportar PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATION -->
+<div class="notification" id="notification">
+  <span id="notificationIcon">✅</span>
+  <span id="notificationText">Guardado exitosamente</span>
+</div>
+
+<script>
+// ==================== STATE ====================
+let sermons = [];
+let celulas = [];
+let series = [];
+let currentWeekOffset = 0;
+let selectedSeriesColor = '#064c74';
+let selectedSeriesIcon = '✝';
+let sermonPointCount = 0;
+let celulaPointCount = 0;
+let celulaQuestionCount = 0;
+let currentSermonFilter = 'all';
+let currentCelulaFilter = 'all';
+
+// ==================== STORAGE HELPERS ====================
+function loadFromStorage(key, defaultVal) {
+  try {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : defaultVal;
+  } catch (e) {
+    console.warn('Error leyendo localStorage:', e);
+    return defaultVal;
+  }
+}
+
+function saveToStorage(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {
+    console.warn('Error guardando en localStorage:', e);
+    showNotification('Error al guardar datos', 'error');
+  }
+}
+
+// ==================== INIT ====================
+document.addEventListener('DOMContentLoaded', function() {
+  sermons = loadFromStorage('pastortools_sermons', []);
+  celulas = loadFromStorage('pastortools_celulas', []);
+  series = loadFromStorage('pastortools_series', []);
+
+  updateHeaderDate();
+  setInterval(updateHeaderDate, 60000);
+  renderDashboard();
+  renderSermonList();
+  renderCelulaList();
+  renderSeriesList();
+  renderHistory();
+  renderWeekPlanner();
+  updateSeriesSelect();
+  addSermonPoint();
+  addCelulaPoint();
+  addCelulaQuestion();
+  addCelulaQuestion();
+  setTodayDates();
+});
+
+function updateHeaderDate() {
+  const now = new Date();
+  const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('headerDate').textContent = now.toLocaleDateString('es-ES', opts);
+}
+
+function setTodayDates() {
+  const today = new Date().toISOString().split('T')[0];
+  const sDate = document.getElementById('sermonDate');
+  const cDate = document.getElementById('celulaDate');
+  if (sDate && !sDate.value) sDate.value = today;
+  if (cDate && !cDate.value) cDate.value = today;
+}
+
+// ==================== NAVIGATION ====================
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+  const page = document.getElementById('page-' + pageId);
+  if (page) page.classList.add('active');
+  document.querySelectorAll('.sidebar-btn').forEach(btn => {
+    const onclick = btn.getAttribute('onclick');
+    if (onclick && onclick.includes("'" + pageId + "'")) {
+      btn.classList.add('active');
+    }
+  });
+  window.scrollTo(0, 0);
+}
+
+function showTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const tab = document.getElementById(tabId);
+  if (tab) tab.classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// ==================== NOTIFICATION ====================
+function showNotification(msg, type) {
+  const n = document.getElementById('notification');
+  const icon = document.getElementById('notificationIcon');
+  const text = document.getElementById('notificationText');
+  if (!n || !icon || !text) return;
+  n.className = 'notification ' + (type || 'success');
+  icon.textContent = type === 'error' ? '❌' : type === 'info' ? 'ℹ️' : '✅';
+  text.textContent = msg;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 3000);
+}
+
+// ==================== MODAL ====================
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('open');
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('open');
+}
+
+// ==================== SERMON POINTS ====================
+function addSermonPoint() {
+  sermonPointCount++;
+  const container = document.getElementById('sermonPoints');
+  if (!container) return;
+  const div = document.createElement('div');
+  div.className = 'point-item';
+  div.id = 'sp-' + sermonPointCount;
+  div.innerHTML = `
+    <div class="point-number">${sermonPointCount}</div>
+    <button class="point-remove" onclick="removePoint('sp-${sermonPointCount}', 'sermonPoints')">✕</button>
+    <div class="form-group">
+      <label class="form-label">Título del Punto</label>
+      <input type="text" class="form-control sp-title" placeholder="Ej: Dios tiene un plan para tu vida">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Desarrollo / Explicación</label>
+      <textarea class="form-control sp-content" rows="3" placeholder="Explica este punto con profundidad bíblica..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Versículo de Apoyo</label>
+      <input type="text" class="form-control sp-verse" placeholder="Ej: Jeremías 29:11">
+    </div>
+    <div class="form-group" style="margin-bottom:0;">
+      <label class="form-label">Ilustración para este punto</label>
+      <textarea class="form-control sp-illustration" rows="2" placeholder="Historia o ejemplo que ilustre este punto..."></textarea>
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function addCelulaPoint() {
+  celulaPointCount++;
+  const container = document.getElementById('celulaPoints');
+  if (!container) return;
+  const div = document.createElement('div');
+  div.className = 'point-item';
+  div.id = 'cp-' + celulaPointCount;
+  div.innerHTML = `
+    <div class="point-number">${celulaPointCount}</div>
+    <button class="point-remove" onclick="removePoint('cp-${celulaPointCount}', 'celulaPoints')">✕</button>
+    <div class="form-group" style="margin-bottom:0;">
+      <input type="text" class="form-control cp-point" placeholder="Punto clave de la enseñanza...">
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function addCelulaQuestion() {
+  celulaQuestionCount++;
+  const container = document.getElementById('celulaQuestions');
+  if (!container) return;
+  const div = document.createElement('div');
+  div.className = 'point-item';
+  div.id = 'cq-' + celulaQuestionCount;
+  div.innerHTML = `
+    <div class="point-number">${celulaQuestionCount}</div>
+    <button class="point-remove" onclick="removePoint('cq-${celulaQuestionCount}', 'celulaQuestions')">✕</button>
+    <div class="form-group" style="margin-bottom:0;">
+      <input type="text" class="form-control cq-question" placeholder="Pregunta de discusión para el grupo...">
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+function removePoint(id, containerId) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+  renumberPoints(containerId);
+}
+
+function renumberPoints(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const items = container.querySelectorAll('.point-number');
+  items.forEach((el, i) => el.textContent = i + 1);
+}
+
+// ==================== SCRIPTURE REFS ====================
+function addScriptureRef() {
+  const input = document.getElementById('newScriptureRef');
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+  const container = document.getElementById('scriptureRefs');
+  if (!container) return;
+  const span = document.createElement('span');
+  span.className = 'scripture-ref';
+  span.innerHTML = `📖 ${escapeHtml(val)} <button onclick="this.parentElement.remove()">✕</button>`;
+  container.appendChild(span);
+  input.value = '';
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ==================== TAGS ====================
+function toggleTag(el) {
+  if (el) el.classList.toggle('selected');
+}
+
+function getSelectedTags(containerId) {
+  const tags = document.querySelectorAll('#' + containerId + ' .tag.selected');
+  return Array.from(tags).map(t => t.textContent.trim());
+}
+
+// ==================== CHECKLIST ====================
+function toggleChecklist(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const cb = el.querySelector('input[type="checkbox"]');
+  if (cb && cb.checked) el.classList.add('checked');
+  else el.classList.remove('checked');
+}
+
+// ==================== SAVE SERMON ====================
+function saveSermon(status) {
+  const titleEl = document.getElementById('sermonTitle');
+  const title = titleEl ? titleEl.value.trim() : '';
+  if (!title) { showNotification('Por favor ingresa un título para el sermón', 'error'); return; }
+
+  const points = [];
+  document.querySelectorAll('#sermonPoints .point-item').forEach(item => {
+    const title = item.querySelector('.sp-title');
+    const content = item.querySelector('.sp-content');
+    const verse = item.querySelector('.sp-verse');
+    const illustration = item.querySelector('.sp-illustration');
+    if (title || content) {
+      points.push({
+        title: title ? title.value : '',
+        content: content ? content.value : '',
+        verse: verse ? verse.value : '',
+        illustration: illustration ? illustration.value : ''
+      });
+    }
+  });
+
+  const scriptureRefs = [];
+  document.querySelectorAll('#scriptureRefs .scripture-ref').forEach(ref => {
+    const text = ref.childNodes[0] ? ref.childNodes[0].textContent.trim() : '';
+    if (text) scriptureRefs.push(text.replace(/^📖\\s*/, ''));
+  });
+
+  const editingId = document.getElementById('editingSermonId').value;
+  const now = new Date().toISOString();
+  const sermon = {
+    id: editingId || Date.now().toString(),
+    title,
+    date: document.getElementById('sermonDate') ? document.getElementById('sermonDate').value : '',
+    scripture: document.getElementById('sermonScripture') ? document.getElementById('sermonScripture').value : '',
+    type: document.getElementById('sermonType') ? document.getElementById('sermonType').value : 'expositivo',
+    series: document.getElementById('sermonSeries') ? document.getElementById('sermonSeries').value : '',
+    theme: document.getElementById('sermonTheme') ? document.getElementById('sermonTheme').value : '',
+    audience: getSelectedTags('audienceTags'),
+    scriptureRefs,
+    hook: document.getElementById('sermonHook') ? document.getElementById('sermonHook').value : '',
+    context: document.getElementById('sermonContext') ? document.getElementById('sermonContext').value : '',
+    proposition: document.getElementById('sermonProposition') ? document.getElementById('sermonProposition').value : '',
+    points,
+    illustrations: document.getElementById('sermonIllustrations') ? document.getElementById('sermonIllustrations').value : '',
+    application: document.getElementById('sermonApplication') ? document.getElementById('sermonApplication').value : '',
+    conclusion: document.getElementById('sermonConclusion') ? document.getElementById('sermonConclusion').value : '',
+    callToAction: document.getElementById('sermonCallToAction') ? document.getElementById('sermonCallToAction').value : '',
+    closingPrayer: document.getElementById('sermonClosingPrayer') ? document.getElementById('sermonClosingPrayer').value : '',
+    duration: document.getElementById('sermonDuration') ? document.getElementById('sermonDuration').value : '30-40 min',
+    tone: document.getElementById('sermonTone') ? document.getElementById('sermonTone').value : 'Exhortativo',
+    notes: document.getElementById('sermonNotes') ? document.getElementById('sermonNotes').value : '',
+    status,
+    createdAt: editingId ? (sermons.find(s => s.id === editingId) ? sermons.find(s => s.id === editingId).createdAt : now) : now,
+    updatedAt: now
+  };
+
+  if (editingId) {
+    const idx = sermons.findIndex(s => s.id === editingId);
+    if (idx !== -1) sermons[idx] = sermon;
+    else sermons.unshift(sermon);
+  } else {
+    sermons.unshift(sermon);
   }
 
-  /* Tablet: 768px+ */
-  @media (min-width: 768px) {
-    :root {
-      --header-h: 60px;
-      --content-pad: 1.25rem;
-      --card-pad: 1.25rem;
-      --section-gap: 1rem;
-      --font-scale: 0.96;
+  saveToStorage('pastortools_sermons', sermons);
+  renderSermonList();
+  renderDashboard();
+  renderHistory();
+  renderWeekPlanner();
+  showNotification(status === 'completo' ? '✅ Sermón guardado como completo' : '💾 Borrador guardado');
+  showPage('sermons');
+}
+
+// ==================== SAVE CELULA ====================
+function saveCelula(status) {
+  const titleEl = document.getElementById('celulaTitle');
+  const title = titleEl ? titleEl.value.trim() : '';
+  if (!title) { showNotification('Por favor ingresa un título para la enseñanza', 'error'); return; }
+
+  const points = [];
+  document.querySelectorAll('#celulaPoints .point-item').forEach(item => {
+    const val = item.querySelector('.cp-point');
+    if (val && val.value.trim()) points.push(val.value.trim());
+  });
+
+  const questions = [];
+  document.querySelectorAll('#celulaQuestions .point-item').forEach(item => {
+    const val = item.querySelector('.cq-question');
+    if (val && val.value.trim()) questions.push(val.value.trim());
+  });
+
+  const editingId = document.getElementById('editingCelulaId').value;
+  const now = new Date().toISOString();
+  const celula = {
+    id: editingId || Date.now().toString(),
+    title,
+    date: document.getElementById('celulaDate') ? document.getElementById('celulaDate').value : '',
+    scripture: document.getElementById('celulaScripture') ? document.getElementById('celulaScripture').value : '',
+    duration: document.getElementById('celulaDuration') ? document.getElementById('celulaDuration').value : '75 min',
+    level: document.getElementById('celulaLevel') ? document.getElementById('celulaLevel').value : 'Intermedio',
+    objective: document.getElementById('celulaObjective') ? document.getElementById('celulaObjective').value : '',
+    welcome: document.getElementById('celulaWelcome') ? document.getElementById('celulaWelcome').value : '',
+    intro: document.getElementById('celulaIntro') ? document.getElementById('celulaIntro').value : '',
+    teaching: document.getElementById('celulaTeaching') ? document.getElementById('celulaTeaching').value : '',
+    points,
+    questions,
+    challenge: document.getElementById('celulaChallenge') ? document.getElementById('celulaChallenge').value : '',
+    activity: document.getElementById('celulaActivity') ? document.getElementById('celulaActivity').value : '',
+    prayer: document.getElementById('celulaPrayer') ? document.getElementById('celulaPrayer').value : '',
+    announcements: document.getElementById('celulaAnnouncements') ? document.getElementById('celulaAnnouncements').value : '',
+    materials: document.getElementById('celulaMaterials') ? document.getElementById('celulaMaterials').value : '',
+    readings: document.getElementById('celulaReadings') ? document.getElementById('celulaReadings').value : '',
+    leaderNotes: document.getElementById('celulaLeaderNotes') ? document.getElementById('celulaLeaderNotes').value : '',
+    status,
+    createdAt: editingId ? (celulas.find(c => c.id === editingId) ? celulas.find(c => c.id === editingId).createdAt : now) : now,
+    updatedAt: now
+  };
+
+  if (editingId) {
+    const idx = celulas.findIndex(c => c.id === editingId);
+    if (idx !== -1) celulas[idx] = celula;
+    else celulas.unshift(celula);
+  } else {
+    celulas.unshift(celula);
+  }
+
+  saveToStorage('pastortools_celulas', celulas);
+  renderCelulaList();
+  renderDashboard();
+  renderHistory();
+  renderWeekPlanner();
+  showNotification(status === 'completo' ? '✅ Enseñanza guardada como completa' : '💾 Borrador guardado');
+  showPage('celulas');
+}
+
+// ==================== RENDER SERMON LIST ====================
+function renderSermonList() {
+  const container = document.getElementById('sermonList');
+  if (!container) return;
+  const searchEl = document.getElementById('sermonSearch');
+  const search = searchEl ? searchEl.value.toLowerCase() : '';
+  let filtered = sermons.filter(s => {
+    const matchSearch = !search || 
+      (s.title && s.title.toLowerCase().includes(search)) || 
+      (s.scripture && s.scripture.toLowerCase().includes(search)) || 
+      (s.theme && s.theme.toLowerCase().includes(search));
+    const matchStatus = currentSermonFilter === 'all' || s.status === currentSermonFilter;
+    return matchSearch && matchStatus;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📖</div><div class="empty-state-title">No hay sermones</div><div class="empty-state-desc">Crea tu primer sermón o ajusta los filtros</div><button class="btn btn-primary" onclick="showPage('sermon-editor'); resetSermonEditor();">✏️ Crear Sermón</button></div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(s => `
+    <div class="item-card" onclick="viewSermon('${s.id}')">
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span class="item-badge badge-sermon">Sermón</span>
+          <span class="item-badge badge-${s.status}">${s.status === 'completo' ? 'Completo' : s.status === 'borrador' ? 'Borrador' : 'En Revisión'}</span>
+          ${s.series ? `<span class="item-badge" style="background:#f3e5f5;color:#6a1b9a;">📚 ${escapeHtml(s.series)}</span>` : ''}
+        </div>
+        <div class="item-title">${escapeHtml(s.title)}</div>
+        <div class="item-meta">
+          ${s.date ? `<span>📅 ${formatDate(s.date)}</span>` : ''}
+          ${s.scripture ? `<span>📖 ${escapeHtml(s.scripture)}</span>` : ''}
+          ${s.type ? `<span>🎯 ${escapeHtml(s.type)}</span>` : ''}
+          ${s.duration ? `<span>⏱ ${escapeHtml(s.duration)}</span>` : ''}
+        </div>
+      </div>
+      <div class="item-actions" onclick="event.stopPropagation()">
+        <button class="btn btn-sm btn-outline" onclick="editSermon('${s.id}')">✏️</button>
+        <button class="btn btn-sm btn-accent" onclick="exportSingleSermonPDF('${s.id}')">📄</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteSermon('${s.id}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterSermons() { renderSermonList(); }
+function filterByStatus(status, el) {
+  currentSermonFilter = status;
+  document.querySelectorAll('#page-sermons .filter-bar .filter-chip').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderSermonList();
+}
+
+// ==================== RENDER CELULA LIST ====================
+function renderCelulaList() {
+  const container = document.getElementById('celulaList');
+  if (!container) return;
+  const searchEl = document.getElementById('celulaSearch');
+  const search = searchEl ? searchEl.value.toLowerCase() : '';
+  let filtered = celulas.filter(c => {
+    const matchSearch = !search || 
+      (c.title && c.title.toLowerCase().includes(search)) || 
+      (c.scripture && c.scripture.toLowerCase().includes(search));
+    const matchStatus = currentCelulaFilter === 'all' || c.status === currentCelulaFilter;
+    return matchSearch && matchStatus;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">👥</div><div class="empty-state-title">No hay enseñanzas</div><div class="empty-state-desc">Crea tu primera enseñanza celular</div><button class="btn btn-accent" onclick="showPage('celula-editor'); resetCelulaEditor();">➕ Crear Enseñanza</button></div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(c => `
+    <div class="item-card" onclick="viewCelula('${c.id}')">
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span class="item-badge badge-celula">Célula</span>
+          <span class="item-badge badge-${c.status}">${c.status === 'completo' ? 'Completa' : 'Borrador'}</span>
+        </div>
+        <div class="item-title">${escapeHtml(c.title)}</div>
+        <div class="item-meta">
+          ${c.date ? `<span>📅 ${formatDate(c.date)}</span>` : ''}
+          ${c.scripture ? `<span>📖 ${escapeHtml(c.scripture)}</span>` : ''}
+          ${c.duration ? `<span>⏱ ${escapeHtml(c.duration)}</span>` : ''}
+          ${c.level ? `<span>📊 ${escapeHtml(c.level)}</span>` : ''}
+        </div>
+      </div>
+      <div class="item-actions" onclick="event.stopPropagation()">
+        <button class="btn btn-sm btn-outline" onclick="editCelula('${c.id}')">✏️</button>
+        <button class="btn btn-sm btn-accent" onclick="exportSingleCelulaPDF('${c.id}')">📄</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteCelula('${c.id}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterCelulas() { renderCelulaList(); }
+function filterCelulaStatus(status, el) {
+  currentCelulaFilter = status;
+  document.querySelectorAll('#page-celulas .filter-bar .filter-chip').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderCelulaList();
+}
+
+// ==================== VIEW SERMON ====================
+function viewSermon(id) {
+  const s = sermons.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('viewSermonTitle').textContent = s.title;
+  const editBtn = document.getElementById('editSermonBtn');
+  const exportBtn = document.getElementById('exportSermonBtn');
+  if (editBtn) editBtn.onclick = () => { closeModal('viewSermonModal'); editSermon(id); };
+  if (exportBtn) exportBtn.onclick = () => exportSingleSermonPDF(id);
+  
+  let html = `
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+        <span class="item-badge badge-sermon">Sermón</span>
+        <span class="item-badge badge-${s.status}">${s.status === 'completo' ? 'Completo' : 'Borrador'}</span>
+      </div>
+      <div class="item-meta" style="font-size:13px;">
+        ${s.date ? `<span>📅 ${formatDate(s.date)}</span>` : ''}
+        ${s.scripture ? `<span>📖 ${escapeHtml(s.scripture)}</span>` : ''}
+        ${s.type ? `<span>🎯 ${escapeHtml(s.type)}</span>` : ''}
+        ${s.duration ? `<span>⏱ ${escapeHtml(s.duration)}</span>` : ''}
+        ${s.tone ? `<span>🎭 ${escapeHtml(s.tone)}</span>` : ''}
+      </div>
+    </div>
+    ${s.theme ? `<div class="alert alert-info">🎯 <strong>Tema Central:</strong> ${escapeHtml(s.theme)}</div>` : ''}
+    ${s.proposition ? `<div class="alert alert-success">💡 <strong>Proposición:</strong> ${escapeHtml(s.proposition)}</div>` : ''}
+  `;
+
+  if (s.hook) html += `<div class="editor-section" style="margin-bottom:12px;"><div class="editor-section-header" style="padding:10px 16px;font-size:13px;">🎯 Introducción</div><div class="editor-section-body" style="padding:14px 16px;"><p style="font-size:14px;line-height:1.7;white-space:pre-wrap;">${escapeHtml(s.hook)}</p></div></div>`;
+  
+  if (s.points && s.points.length > 0) {
+    html += `<div class="editor-section" style="margin-bottom:12px;"><div class="editor-section-header" style="padding:10px 16px;font-size:13px;">📝 Puntos Principales</div><div class="editor-section-body" style="padding:14px 16px;">`;
+    s.points.forEach((p, i) => {
+      if (p.title || p.content) {
+        html += `<div class="point-item" style="margin-bottom:10px;"><div class="point-number">${i+1}</div><strong style="display:block;margin-bottom:6px;">${escapeHtml(p.title || '')}</strong>${p.verse ? `<div class="scripture-ref" style="margin-bottom:8px;">📖 ${escapeHtml(p.verse)}</div>` : ''}<p style="font-size:13px;color:var(--text2);line-height:1.6;white-space:pre-wrap;">${escapeHtml(p.content || '')}</p></div>`;
+      }
+    });
+    html += `</div></div>`;
+  }
+
+  if (s.conclusion) html += `<div class="editor-section" style="margin-bottom:12px;"><div class="editor-section-header" style="padding:10px 16px;font-size:13px;">🏁 Conclusión</div><div class="editor-section-body" style="padding:14px 16px;"><p style="font-size:14px;line-height:1.7;white-space:pre-wrap;">${escapeHtml(s.conclusion)}</p></div></div>`;
+  if (s.callToAction) html += `<div class="editor-section"><div class="editor-section-header" style="padding:10px 16px;font-size:13px;">📣 Llamado a la Acción</div><div class="editor-section-body" style="padding:14px 16px;"><p style="font-size:14px;line-height:1.7;white-space:pre-wrap;">${escapeHtml(s.callToAction)}</p></div></div>`;
+
+  document.getElementById('viewSermonBody').innerHTML = html;
+  openModal('viewSermonModal');
+}
+
+// ==================== VIEW CELULA ====================
+function viewCelula(id) {
+  const c = celulas.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('viewCelulaTitle').textContent = c.title;
+  const editBtn = document.getElementById('editCelulaBtn');
+  const exportBtn = document.getElementById('exportCelulaBtn');
+  if (editBtn) editBtn.onclick = () => { closeModal('viewCelulaModal'); editCelula(id); };
+  if (exportBtn) exportBtn.onclick = () => exportSingleCelulaPDF(id);
+
+  let html = `
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+        <span class="item-badge badge-celula">Célula</span>
+        <span class="item-badge badge-${c.status}">${c.status === 'completo' ? 'Completa' : 'Borrador'}</span>
+      </div>
+      <div class="item-meta" style="font-size:13px;">
+        ${c.date ? `<span>📅 ${formatDate(c.date)}</span>` : ''}
+        ${c.scripture ? `<span>📖 ${escapeHtml(c.scripture)}</span>` : ''}
+        ${c.duration ? `<span>⏱ ${escapeHtml(c.duration)}</span>` : ''}
+        ${c.level ? `<span>📊 ${escapeHtml(c.level)}</span>` : ''}
+      </div>
+    </div>
+    ${c.objective ? `<div class="alert alert-info">🎯 <strong>Objetivo:</strong> ${escapeHtml(c.objective)}</div>` : ''}
+  `;
+
+  if (c.teaching) html += `<div class="editor-section" style="margin-bottom:12px;"><div class="editor-section-header" style="padding:10px 16px;font-size:13px;">💡 Enseñanza Principal</div><div class="editor-section-body" style="padding:14px 16px;"><p style="font-size:14px;line-height:1.7;white-space:pre-wrap;">${escapeHtml(c.teaching)}</p></div></div>`;
+  
+  if (c.points && c.points.length > 0) {
+    html += `<div class="editor-section" style="margin-bottom:12px;"><div class="editor-section-header" style="padding:10px 16px;font-size:13px;">🔑 Puntos Clave</div><div class="editor-section-body" style="padding:14px 16px;">`;
+    c.points.forEach((p, i) => { html += `<div class="checklist-item"><span class="point-number" style="margin-bottom:0;">${i+1}</span><label>${escapeHtml(p)}</label></div>`; });
+    html += `</div></div>`;
+  }
+
+  if (c.questions && c.questions.length > 0) {
+    html += `<div class="editor-section" style="margin-bottom:12px;"><div class="editor-section-header" style="padding:10px 16px;font-size:13px;">💬 Preguntas de Discusión</div><div class="editor-section-body" style="padding:14px 16px;">`;
+    c.questions.forEach((q, i) => { html += `<div class="resource-card"><div class="resource-icon">❓</div><div class="resource-info"><div class="resource-name">${i+1}. ${escapeHtml(q)}</div></div></div>`; });
+    html += `</div></div>`;
+  }
+
+  if (c.challenge) html += `<div class="editor-section"><div class="editor-section-header" style="padding:10px 16px;font-size:13px;">🎯 Desafío de la Semana</div><div class="editor-section-body" style="padding:14px 16px;"><p style="font-size:14px;line-height:1.7;white-space:pre-wrap;">${escapeHtml(c.challenge)}</p></div></div>`;
+
+  document.getElementById('viewCelulaBody').innerHTML = html;
+  openModal('viewCelulaModal');
+}
+
+// ==================== EDIT ====================
+function editSermon(id) {
+  const s = sermons.find(x => x.id === id);
+  if (!s) return;
+  resetSermonEditor();
+  document.getElementById('editingSermonId').value = id;
+  document.getElementById('sermonEditorTitle').textContent = '✏️ Editar Sermón';
+  document.getElementById('sermonTitle').value = s.title || '';
+  document.getElementById('sermonDate').value = s.date || '';
+  document.getElementById('sermonScripture').value = s.scripture || '';
+  document.getElementById('sermonType').value = s.type || 'expositivo';
+  document.getElementById('sermonSeries').value = s.series || '';
+  document.getElementById('sermonTheme').value = s.theme || '';
+  document.getElementById('sermonHook').value = s.hook || '';
+  document.getElementById('sermonContext').value = s.context || '';
+  document.getElementById('sermonProposition').value = s.proposition || '';
+  document.getElementById('sermonIllustrations').value = s.illustrations || '';
+  document.getElementById('sermonApplication').value = s.application || '';
+  document.getElementById('sermonConclusion').value = s.conclusion || '';
+  document.getElementById('sermonCallToAction').value = s.callToAction || '';
+  document.getElementById('sermonClosingPrayer').value = s.closingPrayer || '';
+  document.getElementById('sermonDuration').value = s.duration || '30-40 min';
+  document.getElementById('sermonTone').value = s.tone || 'Exhortativo';
+  document.getElementById('sermonNotes').value = s.notes || '';
+
+  document.getElementById('sermonPoints').innerHTML = '';
+  sermonPointCount = 0;
+  if (s.points && s.points.length > 0) {
+    s.points.forEach(p => {
+      addSermonPoint();
+      const items = document.querySelectorAll('#sermonPoints .point-item');
+      const last = items[items.length - 1];
+      if (last) {
+        const titleEl = last.querySelector('.sp-title');
+        const contentEl = last.querySelector('.sp-content');
+        const verseEl = last.querySelector('.sp-verse');
+        const illEl = last.querySelector('.sp-illustration');
+        if (titleEl) titleEl.value = p.title || '';
+        if (contentEl) contentEl.value = p.content || '';
+        if (verseEl) verseEl.value = p.verse || '';
+        if (illEl) illEl.value = p.illustration || '';
+      }
+    });
+  } else {
+    addSermonPoint();
+  }
+
+  if (s.scriptureRefs && s.scriptureRefs.length > 0) {
+    document.getElementById('scriptureRefs').innerHTML = '';
+    s.scriptureRefs.forEach(ref => {
+      const span = document.createElement('span');
+      span.className = 'scripture-ref';
+      span.innerHTML = `📖 ${escapeHtml(ref)} <button onclick="this.parentElement.remove()">✕</button>`;
+      document.getElementById('scriptureRefs').appendChild(span);
+    });
+  }
+
+  if (s.audience && s.audience.length > 0) {
+    document.querySelectorAll('#audienceTags .tag').forEach(t => {
+      if (s.audience.includes(t.textContent.trim())) t.classList.add('selected');
+    });
+  }
+
+  showPage('sermon-editor');
+}
+
+function editCelula(id) {
+  const c = celulas.find(x => x.id === id);
+  if (!c) return;
+  resetCelulaEditor();
+  document.getElementById('editingCelulaId').value = id;
+  document.getElementById('celulaEditorTitle').textContent = '✏️ Editar Enseñanza';
+  document.getElementById('celulaTitle').value = c.title || '';
+  document.getElementById('celulaDate').value = c.date || '';
+  document.getElementById('celulaScripture').value = c.scripture || '';
+  document.getElementById('celulaDuration').value = c.duration || '75 min';
+  document.getElementById('celulaLevel').value = c.level || 'Intermedio';
+  document.getElementById('celulaObjective').value = c.objective || '';
+  document.getElementById('celulaWelcome').value = c.welcome || '';
+  document.getElementById('celulaIntro').value = c.intro || '';
+  document.getElementById('celulaTeaching').value = c.teaching || '';
+  document.getElementById('celulaChallenge').value = c.challenge || '';
+  document.getElementById('celulaActivity').value = c.activity || '';
+  document.getElementById('celulaPrayer').value = c.prayer || '';
+  document.getElementById('celulaAnnouncements').value = c.announcements || '';
+  document.getElementById('celulaMaterials').value = c.materials || '';
+  document.getElementById('celulaReadings').value = c.readings || '';
+  document.getElementById('celulaLeaderNotes').value = c.leaderNotes || '';
+
+  document.getElementById('celulaPoints').innerHTML = '';
+  celulaPointCount = 0;
+  if (c.points && c.points.length > 0) {
+    c.points.forEach(p => {
+      addCelulaPoint();
+      const items = document.querySelectorAll('#celulaPoints .point-item');
+      const last = items[items.length - 1];
+      if (last) {
+        const input = last.querySelector('.cp-point');
+        if (input) input.value = p;
+      }
+    });
+  } else {
+    addCelulaPoint();
+  }
+
+  document.getElementById('celulaQuestions').innerHTML = '';
+  celulaQuestionCount = 0;
+  if (c.questions && c.questions.length > 0) {
+    c.questions.forEach(q => {
+      addCelulaQuestion();
+      const items = document.querySelectorAll('#celulaQuestions .point-item');
+      const last = items[items.length - 1];
+      if (last) {
+        const input = last.querySelector('.cq-question');
+        if (input) input.value = q;
+      }
+    });
+  } else {
+    addCelulaQuestion();
+    addCelulaQuestion();
+  }
+
+  showPage('celula-editor');
+}
+
+// ==================== DELETE ====================
+function deleteSermon(id) {
+  if (!confirm('¿Estás seguro de que quieres eliminar este sermón?')) return;
+  sermons = sermons.filter(s => s.id !== id);
+  saveToStorage('pastortools_sermons', sermons);
+  renderSermonList();
+  renderDashboard();
+  renderHistory();
+  renderWeekPlanner();
+  showNotification('Sermón eliminado', 'error');
+}
+
+function deleteCelula(id) {
+  if (!confirm('¿Estás seguro de que quieres eliminar esta enseñanza?')) return;
+  celulas = celulas.filter(c => c.id !== id);
+  saveToStorage('pastortools_celulas', celulas);
+  renderCelulaList();
+  renderDashboard();
+  renderHistory();
+  renderWeekPlanner();
+  showNotification('Enseñanza eliminada', 'error');
+}
+
+// ==================== RESET EDITORS ====================
+function resetSermonEditor() {
+  document.getElementById('editingSermonId').value = '';
+  document.getElementById('sermonEditorTitle').textContent = '✏️ Nuevo Sermón';
+  document.getElementById('sermonTitle').value = '';
+  document.getElementById('sermonDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('sermonScripture').value = '';
+  document.getElementById('sermonType').value = 'expositivo';
+  document.getElementById('sermonSeries').value = '';
+  document.getElementById('sermonTheme').value = '';
+  document.getElementById('sermonHook').value = '';
+  document.getElementById('sermonContext').value = '';
+  document.getElementById('sermonProposition').value = '';
+  document.getElementById('sermonIllustrations').value = '';
+  document.getElementById('sermonApplication').value = '';
+  document.getElementById('sermonConclusion').value = '';
+  document.getElementById('sermonCallToAction').value = '';
+  document.getElementById('sermonClosingPrayer').value = '';
+  document.getElementById('sermonNotes').value = '';
+  document.getElementById('scriptureRefs').innerHTML = '';
+  document.getElementById('sermonPoints').innerHTML = '';
+  sermonPointCount = 0;
+  addSermonPoint();
+  document.querySelectorAll('#audienceTags .tag').forEach(t => t.classList.remove('selected'));
+  document.querySelectorAll('#sermonChecklist input[type="checkbox"]').forEach(cb => { 
+    cb.checked = false; 
+    const parent = cb.closest('.checklist-item');
+    if (parent) parent.classList.remove('checked'); 
+  });
+}
+
+function resetCelulaEditor() {
+  document.getElementById('editingCelulaId').value = '';
+  document.getElementById('celulaEditorTitle').textContent = '➕ Nueva Enseñanza Celular';
+  document.getElementById('celulaTitle').value = '';
+  document.getElementById('celulaDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('celulaScripture').value = '';
+  document.getElementById('celulaDuration').value = '75 min';
+  document.getElementById('celulaLevel').value = 'Intermedio';
+  document.getElementById('celulaObjective').value = '';
+  document.getElementById('celulaWelcome').value = '';
+  document.getElementById('celulaIntro').value = '';
+  document.getElementById('celulaTeaching').value = '';
+  document.getElementById('celulaChallenge').value = '';
+  document.getElementById('celulaActivity').value = '';
+  document.getElementById('celulaPrayer').value = '';
+  document.getElementById('celulaAnnouncements').value = '';
+  document.getElementById('celulaMaterials').value = '';
+  document.getElementById('celulaReadings').value = '';
+  document.getElementById('celulaLeaderNotes').value = '';
+  document.getElementById('celulaPoints').innerHTML = '';
+  celulaPointCount = 0;
+  document.getElementById('celulaQuestions').innerHTML = '';
+  celulaQuestionCount = 0;
+  addCelulaPoint();
+  addCelulaQuestion();
+  addCelulaQuestion();
+  document.querySelectorAll('[id^="cchk"] input[type="checkbox"]').forEach(cb => { 
+    cb.checked = false; 
+    const parent = cb.closest('.checklist-item');
+    if (parent) parent.classList.remove('checked'); 
+  });
+}
+
+// ==================== SERIES ====================
+function openSeriesModal() {
+  document.getElementById('seriesName').value = '';
+  document.getElementById('seriesStart').value = new Date().toISOString().split('T')[0];
+  document.getElementById('seriesCount').value = '4';
+  document.getElementById('seriesDesc').value = '';
+  selectedSeriesColor = '#064c74';
+  selectedSeriesIcon = '✝';
+  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
+  const firstColor = document.querySelector('.color-dot');
+  if (firstColor) firstColor.classList.add('selected');
+  document.querySelectorAll('#seriesModal .tags-container .tag').forEach(t => t.classList.remove('selected'));
+  const firstTag = document.querySelector('#seriesModal .tags-container .tag');
+  if (firstTag) firstTag.classList.add('selected');
+  openModal('seriesModal');
+}
+
+function selectColor(el) {
+  if (!el) return;
+  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSeriesColor = el.dataset.color;
+}
+
+function selectSeriesIcon(el) {
+  if (!el) return;
+  document.querySelectorAll('#seriesModal .tags-container .tag').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSeriesIcon = el.dataset.icon;
+}
+
+function saveSeries() {
+  const nameEl = document.getElementById('seriesName');
+  const name = nameEl ? nameEl.value.trim() : '';
+  if (!name) { showNotification('Por favor ingresa un nombre para la serie', 'error'); return; }
+  const s = {
+    id: Date.now().toString(),
+    name,
+    start: document.getElementById('seriesStart') ? document.getElementById('seriesStart').value : '',
+    count: parseInt(document.getElementById('seriesCount').value) || 4,
+    desc: document.getElementById('seriesDesc') ? document.getElementById('seriesDesc').value : '',
+    color: selectedSeriesColor,
+    icon: selectedSeriesIcon,
+    createdAt: new Date().toISOString()
+  };
+  series.unshift(s);
+  saveToStorage('pastortools_series', series);
+  renderSeriesList();
+  updateSeriesSelect();
+  closeModal('seriesModal');
+  showNotification('✅ Serie creada exitosamente');
+}
+
+function renderSeriesList() {
+  const container = document.getElementById('seriesList');
+  if (!container) return;
+  if (series.length === 0) {
+    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">📚</div><div class="empty-state-title">No hay series aún</div><div class="empty-state-desc">Crea tu primera serie de mensajes</div><button class="btn btn-primary" onclick="openSeriesModal()">➕ Nueva Serie</button></div>`;
+    return;
+  }
+  container.innerHTML = series.map(s => {
+    const sermonCount = sermons.filter(x => x.series === s.name).length;
+    const progress = Math.min(100, Math.round((sermonCount / s.count) * 100));
+    return `
+      <div class="series-card">
+        <div class="series-card-banner" style="background:linear-gradient(135deg,${s.color}22,${s.color}44);">
+          <span style="font-size:40px;">${s.icon}</span>
+        </div>
+        <div class="series-card-body">
+          <div class="series-card-title">${escapeHtml(s.name)}</div>
+          <div class="series-card-meta">${s.start ? formatDate(s.start) : ''} · ${s.count} mensajes planificados</div>
+          ${s.desc ? `<p style="font-size:12px;color:var(--text3);margin-bottom:10px;">${escapeHtml(s.desc)}</p>` : ''}
+          <div class="series-progress">
+            <div style="flex:1;">
+              <div class="progress-bar"><div class="progress-fill" style="width:${progress}%;background:${s.color};"></div></div>
+            </div>
+            <div class="series-progress-text">${sermonCount}/${s.count}</div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:10px;">
+            <button class="btn btn-sm btn-outline" style="flex:1;" onclick="deleteSeries('${s.id}')">🗑️ Eliminar</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function deleteSeries(id) {
+  if (!confirm('¿Eliminar esta serie?')) return;
+  series = series.filter(s => s.id !== id);
+  saveToStorage('pastortools_series', series);
+  renderSeriesList();
+  updateSeriesSelect();
+  showNotification('Serie eliminada', 'error');
+}
+
+function updateSeriesSelect() {
+  const sel = document.getElementById('sermonSeries');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">Sin serie</option>' + series.map(s => `<option value="${escapeHtml(s.name)}">${s.icon} ${escapeHtml(s.name)}</option>`).join('');
+}
+
+// ==================== DASHBOARD ====================
+function renderDashboard() {
+  const statSermons = document.getElementById('statSermons');
+  const statCelulas = document.getElementById('statCelulas');
+  const statSeries = document.getElementById('statSeries');
+  const statWeek = document.getElementById('statWeek');
+  if (statSermons) statSermons.textContent = sermons.length;
+  if (statCelulas) statCelulas.textContent = celulas.length;
+  if (statSeries) statSeries.textContent = series.length;
+
+  const now = new Date();
+  const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1));
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + 6);
+
+  const thisWeek = [...sermons, ...celulas].filter(x => {
+    if (!x.date) return false;
+    const d = new Date(x.date + 'T00:00:00');
+    return d >= weekStart && d <= weekEnd;
+  });
+  if (statWeek) statWeek.textContent = thisWeek.length;
+
+  const dsContainer = document.getElementById('dashboardSermons');
+  if (dsContainer) {
+    if (sermons.length === 0) {
+      dsContainer.innerHTML = `<div class="empty-state" style="padding:30px 20px;"><div class="empty-state-icon" style="font-size:40px;">📖</div><div class="empty-state-title" style="font-size:15px;">Sin sermones aún</div></div>`;
+    } else {
+      dsContainer.innerHTML = sermons.slice(0, 3).map(s => `
+        <div class="item-card" style="margin-bottom:10px;" onclick="viewSermon('${s.id}')">
+          <div style="flex:1;">
+            <div class="item-title" style="font-size:14px;">${escapeHtml(s.title)}</div>
+            <div class="item-meta">${s.date ? formatDate(s.date) : ''} ${s.scripture ? '· ' + escapeHtml(s.scripture) : ''}</div>
+          </div>
+          <span class="item-badge badge-${s.status}">${s.status === 'completo' ? '✅' : '📝'}</span>
+        </div>
+      `).join('');
     }
   }
+
+  const dcContainer = document.getElementById('dashboardCelulas');
+  if (dcContainer) {
+    if (celulas.length === 0) {
+      dcContainer.innerHTML = `<div class="empty-state" style="padding:30px 20px;"><div class="empty-state-icon" style="font-size:40px;">👥</div><div class="empty-state-title" style="font-size:15px;">Sin enseñanzas aún</div></div>`;
+    } else {
+      dcContainer.innerHTML = celulas.slice(0, 3).map(c => `
+        <div class="item-card" style="margin-bottom:10px;" onclick="viewCelula('${c.id}')">
+          <div style="flex:1;">
+            <div class="item-title" style="font-size:14px;">${escapeHtml(c.title)}</div>
+            <div class="item-meta">${c.date ? formatDate(c.date) : ''} ${c.scripture ? '· ' + escapeHtml(c.scripture) : ''}</div>
+          </div>
+          <span class="item-badge badge-${c.status}">${c.status === 'completo' ? '✅' : '📝'}</span>
+        </div>
+      `).join('');
+    }
+  }
+}
+
+// ==================== HISTORY ====================
+function renderHistory() {
+  const all = [
+    ...sermons.map(s => ({ ...s, kind: 'sermon' })),
+    ...celulas.map(c => ({ ...c, kind: 'celula' }))
+  ].sort((a, b) => new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt));
+
+  const container = document.getElementById('historyTimeline');
+  if (!container) return;
+  if (all.length === 0) {
+    container.innerHTML = `<div class="empty-state" style="padding-left:0;"><div class="empty-state-icon">🕐</div><div class="empty-state-title">Sin historial aún</div></div>`;
+    return;
+  }
+  container.innerHTML = all.map(item => `
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:${item.kind === 'sermon' ? 'var(--primary)' : 'var(--accent2)'};"></div>
+      <div class="timeline-content">
+        <div class="timeline-date">${item.kind === 'sermon' ? '📖 Sermón' : '👥 Enseñanza Celular'} · ${item.updatedAt ? formatDateTime(item.updatedAt) : ''}</div>
+        <div class="timeline-title">${escapeHtml(item.title)}</div>
+        <div class="timeline-desc">${item.scripture ? '📖 ' + escapeHtml(item.scripture) : ''} ${item.status === 'completo' ? '· ✅ Completo' : '· 📝 Borrador'}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ==================== WEEK PLANNER ====================
+function getWeekDates(offset) {
+  const now = new Date();
+  const day = now.getDay();
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+  const monday = new Date(now.getFullYear(), now.getMonth(), diff + offset * 7);
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    dates.push(d);
+  }
+  return dates;
+}
+
+function renderWeekPlanner() {
+  const dates = getWeekDates(currentWeekOffset);
+  const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+  const today = new Date();
+
+  const start = dates[0];
+  const end = dates[6];
+  const weekTitle = document.getElementById('weekRangeTitle');
+  if (weekTitle) {
+    weekTitle.textContent = `📅 ${start.toLocaleDateString('es-ES', {day:'numeric',month:'long'})} - ${end.toLocaleDateString('es-ES', {day:'numeric',month:'long',year:'numeric'})}`;
+  }
+
+  const calContainer = document.getElementById('weekCalendar');
+  if (calContainer) {
+    calContainer.innerHTML = dates.map((d, i) => {
+      const dateStr = d.toISOString().split('T')[0];
+      const isToday = d.toDateString() === today.toDateString();
+      const hasContent = [...sermons, ...celulas].some(x => x.date === dateStr);
+      return `
+        <div class="week-day ${isToday ? 'active' : ''} ${hasContent && !isToday ? 'has-content' : ''}">
+          <div class="week-day-name">${days[i]}</div>
+          <div class="week-day-num">${d.getDate()}</div>
+          ${hasContent ? '<div class="week-day-dot"></div>' : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  const plannerContainer = document.getElementById('weekPlanner');
+  if (!plannerContainer) return;
+
+  const slots = [
+    { day: 'Domingo', label: 'Servicio Dominical', type: 'sermon' },
+    { day: 'Miércoles', label: 'Servicio de Semana', type: 'sermon' },
+    { day: 'Martes', label: 'Grupo Celular', type: 'celula' },
+    { day: 'Jueves', label: 'Grupo Celular', type: 'celula' },
+    { day: 'Viernes', label: 'Grupo Celular', type: 'celula' },
+    { day: 'Sábado', label: 'Actividad Especial', type: 'any' }
+  ];
+
+  const dayNamesFull = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+
+  plannerContainer.innerHTML = slots.map(slot => {
+    const dateObj = dates.find(d => dayNamesFull[d.getDay()] === slot.day);
+    const dateStr = dateObj ? dateObj.toISOString().split('T')[0] : '';
+
+    const items = [...sermons.map(s => ({...s,kind:'sermon'})), ...celulas.map(c => ({...c,kind:'celula'}))].filter(x => x.date === dateStr);
+
+    return `
+      <div class="week-slot">
+        <div class="week-slot-header">
+          <div class="week-slot-day">${slot.day} - ${slot.label}</div>
+          <button class="btn btn-sm btn-primary" onclick="showPage('${slot.type === 'celula' ? 'celula-editor' : 'sermon-editor'}'); ${slot.type === 'celula' ? 'resetCelulaEditor();' : 'resetSermonEditor();'}">+</button>
+        </div>
+        <div class="week-slot-body">
+          ${items.length === 0 ? `<div class="week-slot-empty">Sin contenido asignado</div>` :
+            items.map(item => `
+              <div class="week-slot-content">${item.kind === 'sermon' ? '📖' : '👥'} ${escapeHtml(item.title)}</div>
+              <div class="week-slot-meta">${item.scripture ? escapeHtml(item.scripture) + ' · ' : ''}${item.status === 'completo' ? '✅ Completo' : '📝 Borrador'}</div>
+            `).join('<hr style="margin:8px 0;border:none;border-top:1px solid var(--border);">')}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function prevWeek() { currentWeekOffset--; renderWeekPlanner(); }
+function nextWeek() { currentWeekOffset++; renderWeekPlanner(); }
+function goToCurrentWeek() { currentWeekOffset = 0; renderWeekPlanner(); }
+
+// ==================== TEMPLATES ====================
+function loadSermonTemplate(type) {
+  resetSermonEditor();
+  if (type === 'evangelistico') {
+    document.getElementById('sermonTitle').value = 'El Camino a la Salvación';
+    document.getElementById('sermonScripture').value = 'Juan 3:16';
+    document.getElementById('sermonType').value = 'evangelistico';
+    document.getElementById('sermonTheme').value = 'Dios ama al mundo y ofrece salvación a través de Jesucristo';
+    document.getElementById('sermonHook').value = 'Imagina que alguien te ofrece el regalo más valioso del mundo, completamente gratis. ¿Lo aceptarías? Hoy vamos a hablar del regalo más grande que existe...';
+    document.getElementById('sermonProposition').value = 'Dios te ama tanto que envió a su Hijo para que tengas vida eterna';
+    document.getElementById('sermonConclusion').value = 'Hoy tienes la oportunidad de recibir el regalo de la salvación. No hay nada que puedas hacer para ganarlo, solo recibirlo por fe.';
+    document.getElementById('sermonCallToAction').value = 'Si quieres recibir a Jesús como tu Salvador, te invito a que repitas esta oración conmigo...';
+    document.getElementById('sermonPoints').innerHTML = '';
+    sermonPointCount = 0;
+    const points = [
+      { title: 'El problema: todos hemos pecado', content: 'La Biblia dice que todos pecamos y estamos destituidos de la gloria de Dios (Romanos 3:23). El pecado nos separa de Dios.', verse: 'Romanos 3:23', illustration: 'Como una deuda que no podemos pagar...' },
+      { title: 'La solución: Dios envió a su Hijo', content: 'Dios, en su amor infinito, envió a Jesucristo para pagar el precio de nuestros pecados. Él murió en la cruz y resucitó al tercer día.', verse: 'Juan 3:16', illustration: 'Como un padre que paga la deuda de su hijo...' },
+      { title: 'La respuesta: creer y recibir', content: 'La salvación es un regalo que se recibe por fe. No por obras, sino por gracia. Solo necesitas creer y confesar a Jesús como Señor.', verse: 'Romanos 10:9', illustration: 'Como recibir un regalo con las manos abiertas...' }
+    ];
+    points.forEach(p => {
+      addSermonPoint();
+      const items = document.querySelectorAll('#sermonPoints .point-item');
+      const last = items[items.length - 1];
+      if (last) {
+        const titleEl = last.querySelector('.sp-title');
+        const contentEl = last.querySelector('.sp-content');
+        const verseEl = last.querySelector('.sp-verse');
+        const illEl = last.querySelector('.sp-illustration');
+        if (titleEl) titleEl.value = p.title;
+        if (contentEl) contentEl.value = p.content;
+        if (verseEl) verseEl.value = p.verse;
+        if (illEl) illEl.value = p.illustration;
+      }
+    });
+  } else if (type === 'doctrinal') {
+    document.getElementById('sermonTitle').value = 'La Trinidad: Un Dios en Tres Personas';
+    document.getElementById('sermonScripture').value = 'Mateo 28:19';
+    document.getElementById('sermonType').value = 'doctrinal';
+    document.getElementById('sermonTheme').value = 'Comprender la naturaleza trinitaria de Dios para adorarle mejor';
+    document.getElementById('sermonProposition').value = 'Dios es uno en esencia pero existe en tres personas distintas: Padre, Hijo y Espíritu Santo';
+  }
+  showPage('sermon-editor');
+  showNotification('✅ Plantilla cargada en el editor');
+}
+
+function loadCelulaTemplate(type) {
+  resetCelulaEditor();
+  if (type === 'comunidad') {
+    document.getElementById('celulaTitle').value = 'Viviendo en Comunidad como el Primer Siglo';
+    document.getElementById('celulaScripture').value = 'Hechos 2:42-47';
+    document.getElementById('celulaObjective').value = 'Que los participantes comprendan el valor de la comunidad cristiana y se comprometan a vivirla';
+    document.getElementById('celulaWelcome').value = 'Pregunta rompe-hielo: ¿Cuál es el mejor recuerdo que tienes de hacer algo en comunidad con otras personas?';
+    document.getElementById('celulaIntro').value = 'El libro de Hechos nos muestra cómo vivía la iglesia primitiva. Leamos juntos Hechos 2:42-47 y observemos qué caracterizaba a esa comunidad.';
+    document.getElementById('celulaTeaching').value = 'La iglesia del primer siglo tenía cuatro pilares fundamentales: la doctrina de los apóstoles, la comunión, el partimiento del pan y las oraciones. No era una religión individual sino una vida compartida.';
+    document.getElementById('celulaChallenge').value = 'Esta semana, haz algo concreto por alguien de este grupo: llámalo, visítalo, ora por él o ayúdalo en alguna necesidad.';
+    document.getElementById('celulaPrayer').value = 'Oren en grupos de 3 por las necesidades específicas de cada uno. Luego oren juntos por la unidad de nuestra iglesia.';
+    
+    document.getElementById('celulaPoints').innerHTML = '';
+    celulaPointCount = 0;
+    const points = ['La comunidad se basa en la Palabra de Dios', 'La comunidad implica compartir la vida', 'La comunidad se fortalece en la oración', 'La comunidad tiene impacto en el mundo'];
+    points.forEach(p => {
+      addCelulaPoint();
+      const items = document.querySelectorAll('#celulaPoints .point-item');
+      const last = items[items.length - 1];
+      if (last) {
+        const input = last.querySelector('.cp-point');
+        if (input) input.value = p;
+      }
+    });
+
+    document.getElementById('celulaQuestions').innerHTML = '';
+    celulaQuestionCount = 0;
+    const questions = ['¿Qué aspecto de la comunidad del primer siglo te parece más difícil de vivir hoy?', '¿Cómo podemos ser más auténticos en nuestra comunidad?', '¿Qué necesitas de este grupo para crecer espiritualmente?'];
+    questions.forEach(q => {
+      addCelulaQuestion();
+      const items = document.querySelectorAll('#celulaQuestions .point-item');
+      const last = items[items.length - 1];
+      if (last) {
+        const input = last.querySelector('.cq-question');
+        if (input) input.value = q;
+      }
+    });
+  } else if (type === 'oracion') {
+    document.getElementById('celulaTitle').value = 'El Poder de la Oración Persistente';
+    document.getElementById('celulaScripture').value = 'Lucas 18:1-8';
+    document.getElementById('celulaObjective').value = 'Motivar a los participantes a desarrollar una vida de oración constante y persistente';
+    document.getElementById('celulaWelcome').value = 'Pregunta: ¿Cuándo fue la última vez que sentiste que Dios respondió una oración tuya? Comparte brevemente.';
+    document.getElementById('celulaTeaching').value = 'Jesús contó la parábola de la viuda persistente para enseñarnos que debemos orar siempre y no desmayar. La oración no es un último recurso, es nuestro primer recurso.';
+    document.getElementById('celulaChallenge').value = 'Establece un tiempo específico de oración cada día esta semana. Escribe en un papel tres peticiones específicas y ora por ellas cada día.';
+  }
+  showPage('celula-editor');
+  showNotification('✅ Plantilla cargada en el editor');
+}
+
+// ==================== EXPORT PDF ====================
+function exportSermonPDF() {
+  const title = document.getElementById('sermonTitle').value.trim();
+  if (!title) { showNotification('Guarda el sermón primero antes de exportar', 'error'); return; }
+  generateSermonPDFContent(title);
+}
+
+function exportSingleSermonPDF(id) {
+  const s = sermons.find(x => x.id === id);
+  if (!s) return;
+  generateSermonPDFFromData(s);
+}
+
+function exportCelulaPDF() {
+  const title = document.getElementById('celulaTitle').value.trim();
+  if (!title) { showNotification('Guarda la enseñanza primero antes de exportar', 'error'); return; }
+  generateCelulaPDFContent(title);
+}
+
+function exportSingleCelulaPDF(id) {
+  const c = celulas.find(x => x.id === id);
+  if (!c) return;
+  generateCelulaPDFFromData(c);
+}
+
+function exportWeekPDF() {
+  const dates = getWeekDates(currentWeekOffset);
+  const start = dates[0].toLocaleDateString('es-ES', {day:'numeric',month:'long'});
+  const end = dates[6].toLocaleDateString('es-ES', {day:'numeric',month:'long',year:'numeric'});
+  const weekItems = [...sermons.map(s => ({...s,kind:'sermon'})), ...celulas.map(c => ({...c,kind:'celula'}))].filter(x => {
+    if (!x.date) return false;
+    const d = new Date(x.date + 'T00:00:00');
+    return d >= dates[0] && d <= dates[6];
+  });
+
+  let content = `PLANIFICACIÓN SEMANAL\\n${start} - ${end}\\n${'='.repeat(50)}\\n\\n`;
+  if (weekItems.length === 0) {
+    content += 'No hay contenido planificado para esta semana.\\n';
+  } else {
+    weekItems.forEach(item => {
+      content += `${item.kind === 'sermon' ? '📖 SERMÓN' : '👥 ENSEÑANZA CELULAR'}\\n`;
+      content += `Título: ${item.title}\\n`;
+      if (item.date) content += `Fecha: ${formatDate(item.date)}\\n`;
+      if (item.scripture) content += `Texto: ${item.scripture}\\n`;
+      content += `Estado: ${item.status === 'completo' ? 'Completo' : 'Borrador'}\\n`;
+      content += `${'-'.repeat(30)}\\n\\n`;
+    });
+  }
+  downloadTextAsPDF(content, `Semana_${start.replace(/\\s/g,'_')}`);
+}
+
+function generateSermonPDFFromData(s) {
+  let content = `SERMÓN\\n${'='.repeat(50)}\\n\\n`;
+  content += `TÍTULO: ${s.title}\\n`;
+  if (s.date) content += `FECHA: ${formatDate(s.date)}\\n`;
+  if (s.scripture) content += `TEXTO BÍBLICO: ${s.scripture}\\n`;
+  if (s.type) content += `TIPO: ${s.type}\\n`;
+  if (s.duration) content += `DURACIÓN: ${s.duration}\\n`;
+  if (s.tone) content += `TONO: ${s.tone}\\n`;
+  content += `\\n`;
+  if (s.theme) content += `TEMA CENTRAL:\\n${s.theme}\\n\\n`;
+  if (s.proposition) content += `PROPOSICIÓN:\\n${s.proposition}\\n\\n`;
+  if (s.hook) content += `INTRODUCCIÓN / GANCHO:\\n${s.hook}\\n\\n`;
+  if (s.context) content += `CONTEXTO BÍBLICO:\\n${s.context}\\n\\n`;
+  if (s.points && s.points.length > 0) {
+    content += `PUNTOS PRINCIPALES:\\n${'─'.repeat(30)}\\n`;
+    s.points.forEach((p, i) => {
+      if (p.title || p.content) {
+        content += `\\n${i+1}. ${p.title}\\n`;
+        if (p.verse) content += `   Versículo: ${p.verse}\\n`;
+        if (p.content) content += `   ${p.content}\\n`;
+        if (p.illustration) content += `   Ilustración: ${p.illustration}\\n`;
+      }
+    });
+    content += `\\n`;
+  }
+  if (s.illustrations) content += `ILUSTRACIONES:\\n${s.illustrations}\\n\\n`;
+  if (s.application) content += `APLICACIÓN PRÁCTICA:\\n${s.application}\\n\\n`;
+  if (s.conclusion) content += `CONCLUSIÓN:\\n${s.conclusion}\\n\\n`;
+  if (s.callToAction) content += `LLAMADO A LA ACCIÓN:\\n${s.callToAction}\\n\\n`;
+  if (s.closingPrayer) content += `ORACIÓN DE CIERRE:\\n${s.closingPrayer}\\n\\n`;
+  if (s.notes) content += `NOTAS PERSONALES:\\n${s.notes}\\n\\n`;
+  content += `\\n${'='.repeat(50)}\\nGenerado por PastorTools - ${new Date().toLocaleDateString('es-ES')}`;
+  downloadTextAsPDF(content, `Sermon_${s.title.replace(/\\s+/g,'_').substring(0,30)}`);
+}
+
+function generateSermonPDFContent(title) {
+  const points = [];
+  document.querySelectorAll('#sermonPoints .point-item').forEach(item => {
+    const titleEl = item.querySelector('.sp-title');
+    const contentEl = item.querySelector('.sp-content');
+    const verseEl = item.querySelector('.sp-verse');
+    const illEl = item.querySelector('.sp-illustration');
+    if (titleEl || contentEl) {
+      points.push({
+        title: titleEl ? titleEl.value : '',
+        content: contentEl ? contentEl.value : '',
+        verse: verseEl ? verseEl.value : '',
+        illustration: illEl ? illEl.value : ''
+      });
+    }
+  });
+  const s = {
+    title,
+    date: document.getElementById('sermonDate') ? document.getElementById('sermonDate').value : '',
+    scripture: document.getElementById('sermonScripture') ? document.getElementById('sermonScripture').value : '',
+    type: document.getElementById('sermonType') ? document.getElementById('sermonType').value : 'expositivo',
+    theme: document.getElementById('sermonTheme') ? document.getElementById('sermonTheme').value : '',
+    hook: document.getElementById('sermonHook') ? document.getElementById('sermonHook').value : '',
+    context: document.getElementById('sermonContext') ? document.getElementById('sermonContext').value : '',
+    proposition: document.getElementById('sermonProposition') ? document.getElementById('sermonProposition').value : '',
+    points,
+    illustrations: document.getElementById('sermonIllustrations') ? document.getElementById('sermonIllustrations').value : '',
+    application: document.getElementById('sermonApplication') ? document.getElementById('sermonApplication').value : '',
+    conclusion: document.getElementById('sermonConclusion') ? document.getElementById('sermonConclusion').value : '',
+    callToAction: document.getElementById('sermonCallToAction') ? document.getElementById('sermonCallToAction').value : '',
+    closingPrayer: document.getElementById('sermonClosingPrayer') ? document.getElementById('sermonClosingPrayer').value : '',
+    duration: document.getElementById('sermonDuration') ? document.getElementById('sermonDuration').value : '30-40 min',
+    tone: document.getElementById('sermonTone') ? document.getElementById('sermonTone').value : 'Exhortativo',
+    notes: document.getElementById('sermonNotes') ? document.getElementById('sermonNotes').value : ''
+  };
+  generateSermonPDFFromData(s);
+}
+
+function generateCelulaPDFFromData(c) {
+  let content = `ENSEÑANZA PARA GRUPO CELULAR\\n${'='.repeat(50)}\\n\\n`;
+  content += `TÍTULO: ${c.title}\\n`;
+  if (c.date) content += `FECHA: ${formatDate(c.date)}\\n`;
+  if (c.scripture) content += `TEXTO BÍBLICO: ${c.scripture}\\n`;
+  if (c.duration) content += `DURACIÓN: ${c.duration}\\n`;
+  if (c.level) content += `NIVEL: ${c.level}\\n`;
+  content += `\\n`;
+  if (c.objective) content += `OBJETIVO:\\n${c.objective}\\n\\n`;
+  if (c.welcome) content += `BIENVENIDA Y ROMPE-HIELO:\\n${c.welcome}\\n\\n`;
+  if (c.intro) content += `INTRODUCCIÓN AL PASAJE:\\n${c.intro}\\n\\n`;
+  if (c.teaching) content += `ENSEÑANZA PRINCIPAL:\\n${c.teaching}\\n\\n`;
+  if (c.points && c.points.length > 0) {
+    content += `PUNTOS CLAVE:\\n`;
+    c.points.forEach((p, i) => { content += `  ${i+1}. ${p}\\n`; });
+    content += `\\n`;
+  }
+  if (c.questions && c.questions.length > 0) {
+    content += `PREGUNTAS DE DISCUSIÓN:\\n`;
+    c.questions.forEach((q, i) => { content += `  ${i+1}. ${q}\\n`; });
+    content += `\\n`;
+  }
+  if (c.challenge) content += `DESAFÍO DE LA SEMANA:\\n${c.challenge}\\n\\n`;
+  if (c.activity) content += `ACTIVIDAD PRÁCTICA:\\n${c.activity}\\n\\n`;
+  if (c.prayer) content += `TIEMPO DE ORACIÓN:\\n${c.prayer}\\n\\n`;
+  if (c.announcements) content += `ANUNCIOS:\\n${c.announcements}\\n\\n`;
+  if (c.materials) content += `MATERIALES NECESARIOS:\\n${c.materials}\\n\\n`;
+  if (c.leaderNotes) content += `NOTAS PARA EL LÍDER:\\n${c.leaderNotes}\\n\\n`;
+  content += `\\n${'='.repeat(50)}\\nGenerado por PastorTools - ${new Date().toLocaleDateString('es-ES')}`;
+  downloadTextAsPDF(content, `Celula_${c.title.replace(/\\s+/g,'_').substring(0,30)}`);
+}
+
+function generateCelulaPDFContent(title) {
+  const points = [];
+  document.querySelectorAll('#celulaPoints .point-item').forEach(item => {
+    const val = item.querySelector('.cp-point');
+    if (val && val.value.trim()) points.push(val.value.trim());
+  });
+  const questions = [];
+  document.querySelectorAll('#celulaQuestions .point-item').forEach(item => {
+    const val = item.querySelector('.cq-question');
+    if (val && val.value.trim()) questions.push(val.value.trim());
+  });
+  const c = {
+    title,
+    date: document.getElementById('celulaDate') ? document.getElementById('celulaDate').value : '',
+    scripture: document.getElementById('celulaScripture') ? document.getElementById('celulaScripture').value : '',
+    duration: document.getElementById('celulaDuration') ? document.getElementById('celulaDuration').value : '75 min',
+    level: document.getElementById('celulaLevel') ? document.getElementById('celulaLevel').value : 'Intermedio',
+    objective: document.getElementById('celulaObjective') ? document.getElementById('celulaObjective').value : '',
+    welcome: document.getElementById('celulaWelcome') ? document.getElementById('celulaWelcome').value : '',
+    intro: document.getElementById('celulaIntro') ? document.getElementById('celulaIntro').value : '',
+    teaching: document.getElementById('celulaTeaching') ? document.getElementById('celulaTeaching').value : '',
+    points,
+    questions,
+    challenge: document.getElementById('celulaChallenge') ? document.getElementById('celulaChallenge').value : '',
+    activity: document.getElementById('celulaActivity') ? document.getElementById('celulaActivity').value : '',
+    prayer: document.getElementById('celulaPrayer') ? document.getElementById('celulaPrayer').value : '',
+    announcements: document.getElementById('celulaAnnouncements') ? document.getElementById('celulaAnnouncements').value : '',
+    materials: document.getElementById('celulaMaterials') ? document.getElementById('celulaMaterials').value : '',
+    leaderNotes: document.getElementById('celulaLeaderNotes') ? document.getElementById('celulaLeaderNotes').value : ''
+  };
+  generateCelulaPDFFromData(c);
+}
+
+function downloadTextAsPDF(content, filename) {
+  const printWindow = window.open('', '_blank');
+  if (!printWindow) { 
+    showNotification('Por favor permite ventanas emergentes para exportar', 'error'); 
+    return; 
+  }
+  
+  const safeContent = escapeHtml(content).replace(/\\n/g, '<br>');
+  const htmlContent = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>${escapeHtml(filename)}</title>
+<style>
+  body { font-family: 'Georgia', serif; max-width: 800px; margin: 0 auto; padding: 40px; color: #1a2332; line-height: 1.8; }
+  h1 { color: #064c74; border-bottom: 3px solid #064c74; padding-bottom: 10px; font-size: 24px; }
+  .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #dde3ea; font-size: 12px; color: #8a9bb0; text-align: center; }
+  @media print { body { padding: 20px; } }
+</style>
+</head>
+<body>
+<div style="font-family:Georgia,serif;font-size:14px;line-height:1.8;white-space:pre-wrap;">${content.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\\n/g, '<br>')}</div>
+<div class="footer">Generado por PastorTools · ${new Date().toLocaleDateString('es-ES', {weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div>
+<script>window.onload = function() { setTimeout(function(){ window.print(); }, 300); }<\/script>
+</body>
+</html>`;
+  
+  printWindow.document.open();
+  printWindow.document.write(htmlContent);
+  printWindow.document.close();
+}
+
+// ==================== UTILS ====================
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr + 'T00:00:00');
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function formatDateTime(isoStr) {
+  if (!isoStr) return '';
+  const d = new Date(isoStr);
+  if (isNaN(d.getTime())) return isoStr;
+  return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+</script>
+</body>
+</html>'''
+
+with open('/mnt/agents/output/pastortools.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("Archivo guardado correctamente. Tamaño:", len(html_content), "caracteres")
 
   /* Desktop: 1024px+ */
   @media (min-width: 1024px) {
