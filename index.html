@@ -1,40 +1,2648 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>PastoralFlow Ultimate</title>
-    
-    <!-- PWA MANIFEST INYECTADO (Data URI) -->
-    <link rel="manifest" id="my-manifest-placeholder">
-    
-    <!-- Meta Tags para iOS y Android -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#2563EB">
-    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐑</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background:white; padding:10px;%22><text y=%22.8em%22 font-size=%2280%22>🐑</text></svg>">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="description" content="SermonCraft - La mejor aplicación para pastores. Crea predicaciones, sermones y mensajes para grupos pequeños de forma profesional.">
+<meta name="theme-color" content="#064c74">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>SermonCraft – Herramienta Pastoral Profesional</title>
+<style>
+  /* ============================================
+     VARIABLES CSS - Sistema de Diseño
+     Mobile-First con escalado progresivo
+     ============================================ */
+  :root {
+    --primary: #064c74;
+    --primary-light: #0a6fa8;
+    --primary-dark: #043a59;
+    --primary-ultra-light: #e8f4fd;
+    --accent: #f0a500;
+    --accent-light: #ffc947;
+    --success: #2ecc71;
+    --danger: #e74c3c;
+    --bg: #F4F6F8;
+    --bg-card: #ffffff;
+    --bg-sidebar: #ffffff;
+    --text-primary: #1a2332;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+    --shadow-xl: 0 20px 50px rgba(0,0,0,0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --header-h: 56px;
+    --sidebar-w: 0px;
+    --content-pad: 0.75rem;
+    --card-pad: 1rem;
+    --section-gap: 0.75rem;
+    --font-scale: 0.9375;
+  }
 
-    <script>
-        // GENERACIÓN DINÁMICA DEL MANIFEST PARA INSTALACIÓN
-        const manifest = {
-            "name": "PastoralFlow",
-            "short_name": "PastoralFlow",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#F3F4F6",
-            "theme_color": "#2563EB",
-            "orientation": "portrait-primary",
-            "icons": [{
-                "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%232563EB%22/><text x=%2250%22 y=%2250%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22>🐑</text></svg>",
-                "sizes": "192x192",
-                "type": "image/svg+xml"
-            }]
-        };
-        const stringManifest = JSON.stringify(manifest);
-        const blob = new Blob([stringManifest], {type: 'application/json'});
-        const manifestURL = URL.createObjectURL(blob);
+  /* Tablet: 768px+ */
+  @media (min-width: 768px) {
+    :root {
+      --header-h: 60px;
+      --content-pad: 1.25rem;
+      --card-pad: 1.25rem;
+      --section-gap: 1rem;
+      --font-scale: 0.96;
+    }
+  }
+
+  /* Desktop: 1024px+ */
+  @media (min-width: 1024px) {
+    :root {
+      --header-h: 64px;
+      --sidebar-w: 260px;
+      --content-pad: 1.5rem;
+      --card-pad: 1.5rem;
+      --section-gap: 1.25rem;
+      --font-scale: 1;
+    }
+  }
+
+  /* Large Desktop: 1400px+ */
+  @media (min-width: 1400px) {
+    :root {
+      --content-pad: 2rem;
+      --card-pad: 1.75rem;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-size: calc(0.875rem * var(--font-scale));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 3px; }
+
+  /* ============================================
+     HEADER - Adaptativo
+     ============================================ */
+  .app-header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--primary); height: var(--header-h);
+    display: flex; align-items: center; padding: 0 var(--content-pad);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+  }
+
+  .header-inner {
+    width: 100%; max-width: 1600px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+  }
+
+  .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: #fff; min-width: 0; }
+  .logo-icon {
+    width: 32px; height: 32px; background: rgba(255,255,255,0.15); border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0;
+  }
+  .logo-text { font-weight: 800; font-size: calc(1.1rem * var(--font-scale)); letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap; }
+  .logo-sub { font-size: 0.6rem; font-weight: 400; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.08em; display: block; }
+
+  .header-actions { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
+
+  .btn-header {
+    display: flex; align-items: center; gap: 0.35rem;
+    padding: 0.45rem 0.7rem; border-radius: var(--radius-sm);
+    border: 1.5px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);
+    color: #fff; font-size: calc(0.75rem * var(--font-scale)); font-weight: 600; cursor: pointer;
+    transition: var(--transition); font-family: var(--font); white-space: nowrap;
+    min-height: 36px;
+  }
+  .btn-header:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.5); }
+  .btn-header.accent { background: var(--accent); border-color: var(--accent); color: #1a2332; }
+  .btn-header.accent:hover { background: var(--accent-light); }
+
+  /* Tablet+ */
+  @media (min-width: 768px) {
+    .btn-header { padding: 0.5rem 0.875rem; font-size: calc(0.8rem * var(--font-scale)); gap: 0.4rem; }
+    .logo-icon { width: 36px; height: 36px; font-size: 1.1rem; }
+    .logo-text { font-size: calc(1.25rem * var(--font-scale)); }
+    .logo-sub { font-size: 0.65rem; }
+  }
+
+  /* ============================================
+     LAYOUT PRINCIPAL
+     ============================================ */
+  .app-layout {
+    display: flex;
+    min-height: 100vh;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+    padding-top: var(--header-h);
+  }
+
+  /* ============================================
+     SIDEBAR - Drawer en móvil, fijo en desktop
+     ============================================ */
+  .sidebar {
+    position: fixed;
+    top: var(--header-h); left: 0; bottom: 0;
+    width: 260px;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    padding: 1rem 0.75rem;
+    display: flex; flex-direction: column; gap: 0.25rem;
+    overflow-y: auto;
+    z-index: 900;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-xl);
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .sidebar-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+    z-index: 850; opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .sidebar-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .sidebar-section-label {
+    font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--text-muted);
+    padding: 0.5rem 0.75rem 0.25rem; margin-top: 0.5rem;
+  }
+  .sidebar-section-label:first-child { margin-top: 0; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 0.625rem;
+    padding: 0.625rem 0.75rem; border-radius: var(--radius-sm);
+    cursor: pointer; transition: var(--transition); color: var(--text-secondary);
+    font-size: calc(0.875rem * var(--font-scale)); font-weight: 500;
+    border: none; background: transparent;
+    width: 100%; text-align: left; font-family: var(--font); position: relative;
+    min-height: 44px;
+  }
+  .nav-item:hover { background: var(--primary-ultra-light); color: var(--primary); }
+  .nav-item.active { background: var(--primary-ultra-light); color: var(--primary); font-weight: 600; }
+  .nav-item.active::before {
+    content: ''; position: absolute; left: 0; top: 20%; height: 60%; width: 3px;
+    background: var(--primary); border-radius: 0 2px 2px 0;
+  }
+  .nav-icon { font-size: 1rem; flex-shrink: 0; width: 20px; text-align: center; }
+  .nav-badge {
+    margin-left: auto; background: var(--primary); color: #fff;
+    font-size: 0.6rem; font-weight: 700; padding: 0.1rem 0.4rem;
+    border-radius: 10px; min-width: 18px; text-align: center;
+  }
+
+  /* Desktop: sidebar visible */
+  @media (min-width: 1024px) {
+    .sidebar {
+      position: sticky;
+      transform: translateX(0);
+      box-shadow: none;
+      padding: 1.5rem 1rem;
+      height: calc(100vh - var(--header-h));
+    }
+    .sidebar-overlay { display: none; }
+  }
+
+  /* ============================================
+     MAIN CONTENT
+     ============================================ */
+  .main-content {
+    flex: 1;
+    padding: var(--content-pad);
+    min-width: 0;
+    overflow-x: hidden;
+    padding-bottom: calc(var(--content-pad) + 70px);
+  }
+
+  @media (min-width: 1024px) {
+    .main-content { padding-bottom: var(--content-pad); }
+  }
+
+  /* ============================================
+     CARDS
+     ============================================ */
+  .card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--card-pad);
+    margin-bottom: var(--section-gap);
+    transition: var(--transition);
+  }
+  .card:hover { box-shadow: var(--shadow-md); }
+
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .card-title {
+    font-size: calc(0.95rem * var(--font-scale));
+    font-weight: 700; color: var(--text-primary);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .card-title .icon-badge {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--primary-ultra-light); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; flex-shrink: 0;
+  }
+
+  /* ============================================
+     TAGS & CHIPS
+     ============================================ */
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.25rem 0.6rem; border-radius: 20px;
+    font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .tag-primary { background: var(--primary-ultra-light); color: var(--primary); }
+  .tag-accent { background: #fff8e6; color: #b07800; }
+  .tag-success { background: #e8fdf0; color: #1a7a44; }
+  .tag-purple { background: #f3eeff; color: #5b21b6; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.2rem 0.6rem; border-radius: 20px;
+    font-size: 0.7rem; font-weight: 600; border: 1px solid;
+  }
+  .chip-blue { background: var(--primary-ultra-light); color: var(--primary); border-color: #c3dff0; }
+  .chip-gold { background: #fff8e6; color: #b07800; border-color: #fde68a; }
+  .chip-green { background: #e8fdf0; color: #1a7a44; border-color: #a7f3d0; }
+  .chip-purple { background: #f3eeff; color: #5b21b6; border-color: #ddd6fe; }
+
+  /* ============================================
+     FORMULARIOS
+     ============================================ */
+  .form-group { margin-bottom: 1.25rem; }
+  .form-label {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: calc(0.78rem * var(--font-scale));
+    font-weight: 600; color: var(--text-secondary);
+    margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .form-label .req { color: var(--danger); }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%; padding: 0.625rem 0.875rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: calc(0.875rem * var(--font-scale));
+    color: var(--text-primary); background: var(--bg);
+    transition: var(--transition);
+    appearance: none; -webkit-appearance: none;
+    min-height: 44px;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none; border-color: var(--primary); background: #fff;
+    box-shadow: 0 0 0 3px rgba(6, 76, 116, 0.1);
+  }
+  .form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  .form-textarea.large { min-height: 140px; }
+  .form-textarea.xlarge { min-height: 180px; }
+
+  @media (min-width: 768px) {
+    .form-textarea.large { min-height: 160px; }
+    .form-textarea.xlarge { min-height: 220px; }
+  }
+
+  .input-hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem; }
+  .char-counter { font-size: 0.65rem; color: var(--text-muted); text-align: right; margin-top: 0.2rem; }
+  .char-counter.warn { color: var(--accent); }
+  .char-counter.over { color: var(--danger); }
+
+  .select-wrapper { position: relative; }
+  .select-wrapper::after {
+    content: '▾'; position: absolute; right: 0.875rem; top: 50%;
+    transform: translateY(-50%); pointer-events: none;
+    color: var(--text-muted); font-size: 0.8rem;
+  }
+
+  /* ============================================
+     BOTONES
+     ============================================ */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+    padding: 0.625rem 1.25rem; border-radius: var(--radius-sm); border: none;
+    font-family: var(--font);
+    font-size: calc(0.85rem * var(--font-scale));
+    font-weight: 600; cursor: pointer; transition: var(--transition);
+    text-decoration: none; white-space: nowrap; min-height: 44px;
+    touch-action: manipulation;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(6,76,116,0.3); }
+  .btn-primary:hover:not(:disabled) { background: var(--primary-light); transform: translateY(-1px); }
+  .btn-secondary { background: var(--bg); color: var(--primary); border: 1.5px solid var(--border); }
+  .btn-secondary:hover:not(:disabled) { background: var(--primary-ultra-light); border-color: var(--primary); }
+  .btn-accent { background: var(--accent); color: #1a2332; box-shadow: 0 2px 8px rgba(240,165,0,0.3); }
+  .btn-accent:hover:not(:disabled) { background: var(--accent-light); }
+  .btn-danger { background: #fff0f0; color: var(--danger); border: 1.5px solid #fecaca; }
+  .btn-danger:hover:not(:disabled) { background: var(--danger); color: #fff; }
+  .btn-success { background: #e8fdf0; color: #1a7a44; border: 1.5px solid #a7f3d0; }
+  .btn-success:hover:not(:disabled) { background: var(--success); color: #fff; }
+  .btn-sm { padding: 0.4rem 0.875rem; font-size: calc(0.78rem * var(--font-scale)); min-height: 36px; }
+  .btn-lg { padding: 0.75rem 1.5rem; font-size: calc(0.95rem * var(--font-scale)); min-height: 48px; }
+
+  @media (min-width: 768px) {
+    .btn-lg { padding: 0.875rem 1.75rem; min-height: 52px; }
+  }
+
+  .btn-icon {
+    width: 40px; height: 40px; padding: 0; border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--text-muted); border: 1.5px solid var(--border);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: var(--transition); font-family: var(--font);
+    flex-shrink: 0; min-width: 40px; min-height: 40px;
+  }
+  .btn-icon:hover { background: var(--primary-ultra-light); color: var(--primary); border-color: var(--primary); }
+  .btn-group { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+
+  /* ============================================
+     SECCIONES DE SERMON
+     ============================================ */
+  .sermon-section {
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+    margin-bottom: var(--section-gap);
+    transition: var(--transition);
+  }
+  .sermon-section:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(6,76,116,0.08); }
+
+  .sermon-section-header {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: linear-gradient(135deg, var(--primary-ultra-light), #f8fafc);
+    cursor: pointer; user-select: none; transition: var(--transition);
+    min-height: 56px;
+  }
+  .sermon-section-header:hover { background: linear-gradient(135deg, #d6edf8, #edf2f7); }
+
+  .section-num {
+    width: 28px; height: 28px; border-radius: 50%; background: var(--primary);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+  }
+  .section-title-group { flex: 1; min-width: 0; }
+  .section-title-group h3 {
+    font-size: calc(0.875rem * var(--font-scale));
+    font-weight: 700; color: var(--primary-dark); margin-bottom: 0.1rem;
+  }
+  .section-title-group p { font-size: 0.7rem; color: var(--text-muted); }
+  .section-chevron {
+    transition: transform 0.3s ease; color: var(--text-muted);
+    font-size: 0.8rem; flex-shrink: 0;
+  }
+  .sermon-section.collapsed .section-chevron { transform: rotate(-90deg); }
+  .sermon-section-body { padding: 1rem; background: #fff; }
+  .sermon-section.collapsed .sermon-section-body { display: none; }
+
+  /* ============================================
+     BARRA DE PROGRESO
+     ============================================ */
+  .progress-wrapper {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 1rem var(--card-pad);
+    margin-bottom: var(--section-gap);
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .progress-info { flex: 1; min-width: 200px; }
+  .progress-info h2 {
+    font-size: calc(0.875rem * var(--font-scale));
+    font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;
+  }
+  .progress-info p { font-size: 0.75rem; color: var(--text-muted); }
+  .progress-bar-track {
+    width: 100%; height: 6px; background: var(--border);
+    border-radius: 3px; overflow: hidden; margin-top: 0.5rem;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 3px; transition: width 0.5s ease; width: 0%;
+  }
+  .progress-percent {
+    font-size: calc(1.5rem * var(--font-scale));
+    font-weight: 800; color: var(--primary); flex-shrink: 0;
+  }
+
+  /* ============================================
+     LISTA DE MENSAJES
+     ============================================ */
+  .sermon-list-item {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.875rem 1rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer; transition: var(--transition);
+    display: flex; align-items: flex-start; gap: 0.875rem;
+  }
+  .sermon-list-item:hover {
+    border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-1px);
+  }
+  .sermon-list-item .item-icon {
+    width: 40px; height: 40px; border-radius: var(--radius-sm);
+    background: var(--primary-ultra-light); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .sermon-list-item .item-body { flex: 1; min-width: 0; }
+  .sermon-list-item .item-title {
+    font-weight: 700;
+    font-size: calc(0.9rem * var(--font-scale));
+    color: var(--text-primary); margin-bottom: 0.25rem;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .sermon-list-item .item-meta {
+    font-size: 0.72rem; color: var(--text-muted);
+    display: flex; gap: 0.75rem; flex-wrap: wrap;
+  }
+  .sermon-list-item .item-actions {
+    display: flex; gap: 0.25rem; flex-shrink: 0;
+  }
+
+  /* ============================================
+     TOASTS
+     ============================================ */
+  .toast-container {
+    position: fixed; bottom: 5rem; right: 1rem; z-index: 9999;
+    display: flex; flex-direction: column; gap: 0.5rem;
+    pointer-events: none; max-width: calc(100vw - 2rem);
+  }
+  .toast {
+    background: var(--text-primary); color: #fff;
+    padding: 0.75rem 1rem; border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    font-size: calc(0.82rem * var(--font-scale)); font-weight: 500;
+    display: flex; align-items: center; gap: 0.6rem;
+    min-width: 240px; max-width: 360px;
+    pointer-events: auto;
+    animation: slideInRight 0.3s ease;
+    border-left: 4px solid var(--primary-light);
+  }
+  .toast.success { border-left-color: var(--success); }
+  .toast.warning { border-left-color: var(--accent); }
+  .toast.error { border-left-color: var(--danger); }
+  .toast.exiting { animation: slideOutRight 0.3s ease forwards; }
+
+  @keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(120%); opacity: 0; }
+  }
+
+  @media (max-width: 480px) {
+    .toast-container { left: 1rem; right: 1rem; bottom: 5.5rem; }
+    .toast { min-width: auto; max-width: none; width: 100%; }
+    @keyframes slideInRight {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes slideOutRight {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(120%); opacity: 0; }
+    }
+  }
+
+  /* ============================================
+     MODALES
+     ============================================ */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    z-index: 2000; display: flex; align-items: center; justify-content: center;
+    padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .modal {
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    width: 100%; max-width: 560px; max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s ease;
+  }
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+  .modal-header {
+    padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; background: var(--bg-card); z-index: 1;
+  }
+  .modal-title {
+    font-weight: 700;
+    font-size: calc(1rem * var(--font-scale));
+    color: var(--text-primary);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .modal-close {
+    width: 36px; height: 36px; border-radius: var(--radius-sm); border: none;
+    background: var(--bg); color: var(--text-muted); font-size: 1rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: var(--transition); font-family: var(--font); flex-shrink: 0;
+  }
+  .modal-close:hover { background: var(--border); color: var(--text-primary); }
+  .modal-body { padding: 1.25rem var(--card-pad); }
+  .modal-footer {
+    padding: 1rem var(--card-pad); border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end; gap: 0.5rem; flex-wrap: wrap;
+  }
+
+  @media (max-width: 480px) {
+    .modal-overlay { padding: 0; align-items: flex-end; }
+    .modal {
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      max-height: 92vh; transform: translateY(100%);
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-header { padding: 1rem var(--card-pad); }
+    .modal-body { padding: 1rem var(--card-pad); }
+    .modal-footer { padding: 0.875rem var(--card-pad); }
+    .modal-footer .btn { flex: 1; justify-content: center; }
+  }
+
+  /* ============================================
+     ESTADÍSTICAS
+     ============================================ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: var(--section-gap);
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: 1.5px solid var(--border);
+    transition: var(--transition);
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .stat-value {
+    font-size: calc(1.75rem * var(--font-scale));
+    font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 0.25rem;
+  }
+  .stat-label {
+    font-size: 0.7rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
+  }
+
+  @media (min-width: 768px) {
+    .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (min-width: 1024px) {
+    .stats-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  }
+
+  /* ============================================
+     PLANTILLAS
+     ============================================ */
+  .template-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+  .template-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    cursor: pointer; transition: var(--transition);
+    position: relative; overflow: hidden;
+    text-align: left; font-family: var(--font);
+  }
+  .template-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--primary); transform: scaleX(0); transition: transform 0.3s ease;
+  }
+  .template-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .template-card:hover::before { transform: scaleX(1); }
+  .template-icon { font-size: 1.75rem; margin-bottom: 0.75rem; display: block; }
+  .template-name {
+    font-weight: 700;
+    font-size: calc(0.875rem * var(--font-scale));
+    color: var(--text-primary); margin-bottom: 0.375rem;
+  }
+  .template-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+
+  @media (min-width: 480px) {
+    .template-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 768px) {
+    .template-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  }
+
+  /* ============================================
+     CALENDARIO SEMANAL
+     ============================================ */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .day-cell {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem;
+    text-align: center;
+    min-height: 65px;
+    cursor: pointer; transition: var(--transition);
+    font-size: 0.75rem;
+  }
+  .day-cell:hover { border-color: var(--primary); background: var(--primary-ultra-light); }
+  .day-cell.today { border-color: var(--primary); background: var(--primary-ultra-light); }
+  .day-cell.has-event { border-color: var(--accent); }
+  .day-name { font-weight: 700; color: var(--text-muted); font-size: 0.6rem; text-transform: uppercase; }
+  .day-num { font-weight: 800; font-size: 0.95rem; color: var(--text-primary); margin: 0.2rem 0; }
+  .day-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); margin: 0 auto; }
+
+  @media (min-width: 480px) {
+    .week-grid { grid-template-columns: repeat(7, 1fr); }
+    .day-cell { min-height: 70px; }
+    .day-name { font-size: 0.65rem; }
+    .day-num { font-size: 1rem; }
+  }
+
+  /* ============================================
+     BÚSQUEDA
+     ============================================ */
+  .search-wrapper { position: relative; margin-bottom: 1rem; }
+  .search-input {
+    width: 100%; padding: 0.625rem 1rem 0.625rem 2.5rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: calc(0.875rem * var(--font-scale));
+    color: var(--text-primary); background: var(--bg-card);
+    transition: var(--transition); min-height: 44px;
+  }
+  .search-input:focus {
+    outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(6,76,116,0.1);
+  }
+  .search-icon {
+    position: absolute; left: 0.75rem; top: 50%;
+    transform: translateY(-50%); color: var(--text-muted);
+    font-size: 0.875rem; pointer-events: none;
+  }
+
+  /* ============================================
+     CAJA DE CONSEJOS
+     ============================================ */
+  .tip-box {
+    background: linear-gradient(135deg, #fff8e6, #fffbf0);
+    border: 1px solid #fde68a;
+    border-radius: var(--radius-md);
+    padding: 0.875rem 1rem;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    margin-bottom: var(--section-gap);
+  }
+  .tip-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .tip-content h4 {
+    font-size: calc(0.8rem * var(--font-scale));
+    font-weight: 700; color: #b07800; margin-bottom: 0.2rem;
+  }
+  .tip-content p { font-size: 0.76rem; color: #7a5500; line-height: 1.5; }
+
+  /* ============================================
+     NAVEGACIÓN MÓVIL
+     ============================================ */
+  .mobile-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    z-index: 900;
+    padding: 0.25rem 0;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .mobile-nav-inner {
+    display: flex; align-items: center; justify-content: space-around;
+    max-width: 600px; margin: 0 auto;
+  }
+  .mobile-nav-item {
+    display: flex; flex-direction: column; align-items: center; gap: 0.15rem;
+    padding: 0.4rem 0.5rem; border: none; background: transparent;
+    color: var(--text-muted);
+    font-size: 0.55rem; font-weight: 600; cursor: pointer;
+    transition: var(--transition); font-family: var(--font);
+    min-width: 56px; text-transform: uppercase; letter-spacing: 0.04em;
+    flex: 1;
+  }
+  .mobile-nav-item .mn-icon { font-size: 1.15rem; }
+  .mobile-nav-item.active { color: var(--primary); }
+
+  @media (min-width: 1024px) {
+    .mobile-nav { display: none; }
+  }
+
+  /* ============================================
+     ESTADO VACÍO
+     ============================================ */
+  .empty-state {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    color: var(--text-muted);
+  }
+  .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 0.875rem; opacity: 0.6; }
+  .empty-state h3 {
+    font-size: calc(1rem * var(--font-scale));
+    font-weight: 700; color: var(--text-secondary); margin-bottom: 0.4rem;
+  }
+  .empty-state p { font-size: 0.82rem; line-height: 1.6; }
+
+  @media (min-width: 768px) {
+    .empty-state { padding: 3rem 1.5rem; }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+  }
+
+  /* ============================================
+     TOOLBAR RICO
+     ============================================ */
+  .rich-toolbar {
+    display: flex; flex-wrap: wrap; gap: 0.25rem;
+    padding: 0.5rem; background: var(--bg);
+    border: 1.5px solid var(--border); border-bottom: none;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  }
+  .rich-toolbar + .form-textarea {
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm); border-top: none;
+  }
+  .toolbar-btn {
+    width: 32px; height: 32px; border: 1px solid var(--border);
+    border-radius: 4px; background: var(--bg-card); color: var(--text-secondary);
+    font-size: 0.75rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition); font-family: var(--font);
+  }
+  .toolbar-btn:hover { background: var(--primary-ultra-light); color: var(--primary); border-color: var(--primary); }
+  .toolbar-sep { width: 1px; height: 20px; background: var(--border); margin: 0 0.1rem; align-self: center; }
+
+  .word-count { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
+
+  /* ============================================
+     ACORDEÓN
+     ============================================ */
+  .accordion-item {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    margin-bottom: 0.5rem; overflow: hidden;
+  }
+  .accordion-trigger {
+    width: 100%; padding: 0.875rem 1rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg-card); border: none; cursor: pointer;
+    font-family: var(--font);
+    font-size: calc(0.875rem * var(--font-scale));
+    font-weight: 600; color: var(--text-primary);
+    text-align: left; transition: var(--transition);
+    min-height: 48px;
+  }
+  .accordion-trigger:hover { background: var(--primary-ultra-light); color: var(--primary); }
+  .accordion-trigger[aria-expanded="true"] { color: var(--primary); background: var(--primary-ultra-light); }
+  .accordion-trigger[aria-expanded="true"] .acc-chevron { transform: rotate(180deg); }
+  .acc-chevron { transition: transform 0.3s ease; font-size: 0.75rem; }
+  .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .accordion-content.open { max-height: 2000px; }
+  .accordion-inner { padding: 0.875rem 1rem; background: #fafbfc; border-top: 1px solid var(--border); }
+
+  /* ============================================
+     INDICADORES
+     ============================================ */
+  .s-indicator { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .si-1 { background: #3b82f6; }
+  .si-2 { background: #8b5cf6; }
+  .si-3 { background: #ec4899; }
+
+  /* ============================================
+     TÍTULOS DE PÁGINA
+     ============================================ */
+  .page-title-area { margin-bottom: var(--section-gap); }
+  .page-title {
+    font-size: calc(1.25rem * var(--font-scale));
+    font-weight: 800; color: var(--text-primary);
+    letter-spacing: -0.02em; margin-bottom: 0.25rem;
+  }
+  .page-subtitle { font-size: calc(0.82rem * var(--font-scale)); color: var(--text-muted); }
+
+  @media (min-width: 768px) {
+    .page-title { font-size: calc(1.4rem * var(--font-scale)); }
+  }
+
+  /* ============================================
+     GRIDS
+     ============================================ */
+  .grid-2 { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+
+  @media (min-width: 768px) {
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ============================================
+     FAB
+     ============================================ */
+  .fab {
+    position: fixed; bottom: 5rem; right: 1rem; z-index: 150;
+    background: var(--primary); color: #fff; border: none;
+    border-radius: 50px; padding: 0.75rem 1.25rem;
+    font-family: var(--font);
+    font-size: calc(0.82rem * var(--font-scale));
+    font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(6,76,116,0.4);
+    display: flex; align-items: center; gap: 0.4rem;
+    transition: var(--transition);
+    min-height: 48px;
+  }
+  .fab:hover { background: var(--primary-light); transform: translateY(-2px); }
+
+  @media (min-width: 1024px) {
+    .fab { display: none; }
+  }
+
+  /* ============================================
+     ANIMACIONES
+     ============================================ */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeIn 0.3s ease; }
+
+  /* ============================================
+     BOTÓN MENÚ HAMBURGUESA
+     ============================================ */
+  .menu-toggle {
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: var(--radius-sm);
+    border: 1.5px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1);
+    color: #fff; font-size: 1.1rem; cursor: pointer;
+    transition: var(--transition); font-family: var(--font);
+    margin-right: 0.5rem; flex-shrink: 0;
+  }
+  .menu-toggle:hover { background: rgba(255,255,255,0.2); }
+
+  @media (min-width: 1024px) {
+    .menu-toggle { display: none; }
+  }
+
+  /* ============================================
+     REDUCED MOTION
+     ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    html { scroll-behavior: auto; }
+  }
+
+  /* ============================================
+     UTILIDADES
+     ============================================ */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+<header class="app-header" role="banner">
+  <div class="header-inner">
+    <div style="display:flex;align-items:center">
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="sidebar">
+        ☰
+      </button>
+      <a href="#" class="logo" aria-label="SermonCraft - Inicio">
+        <div class="logo-icon" aria-hidden="true">✝</div>
+        <div>
+          <span class="logo-text">SermonCraft</span>
+          <span class="logo-sub">Herramienta Pastoral</span>
+        </div>
+      </a>
+    </div>
+    <div class="header-actions">
+      <button class="btn-header" id="btnAutoSave" aria-label="Guardado automático">
+        <span aria-hidden="true">💾</span>
+        <span>Guardado</span>
+      </button>
+      <button class="btn-header accent" id="btnExportPDF" aria-label="Exportar">
+        <span aria-hidden="true">📄</span>
+        <span>Exportar</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navegación principal">
+    <span class="sidebar-section-label">Crear</span>
+    <button class="nav-item active" data-view="dashboard">
+      <span class="nav-icon" aria-hidden="true">🏠</span>Dashboard
+    </button>
+    <button class="nav-item" data-view="sermon">
+      <span class="nav-icon" aria-hidden="true">📢</span>Nueva Predicación
+    </button>
+    <button class="nav-item" data-view="smallgroup">
+      <span class="nav-icon" aria-hidden="true">👥</span>Grupo Pequeño
+    </button>
+    <span class="sidebar-section-label">Biblioteca</span>
+    <button class="nav-item" data-view="library">
+      <span class="nav-icon" aria-hidden="true">📚</span>Mis Mensajes
+      <span class="nav-badge" id="sidebarBadge">0</span>
+    </button>
+    <button class="nav-item" data-view="templates">
+      <span class="nav-icon" aria-hidden="true">📋</span>Plantillas
+    </button>
+    <button class="nav-item" data-view="calendar">
+      <span class="nav-icon" aria-hidden="true">📅</span>Planificador
+    </button>
+  </aside>
+
+  <main class="main-content" id="mainContent" role="main">
+
+    <!-- DASHBOARD -->
+    <section id="view-dashboard" class="fade-in" aria-label="Panel principal">
+      <div class="page-title-area">
+        <h1 class="page-title">Bienvenido, Pastor 👋</h1>
+        <p class="page-subtitle">Tu espacio de preparación ministerial semanal</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-value" id="statSermons">0</div><div class="stat-label">Predicaciones</div></div>
+        <div class="stat-card"><div class="stat-value" id="statGroups">0</div><div class="stat-label">Grupos Pequeños</div></div>
+        <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total Mensajes</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span class="icon-badge">⚡</span>Acciones Rápidas</h2>
+        </div>
+        <div class="template-grid">
+          <button class="template-card" onclick="navigateTo('sermon')">
+            <span class="template-icon">📢</span>
+            <div class="template-name">Nueva Predicación</div>
+            <div class="template-desc">Prepara tu sermón dominical con estructura completa</div>
+          </button>
+          <button class="template-card" onclick="navigateTo('smallgroup')">
+            <span class="template-icon">👥</span>
+            <div class="template-name">Mensaje Grupo Pequeño</div>
+            <div class="template-desc">Rompehielo, cuerpo, preguntas y conclusión</div>
+          </button>
+          <button class="template-card" onclick="navigateTo('templates')">
+            <span class="template-icon">📋</span>
+            <div class="template-name">Plantillas</div>
+            <div class="template-desc">Estructuras probadas para diferentes mensajes</div>
+          </button>
+          <button class="template-card" onclick="navigateTo('calendar')">
+            <span class="template-icon">📅</span>
+            <div class="template-name">Planificar Semana</div>
+            <div class="template-desc">Organiza tu calendario ministerial</div>
+          </button>
+        </div>
+      </div>
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <div class="tip-content">
+          <h4>Consejo para esta semana</h4>
+          <p id="tipOfDay">Un buen sermón nace en la oración. Dedica los primeros 15 minutos de cada sesión de preparación a buscar dirección divina antes de escribir.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span class="icon-badge">🕒</span>Mensajes Recientes</h2>
+          <button class="btn btn-secondary btn-sm" onclick="navigateTo('library')">Ver todos</button>
+        </div>
+        <div id="recentMessages">
+          <div class="empty-state">
+            <div class="empty-icon">📝</div>
+            <h3>No hay mensajes aún</h3>
+            <p>Crea tu primera predicación para comenzar tu biblioteca pastoral.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERMON -->
+    <section id="view-sermon" class="fade-in" style="display:none" aria-label="Nueva predicación">
+      <div class="page-title-area">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem">
+          <div>
+            <h1 class="page-title">📢 Nueva Predicación</h1>
+            <p class="page-subtitle">Desarrolla tu sermón paso a paso</p>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" id="clearSermonBtn">🗑️ Limpiar</button>
+            <button class="btn btn-success btn-sm" id="saveSermonBtn">💾 Guardar</button>
+            <button class="btn btn-accent btn-sm" id="exportSermonPdfBtn">📄 Vista Previa</button>
+          </div>
+        </div>
+      </div>
+      <div class="progress-wrapper">
+        <div class="progress-info">
+          <h2>Progreso del Sermón</h2>
+          <p>Completa cada sección para un sermón integral</p>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="sermonProgress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        <div class="progress-percent" id="sermonProgressPct">0%</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span class="icon-badge">ℹ️</span>Información General</h2>
+          <span class="section-tag tag-primary">Básico</span>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="s-title">Título del Sermón <span class="req">*</span></label>
+            <input type="text" class="form-input" id="s-title" placeholder="Ej: La fe que mueve montañas" maxlength="100" autocomplete="off">
+            <div class="char-counter" id="sTitleCounter">0/100</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-date">Fecha de Predicación</label>
+            <input type="date" class="form-input" id="s-date">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="s-series">Serie / Tema</label>
+            <input type="text" class="form-input" id="s-series" placeholder="Ej: Fe Genuina" maxlength="60">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-type">Tipo de Mensaje</label>
+            <div class="select-wrapper">
+              <select class="form-select" id="s-type">
+                <option value="expositivo">Expositivo</option>
+                <option value="tematico">Temático</option>
+                <option value="evangelistico">Evangelístico</option>
+                <option value="pastoral">Pastoral</option>
+                <option value="misional">Misional</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="s-verse">Pasaje Bíblico Principal <span class="req">*</span></label>
+          <input type="text" class="form-input" id="s-verse" placeholder="Ej: Hebreos 11:1-6" maxlength="80">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="s-bigidea">Gran Idea / Propósito Central</label>
+          <input type="text" class="form-input" id="s-bigidea" placeholder="¿Qué quieres que la gente sepa, sienta y haga?" maxlength="200">
+          <p class="input-hint">Una oración que resume todo el sermón</p>
+        </div>
+      </div>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Introducción">
+          <span class="section-num">1</span>
+          <div class="section-title-group"><h3>Introducción</h3><p>Capta la atención y presenta el tema</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="tip-box">
+            <span class="tip-icon">💡</span>
+            <div class="tip-content"><h4>Principio Homilético</h4><p>Los primeros 90 segundos determinan si la gente escucha el resto. Empieza con una historia, pregunta impactante o dato sorprendente.</p></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-hook">Gancho / Apertura Impactante</label>
+            <div class="rich-toolbar">
+              <button class="toolbar-btn" type="button" title="Negrita" onclick="insertFormat('s-hook','**','**')"><strong>B</strong></button>
+              <button class="toolbar-btn" type="button" title="Cursiva" onclick="insertFormat('s-hook','_','_')"><em>I</em></button>
+              <div class="toolbar-sep"></div>
+              <button class="toolbar-btn" type="button" title="Lista" onclick="insertFormat('s-hook','\\n• ','')">☰</button>
+              <button class="toolbar-btn" type="button" title="Cita" onclick="insertFormat('s-hook','&quot;','&quot;')">❝</button>
+            </div>
+            <textarea class="form-textarea" id="s-hook" placeholder="Historia personal, estadística impactante, pregunta retórica..." rows="4"></textarea>
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.25rem">
+              <span class="input-hint">Genera curiosidad en los primeros 30 segundos</span>
+              <span class="word-count" id="hookWC">0 palabras</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-context">Contexto Bíblico e Histórico</label>
+            <textarea class="form-textarea" id="s-context" placeholder="¿Quién escribió este pasaje? ¿A quién? ¿En qué contexto histórico-cultural?" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-proposition">Proposición del Sermón</label>
+            <input type="text" class="form-input" id="s-proposition" placeholder="La verdad central que se probará y aplicará">
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Primer Punto Principal">
+          <span class="section-num" style="background:#8b5cf6">2</span>
+          <div class="section-title-group"><h3>Primer Punto Principal</h3><p>Primera verdad o enseñanza central</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="form-group">
+            <label class="form-label" for="s-p1title">Título del Punto</label>
+            <input type="text" class="form-input" id="s-p1title" placeholder="Ej: Dios es fiel en medio de la tormenta">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-p1verse">Versículo(s) de Apoyo</label>
+            <input type="text" class="form-input" id="s-p1verse" placeholder="Ej: Romanos 8:28">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-p1content">Desarrollo del Punto</label>
+            <textarea class="form-textarea large" id="s-p1content" placeholder="Explicación exegética, ilustración, aplicación práctica..."></textarea>
+            <div style="text-align:right"><span class="word-count" id="p1WC">0 palabras</span></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-p1illus">Ilustración / Historia</label>
+            <textarea class="form-textarea" id="s-p1illus" placeholder="Cuenta una historia real o ilustración..." rows="3"></textarea>
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Segundo Punto Principal">
+          <span class="section-num" style="background:#ec4899">3</span>
+          <div class="section-title-group"><h3>Segundo Punto Principal</h3><p>Segunda verdad o enseñanza central</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="form-group">
+            <label class="form-label" for="s-p2title">Título del Punto</label>
+            <input type="text" class="form-input" id="s-p2title" placeholder="Ej: Nuestra respuesta determina nuestra victoria">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-p2verse">Versículo(s) de Apoyo</label>
+            <input type="text" class="form-input" id="s-p2verse" placeholder="Ej: Santiago 1:2-4">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-p2content">Desarrollo del Punto</label>
+            <textarea class="form-textarea large" id="s-p2content" placeholder="Explicación exegética, ilustración, aplicación práctica..."></textarea>
+            <div style="text-align:right"><span class="word-count" id="p2WC">0 palabras</span></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-p2illus">Ilustración / Historia</label>
+            <textarea class="form-textarea" id="s-p2illus" placeholder="Cuenta una historia real o ilustración..." rows="3"></textarea>
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Tercer Punto Principal">
+          <span class="section-num" style="background:#f59e0b">4</span>
+          <div class="section-title-group"><h3>Tercer Punto Principal</h3><p>Tercera verdad o enseñanza central</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="form-group">
+            <label class="form-label" for="s-p3title">Título del Punto</label>
+            <input type="text" class="form-input" id="s-p3title" placeholder="Ej: Dios transforma el dolor en propósito">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-p3verse">Versículo(s) de Apoyo</label>
+            <input type="text" class="form-input" id="s-p3verse" placeholder="Ej: Génesis 50:20">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-p3content">Desarrollo del Punto</label>
+            <textarea class="form-textarea large" id="s-p3content" placeholder="Explicación exegética, ilustración, aplicación práctica..."></textarea>
+            <div style="text-align:right"><span class="word-count" id="p3WC">0 palabras</span></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-p3illus">Ilustración / Historia</label>
+            <textarea class="form-textarea" id="s-p3illus" placeholder="Cuenta una historia real o ilustración..." rows="3"></textarea>
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Aplicación Práctica">
+          <span class="section-num" style="background:#10b981">5</span>
+          <div class="section-title-group"><h3>Aplicación Práctica</h3><p>¿Qué debe hacer la congregación esta semana?</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="tip-box">
+            <span class="tip-icon">💡</span>
+            <div class="tip-content"><h4>Aplicación Efectiva</h4><p>Sé específico: ¿Quién debe hacerlo? ¿Cuándo? ¿Cómo? La gente necesita pasos concretos, no solo inspiración general.</p></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-apply">Pasos Prácticos de Aplicación</label>
+            <textarea class="form-textarea large" id="s-apply" placeholder="• Paso 1: Esta semana, identifica tres personas por las que orarás&#10;• Paso 2: Lee el pasaje en contexto completo..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-challenge">Desafío Semanal</label>
+            <input type="text" class="form-input" id="s-challenge" placeholder="Un reto específico y medible para la semana">
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Conclusión y Llamado">
+          <span class="section-num" style="background:#ef4444">6</span>
+          <div class="section-title-group"><h3>Conclusión y Llamado</h3><p>Cierre poderoso y llamado a la acción</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="form-group">
+            <label class="form-label" for="s-conclusion">Conclusión del Sermón</label>
+            <textarea class="form-textarea large" id="s-conclusion" placeholder="Resume la gran idea, reitera la verdad central con emoción y convicción..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-invitation">Llamado / Invitación</label>
+            <textarea class="form-textarea" id="s-invitation" placeholder="Describe el momento de decisión o compromiso..." rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-prayer">Oración de Cierre</label>
+            <textarea class="form-textarea" id="s-prayer" placeholder="Bosquejo o texto de la oración de cierre..." rows="3"></textarea>
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Notas y Referencias">
+          <span class="section-num" style="background:#06b6d4">7</span>
+          <div class="section-title-group"><h3>Notas y Referencias</h3><p>Material adicional y fuentes</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="form-group">
+            <label class="form-label" for="s-notes">Notas del Predicador</label>
+            <textarea class="form-textarea" id="s-notes" placeholder="Notas personales, recordatorios, tiempo estimado por sección..." rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-refs">Referencias Bibliográficas</label>
+            <textarea class="form-textarea" id="s-refs" placeholder="Libros, comentarios, fuentes consultadas..." rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="s-duration">Duración Estimada</label>
+            <div class="select-wrapper">
+              <select class="form-select" id="s-duration">
+                <option value="20-30">20-30 minutos</option>
+                <option value="30-45" selected>30-45 minutos</option>
+                <option value="45-60">45-60 minutos</option>
+                <option value="60+">Más de 60 minutos</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="btn-group" style="margin-top:1.5rem;justify-content:center">
+        <button class="btn btn-secondary" id="clearSermonBtn2">🗑️ Limpiar Todo</button>
+        <button class="btn btn-primary btn-lg" id="saveSermonBtn2">💾 Guardar Predicación</button>
+        <button class="btn btn-accent btn-lg" id="exportSermonPdfBtn2">📄 Vista Previa</button>
+      </div>
+    </section>
+
+    <!-- SMALL GROUP -->
+    <section id="view-smallgroup" class="fade-in" style="display:none" aria-label="Mensaje para grupo pequeño">
+      <div class="page-title-area">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem">
+          <div>
+            <h1 class="page-title">👥 Mensaje Grupo Pequeño</h1>
+            <p class="page-subtitle">Diseñado para comunidad, participación y aplicación</p>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" id="clearSGBtn">🗑️ Limpiar</button>
+            <button class="btn btn-success btn-sm" id="saveSGBtn">💾 Guardar</button>
+            <button class="btn btn-accent btn-sm" id="exportSGPdfBtn">📄 Vista Previa</button>
+          </div>
+        </div>
+      </div>
+      <div class="progress-wrapper">
+        <div class="progress-info">
+          <h2>Progreso del Mensaje</h2>
+          <p>5 secciones para un mensaje completo de grupo</p>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="sgProgress"></div>
+          </div>
+        </div>
+        <div class="progress-percent" id="sgProgressPct">0%</div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span class="icon-badge">📋</span>Información del Grupo</h2>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="sg-title">Título del Mensaje <span class="req">*</span></label>
+            <input type="text" class="form-input" id="sg-title" placeholder="Ej: Viviendo en comunidad" maxlength="100">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-date">Fecha de la Reunión</label>
+            <input type="date" class="form-input" id="sg-date">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="sg-verse">Pasaje Bíblico <span class="req">*</span></label>
+            <input type="text" class="form-input" id="sg-verse" placeholder="Ej: Hechos 2:42-47">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-theme">Tema Central</label>
+            <input type="text" class="form-input" id="sg-theme" placeholder="Ej: Comunidad auténtica">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sg-objective">Objetivo del Encuentro</label>
+          <input type="text" class="form-input" id="sg-objective" placeholder="¿Qué quieres lograr al final de esta reunión?">
+        </div>
+      </div>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Rompehielo">
+          <span class="section-num" style="background:#f59e0b">1</span>
+          <div class="section-title-group"><h3>🧊 Rompehielo</h3><p>Actividad o pregunta para iniciar con confianza</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="tip-box">
+            <span class="tip-icon">💡</span>
+            <div class="tip-content"><h4>¿Por qué el rompehielo importa?</h4><p>Los primeros 5-10 minutos establecen la atmósfera del grupo. Un buen rompehielo reduce la ansiedad y hace que todos participen desde el inicio.</p></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-ice-type">Tipo de Rompehielo</label>
+            <div class="select-wrapper">
+              <select class="form-select" id="sg-ice-type" onchange="loadIceBreaker()">
+                <option value="">Seleccionar tipo...</option>
+                <option value="pregunta">Pregunta Personal</option>
+                <option value="dinamica">Dinámica Grupal</option>
+                <option value="historia">Comparte una Historia</option>
+                <option value="juego">Juego Rápido</option>
+                <option value="verdad-mentira">Verdad o Mentira</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-ice-activity">Actividad Rompehielo</label>
+            <textarea class="form-textarea" id="sg-ice-activity" placeholder="Describe la actividad o pregunta rompehielo en detalle..." rows="4"></textarea>
+            <p class="input-hint">Duración recomendada: 5-10 minutos</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-ice-connection">Conexión con el Tema</label>
+            <input type="text" class="form-input" id="sg-ice-connection" placeholder="¿Cómo transiciona esta actividad hacia el tema del mensaje?">
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Introducción">
+          <span class="section-num" style="background:#3b82f6">2</span>
+          <div class="section-title-group"><h3>📣 Introducción</h3><p>Presenta el tema y crea expectativa</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="form-group">
+            <label class="form-label" for="sg-intro-context">Contexto y Relevancia</label>
+            <textarea class="form-textarea" id="sg-intro-context" placeholder="¿Por qué este tema es relevante para el grupo ahora?" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-intro-passage">Lectura del Pasaje</label>
+            <textarea class="form-textarea" id="sg-intro-passage" placeholder="¿Cómo presentarás la lectura bíblica? ¿Leerán juntos, responsorial, dramatizada?" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-intro-background">Fondo Histórico / Cultural</label>
+            <textarea class="form-textarea" id="sg-intro-background" placeholder="Contexto histórico clave que el grupo necesita saber..." rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-intro-hook">Declaración de Transición</label>
+            <input type="text" class="form-input" id="sg-intro-hook" placeholder="Frase que conecta la introducción con el cuerpo del mensaje">
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Cuerpo del Mensaje">
+          <span class="section-num" style="background:#8b5cf6">3</span>
+          <div class="section-title-group"><h3>📚 Cuerpo del Mensaje</h3><p>La enseñanza central con puntos clave</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="tip-box">
+            <span class="tip-icon">💡</span>
+            <div class="tip-content"><h4>Formato para Grupos Pequeños</h4><p>En grupos pequeños el cuerpo debe ser conversacional. Incluye momentos de reflexión y evita discursos de más de 5 minutos continuos.</p></div>
+          </div>
+          <div class="card" style="background:#fafbfc;border:1.5px solid #e2e8f0;margin-bottom:0.75rem">
+            <div class="card-header" style="margin-bottom:0.75rem">
+              <h4 class="card-title" style="font-size:0.82rem"><span class="s-indicator si-1" style="margin-right:0.3rem"></span>Punto 1</h4>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-b1-title">Título / Idea Principal</label>
+              <input type="text" class="form-input" id="sg-b1-title" placeholder="Ej: Dios nos diseñó para la comunidad">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-b1-content">Desarrollo</label>
+              <textarea class="form-textarea" id="sg-b1-content" placeholder="Explicación bíblica, ilustración o historia..." rows="4"></textarea>
+            </div>
+          </div>
+          <div class="card" style="background:#fafbfc;border:1.5px solid #e2e8f0;margin-bottom:0.75rem">
+            <div class="card-header" style="margin-bottom:0.75rem">
+              <h4 class="card-title" style="font-size:0.82rem"><span class="s-indicator si-2" style="margin-right:0.3rem"></span>Punto 2</h4>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-b2-title">Título / Idea Principal</label>
+              <input type="text" class="form-input" id="sg-b2-title" placeholder="Ej: La comunidad requiere vulnerabilidad">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-b2-content">Desarrollo</label>
+              <textarea class="form-textarea" id="sg-b2-content" placeholder="Explicación bíblica, ilustración o historia..." rows="4"></textarea>
+            </div>
+          </div>
+          <div class="card" style="background:#fafbfc;border:1.5px solid #e2e8f0">
+            <div class="card-header" style="margin-bottom:0.75rem">
+              <h4 class="card-title" style="font-size:0.82rem"><span class="s-indicator si-3" style="margin-right:0.3rem"></span>Punto 3</h4>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-b3-title">Título / Idea Principal</label>
+              <input type="text" class="form-input" id="sg-b3-title" placeholder="Ej: El fruto de la comunidad genuina">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-b3-content">Desarrollo</label>
+              <textarea class="form-textarea" id="sg-b3-content" placeholder="Explicación bíblica, ilustración o historia..." rows="4"></textarea>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Preguntas Participativas">
+          <span class="section-num" style="background:#10b981">4</span>
+          <div class="section-title-group"><h3>❓ Tres Preguntas Participativas</h3><p>Genera diálogo profundo y reflexión grupal</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="tip-box">
+            <span class="tip-icon">💡</span>
+            <div class="tip-content"><h4>El Arte de Preguntar</h4><p>Las mejores preguntas siguen el modelo EAA: <strong>Exploración</strong> (¿qué dice el texto?), <strong>Aplicación</strong> (¿qué significa para nosotros?) y <strong>Acción</strong> (¿qué haré al respecto?).</p></div>
+          </div>
+          <div class="card" style="background:linear-gradient(135deg,#e8fdf0,#f0fff8);border:1.5px solid #a7f3d0;margin-bottom:0.75rem">
+            <div class="card-header" style="margin-bottom:0.75rem">
+              <h4 class="card-title" style="color:#1a7a44;font-size:0.85rem">
+                <span style="background:#10b981;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;margin-right:0.4rem">P1</span>
+                Pregunta de Exploración
+              </h4>
+              <span class="section-tag tag-success">Observación</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-q1">¿Qué dice el texto? (Observación)</label>
+              <textarea class="form-textarea" id="sg-q1" placeholder="Ej: ¿Qué prácticas específicas mencionan estos versículos?" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-q1-guide">Guía para el Facilitador</label>
+              <input type="text" class="form-input" id="sg-q1-guide" placeholder="Respuesta esperada o puntos clave">
+            </div>
+          </div>
+          <div class="card" style="background:linear-gradient(135deg,#f3eeff,#f9f5ff);border:1.5px solid #ddd6fe;margin-bottom:0.75rem">
+            <div class="card-header" style="margin-bottom:0.75rem">
+              <h4 class="card-title" style="color:#5b21b6;font-size:0.85rem">
+                <span style="background:#8b5cf6;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;margin-right:0.4rem">P2</span>
+                Pregunta de Interpretación
+              </h4>
+              <span class="section-tag tag-purple">Comprensión</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-q2">¿Qué significa para nosotros? (Interpretación)</label>
+              <textarea class="form-textarea" id="sg-q2" placeholder="Ej: ¿Por qué crees que es difícil vivir en comunidad auténtica hoy?" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-q2-guide">Guía para el Facilitador</label>
+              <input type="text" class="form-input" id="sg-q2-guide" placeholder="Respuesta esperada o puntos clave">
+            </div>
+          </div>
+          <div class="card" style="background:linear-gradient(135deg,#fff8e6,#fffbf0);border:1.5px solid #fde68a">
+            <div class="card-header" style="margin-bottom:0.75rem">
+              <h4 class="card-title" style="color:#b07800;font-size:0.85rem">
+                <span style="background:#f59e0b;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;margin-right:0.4rem">P3</span>
+                Pregunta de Aplicación
+              </h4>
+              <span class="section-tag tag-accent">Acción</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-q3">¿Qué haré esta semana? (Aplicación)</label>
+              <textarea class="form-textarea" id="sg-q3" placeholder="Ej: ¿Qué acción concreta puedes tomar esta semana?" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sg-q3-guide">Guía para el Facilitador</label>
+              <input type="text" class="form-input" id="sg-q3-guide" placeholder="Respuesta esperada o puntos clave">
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="sermon-section">
+        <div class="sermon-section-header" onclick="toggleSection(this)" tabindex="0" role="button" aria-expanded="true" aria-label="Sección Conclusión Práctica">
+          <span class="section-num" style="background:#ef4444">5</span>
+          <div class="section-title-group"><h3>🎯 Conclusión Práctica</h3><p>Cierre que transforma y envía al grupo en misión</p></div>
+          <span class="section-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="sermon-section-body">
+          <div class="tip-box">
+            <span class="tip-icon">💡</span>
+            <div class="tip-content"><h4>Conclusiones que Transforman</h4><p>Una buena conclusión resume la verdad central, da un paso de acción concreto, crea rendición de cuentas y termina en oración.</p></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-conc-summary">Resumen de la Verdad Central</label>
+            <textarea class="form-textarea" id="sg-conc-summary" placeholder="Resume en 2-3 oraciones la verdad más importante del mensaje de hoy..." rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-conc-action">Paso de Acción Esta Semana</label>
+            <textarea class="form-textarea" id="sg-conc-action" placeholder="Describe el compromiso específico que cada miembro tomará esta semana..." rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-conc-accountability">Rendición de Cuentas</label>
+            <textarea class="form-textarea" id="sg-conc-accountability" placeholder="¿Cómo el grupo se rendirá cuentas mutuamente?" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-conc-prayer">Oración de Cierre</label>
+            <textarea class="form-textarea" id="sg-conc-prayer" placeholder="Guía para la oración de cierre grupal..." rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sg-conc-next">Para la Próxima Reunión</label>
+            <input type="text" class="form-input" id="sg-conc-next" placeholder="¿Qué traerán para compartir? ¿Qué deben leer o preparar?">
+          </div>
+        </div>
+      </article>
+
+      <div class="btn-group" style="margin-top:1.5rem;justify-content:center">
+        <button class="btn btn-secondary" id="clearSGBtn2">🗑️ Limpiar Todo</button>
+        <button class="btn btn-primary btn-lg" id="saveSGBtn2">💾 Guardar Mensaje</button>
+        <button class="btn btn-accent btn-lg" id="exportSGPdfBtn2">📄 Vista Previa</button>
+      </div>
+    </section>
+
+    <!-- LIBRARY -->
+    <section id="view-library" class="fade-in" style="display:none" aria-label="Biblioteca de mensajes">
+      <div class="page-title-area">
+        <h1 class="page-title">📚 Mis Mensajes</h1>
+        <p class="page-subtitle">Tu biblioteca de predicaciones y mensajes guardados</p>
+      </div>
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="librarySearch" placeholder="Buscar por título, versículo o tema...">
+      </div>
+      <div id="libraryFilters" style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap">
+        <button class="btn btn-sm filter-btn" data-filter="all" style="background:var(--primary);color:#fff;border:none">Todos</button>
+        <button class="btn btn-secondary btn-sm filter-btn" data-filter="sermon">📢 Sermones</button>
+        <button class="btn btn-secondary btn-sm filter-btn" data-filter="smallgroup">👥 Grupos</button>
+      </div>
+      <div id="libraryList">
+        <div class="empty-state">
+          <div class="empty-icon">📚</div>
+          <h3>Tu biblioteca está vacía</h3>
+          <p>Guarda tu primera predicación para verla aquí.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEMPLATES -->
+    <section id="view-templates" class="fade-in" style="display:none" aria-label="Plantillas de mensajes">
+      <div class="page-title-area">
+        <h1 class="page-title">📋 Plantillas</h1>
+        <p class="page-subtitle">Estructuras probadas para diferentes tipos de mensajes</p>
+      </div>
+      <div class="template-grid">
+        <button class="template-card" onclick="applyTemplate('topical')">
+          <span class="template-icon">🎯</span>
+          <div class="template-name">Sermón Temático</div>
+          <div class="template-desc">3 puntos sobre un tema específico con aplicación directa</div>
+        </button>
+        <button class="template-card" onclick="applyTemplate('expository')">
+          <span class="template-icon">📖</span>
+          <div class="template-name">Expositivo</div>
+          <div class="template-desc">Versículo por versículo, explicando el texto en su contexto</div>
+        </button>
+        <button class="template-card" onclick="applyTemplate('evangelistic')">
+          <span class="template-icon">✝️</span>
+          <div class="template-name">Evangelístico</div>
+          <div class="template-desc">Llamado a la salvación con el evangelio claro</div>
+        </button>
+        <button class="template-card" onclick="applyTemplate('narrative')">
+          <span class="template-icon">📜</span>
+          <div class="template-name">Narrativo</div>
+          <div class="template-desc">Cuenta la historia bíblica con aplicación contemporánea</div>
+        </button>
+        <button class="template-card" onclick="applyTemplate('pastoral')">
+          <span class="template-icon">🤝</span>
+          <div class="template-name">Pastoral</div>
+          <div class="template-desc">Para momentos de crisis, consuelo o celebración</div>
+        </button>
+        <button class="template-card" onclick="applyTemplate('sg-community')">
+          <span class="template-icon">👥</span>
+          <div class="template-name">GP: Comunidad</div>
+          <div class="template-desc">Plantilla completa para mensaje de grupo pequeño</div>
+        </button>
+      </div>
+      <div class="card" style="margin-top:1.5rem">
+        <div class="card-header">
+          <h2 class="card-title"><span class="icon-badge">🗂️</span>Estructuras Homiléticas</h2>
+        </div>
+        <div id="accordionTemplates">
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)" aria-expanded="false">
+              📐 Estructura 3-2-1 <span class="acc-chevron">▾</span>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.7"><strong>3 verdades</strong> del texto → <strong>2 aplicaciones</strong> prácticas → <strong>1 decisión</strong> que tomar. Ideal para mensajes dominicales de 35-45 min con congregaciones mixtas.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)" aria-expanded="false">
+              🔺 Estructura Problema-Solución <span class="acc-chevron">▾</span>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.7"><strong>Presenta el problema</strong> humano con empatía → <strong>Revela la solución</strong> bíblica → <strong>Muestra el camino</strong> hacia esa solución → <strong>Llama a la acción</strong>. Muy efectivo para mensajes evangelísticos.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)" aria-expanded="false">
+              ⭕ Método OAAT (Observa, Analiza, Aplica, Transforma) <span class="acc-chevron">▾</span>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.7"><strong>Observa</strong>: ¿Qué dice el texto? → <strong>Analiza</strong>: ¿Qué significa en su contexto? → <strong>Aplica</strong>: ¿Cómo se traduce a nuestra vida? → <strong>Transforma</strong>: ¿Qué cambiará en mí?</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion(this)" aria-expanded="false">
+              🌊 Estructura de 5 Partes (Heliocéntrica) <span class="acc-chevron">▾</span>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                <p style="font-size:0.82rem;color:var(--text-secondary);line-height:1.7">Todo gira alrededor de Cristo: <strong>La necesidad humana</strong> → <strong>El plan de Dios</strong> → <strong>La obra de Cristo</strong> → <strong>Nuestra respuesta</strong> → <strong>La vida transformada</strong>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section id="view-calendar" class="fade-in" style="display:none" aria-label="Planificador pastoral">
+      <div class="page-title-area">
+        <h1 class="page-title">📅 Planificador Pastoral</h1>
+        <p class="page-subtitle">Organiza tu ministerio con visión semanal y mensual</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span class="icon-badge">📅</span>Esta Semana</h2>
+          <div id="weekDateRange" style="font-size:0.75rem;color:var(--text-muted)"></div>
+        </div>
+        <div class="week-grid" id="weekGrid"></div>
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <div class="tip-content"><h4>Planificación Efectiva</h4><p>Los pastores más efectivos planifican los mensajes con al menos 3-4 semanas de anticipación.</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span class="icon-badge">📆</span>Plan de Predicación</h2>
+          <button class="btn btn-primary btn-sm" onclick="openPlanModal()">+ Añadir</button>
+        </div>
+        <div id="preachingPlan">
+          <div class="empty-state">
+            <div class="empty-icon">📆</div>
+            <h3>Sin plan de predicación</h3>
+            <p>Añade tus próximos mensajes planificados</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<nav class="mobile-nav" role="navigation" aria-label="Navegación móvil">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-item active" data-view="dashboard"><span class="mn-icon">🏠</span>Inicio</button>
+    <button class="mobile-nav-item" data-view="sermon"><span class="mn-icon">📢</span>Sermón</button>
+    <button class="mobile-nav-item" data-view="smallgroup"><span class="mn-icon">👥</span>Grupo</button>
+    <button class="mobile-nav-item" data-view="library"><span class="mn-icon">📚</span>Biblioteca</button>
+    <button class="mobile-nav-item" data-view="templates"><span class="mn-icon">📋</span>Plantillas</button>
+  </div>
+</nav>
+
+<button class="fab" id="fabSave">💾 Guardar</button>
+
+<!-- PLAN MODAL -->
+<div class="modal-overlay" id="planModal" role="dialog" aria-modal="true" aria-labelledby="planModalTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="planModalTitle">📅 Añadir al Plan</h2>
+      <button class="modal-close" onclick="closePlanModal()" aria-label="Cerrar modal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label" for="plan-date">Fecha</label>
+        <input type="date" class="form-input" id="plan-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="plan-title">Título del Mensaje</label>
+        <input type="text" class="form-input" id="plan-title" placeholder="Ej: El amor que transforma">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="plan-type">Tipo</label>
+        <div class="select-wrapper">
+          <select class="form-select" id="plan-type">
+            <option value="sermon">📢 Predicación</option>
+            <option value="smallgroup">👥 Grupo Pequeño</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="plan-verse">Pasaje</label>
+        <input type="text" class="form-input" id="plan-verse" placeholder="Ej: Juan 15:1-8">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="plan-notes">Notas</label>
+        <textarea class="form-textarea" id="plan-notes" placeholder="Ideas iniciales, contexto, audiencia..." rows="2"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closePlanModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="savePlan()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-overlay" id="pdfModal" role="dialog" aria-modal="true" aria-labelledby="pdfModalTitle">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header">
+      <h2 class="modal-title" id="pdfModalTitle">📄 Vista Previa para Imprimir</h2>
+      <button class="modal-close" onclick="closePdfModal()" aria-label="Cerrar modal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="pdfPreviewContent" style="background:#fff;padding:1.5rem;border-radius:var(--radius-md);border:1px solid var(--border);max-height:60vh;overflow-y:auto;font-size:0.875rem;line-height:1.7"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closePdfModal()">Cerrar</button>
+      <button class="btn btn-primary" onclick="triggerPrint()">🖨️ Imprimir</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+var APP_STATE = {
+  currentView: 'dashboard',
+  messages: [],
+  plans: [],
+  currentFilter: 'all',
+  sidebarOpen: false
+};
+
+try { APP_STATE.messages = JSON.parse(localStorage.getItem('sc_messages') || '[]'); } catch(e) { APP_STATE.messages = []; }
+try { APP_STATE.plans = JSON.parse(localStorage.getItem('sc_plans') || '[]'); } catch(e) { APP_STATE.plans = []; }
+
+var TIPS = [
+  "Un buen sermón nace en la oración. Dedica los primeros 15 minutos de preparación a buscar dirección divina.",
+  "El contexto histórico cambia todo. Nunca prediques un versículo sin entender a quién fue escrito y por qué.",
+  "Una ilustración vale más que mil explicaciones. Busca historias de la vida real que conecten con tu congregación.",
+  "Los mejores sermones no tienen 10 puntos: tienen uno. Una gran idea, perfectamente desarrollada y aplicada.",
+  "Practica tu sermón en voz alta al menos dos veces antes de predicarlo.",
+  "La aplicación es la prueba ácida del sermón. Si no puedes decir claramente qué debe hacer la gente, sigue trabajando.",
+  "Conoce a tu audiencia antes de abrir la Biblia. ¿Qué luchas enfrentan esta semana?",
+  "El sermón termina cuando la gente lo vive, no cuando tú lo predicas."
+];
+
+function showToast(message, type) {
+  type = type || 'success';
+  var container = document.getElementById('toastContainer');
+  var toast = document.createElement('div');
+  toast.className = 'toast ' + type;
+  var icon = type === 'success' ? '✅' : type === 'warning' ? '⚠️' : type === 'error' ? '❌' : 'ℹ️';
+  toast.innerHTML = '<span>' + icon + '</span> <span>' + escapeHtml(message) + '</span>';
+  container.appendChild(toast);
+  setTimeout(function() {
+    toast.classList.add('exiting');
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300);
+  }, 3000);
+}
+
+function getVal(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function setVal(id, val) {
+  var el = document.getElementById(id);
+  if (el) {
+    el.value = val || '';
+    el.dispatchEvent(new Event('input'));
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function nl2br(str) {
+  if (!str) return '';
+  return escapeHtml(str).replace(/\\n/g, '<br>');
+}
+
+/* ============================================
+   NAVEGACIÓN Y SIDEBAR
+   ============================================ */
+function toggleSidebar() {
+  APP_STATE.sidebarOpen = !APP_STATE.sidebarOpen;
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  var toggle = document.getElementById('menuToggle');
+  if (APP_STATE.sidebarOpen) {
+    sidebar.classList.add('open');
+    overlay.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  } else {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+}
+
+function closeSidebar() {
+  if (APP_STATE.sidebarOpen) toggleSidebar();
+}
+
+document.getElementById('menuToggle').addEventListener('click', toggleSidebar);
+document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+
+function navigateTo(view) {
+  closeSidebar();
+  var sections = document.querySelectorAll('[id^="view-"]');
+  for (var i = 0; i < sections.length; i++) {
+    sections[i].style.display = 'none';
+  }
+  var target = document.getElementById('view-' + view);
+  if (target) {
+    target.style.display = 'block';
+    target.classList.remove('fade-in');
+    void target.offsetWidth;
+    target.classList.add('fade-in');
+  }
+  APP_STATE.currentView = view;
+  var navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
+  for (var j = 0; j < navItems.length; j++) {
+    navItems[j].classList.remove('active');
+    if (navItems[j].dataset.view === view) {
+      navItems[j].classList.add('active');
+    }
+  }
+  if (view === 'dashboard') initDashboard();
+  if (view === 'calendar') initCalendar();
+  if (view === 'library') renderLibrary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+var navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
+for (var ni = 0; ni < navItems.length; ni++) {
+  navItems[ni].addEventListener('click', (function(item) {
+    return function() {
+      var view = item.dataset.view;
+      if (view) navigateTo(view);
+    };
+  })(navItems[ni]));
+}
+
+function toggleSection(header) {
+  var section = header.closest('.sermon-section');
+  var isCollapsed = section.classList.toggle('collapsed');
+  header.setAttribute('aria-expanded', String(!isCollapsed));
+}
+
+var sectionHeaders = document.querySelectorAll('.sermon-section-header');
+for (var sh = 0; sh < sectionHeaders.length; sh++) {
+  sectionHeaders[sh].addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleSection(this);
+    }
+  });
+}
+
+function toggleAccordion(btn) {
+  var expanded = btn.getAttribute('aria-expanded') === 'true';
+  btn.setAttribute('aria-expanded', String(!expanded));
+  var content = btn.nextElementSibling;
+  if (!expanded) { content.classList.add('open'); } else { content.classList.remove('open'); }
+}
+
+function insertFormat(id, pre, post) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var start = el.selectionStart;
+  var end = el.selectionEnd;
+  var text = el.value;
+  el.value = text.substring(0, start) + pre + text.substring(start, end) + post + text.substring(end);
+  el.focus();
+  el.selectionStart = start + pre.length;
+  el.selectionEnd = end + pre.length;
+  el.dispatchEvent(new Event('input'));
+}
+
+function countWords(text) {
+  return text.trim() ? text.trim().split(/\\s+/).length : 0;
+}
+
+function setupWordCount(inputId, counterId) {
+  var input = document.getElementById(inputId);
+  var counter = document.getElementById(counterId);
+  if (!input || !counter) return;
+  input.addEventListener('input', function() {
+    counter.textContent = countWords(input.value) + ' palabras';
+  });
+}
+
+setupWordCount('s-hook', 'hookWC');
+setupWordCount('s-p1content', 'p1WC');
+setupWordCount('s-p2content', 'p2WC');
+setupWordCount('s-p3content', 'p3WC');
+
+function setupCharCounter(inputId, counterId, max) {
+  var input = document.getElementById(inputId);
+  var counter = document.getElementById(counterId);
+  if (!input || !counter) return;
+  input.addEventListener('input', function() {
+    var len = input.value.length;
+    counter.textContent = len + '/' + max;
+    counter.className = 'char-counter';
+    if (len > max * 0.9) counter.classList.add('warn');
+    if (len >= max) counter.classList.add('over');
+  });
+}
+
+setupCharCounter('s-title', 'sTitleCounter', 100);
+
+var SERMON_FIELDS = ['s-title','s-verse','s-bigidea','s-hook','s-context','s-p1title','s-p1content','s-p2title','s-p2content','s-p3title','s-p3content','s-apply','s-conclusion'];
+var SG_FIELDS = ['sg-title','sg-verse','sg-ice-activity','sg-intro-context','sg-b1-title','sg-b1-content','sg-q1','sg-q2','sg-q3','sg-conc-summary','sg-conc-action'];
+
+function calcProgress(fields) {
+  var filled = 0;
+  for (var i = 0; i < fields.length; i++) {
+    var el = document.getElementById(fields[i]);
+    if (el && el.value.trim().length > 0) filled++;
+  }
+  return Math.round((filled / fields.length) * 100);
+}
+
+function updateSermonProgress() {
+  var pct = calcProgress(SERMON_FIELDS);
+  var bar = document.getElementById('sermonProgress');
+  var label = document.getElementById('sermonProgressPct');
+  if (bar) { bar.style.width = pct + '%'; bar.setAttribute('aria-valuenow', pct); }
+  if (label) label.textContent = pct + '%';
+}
+
+function updateSGProgress() {
+  var pct = calcProgress(SG_FIELDS);
+  var bar = document.getElementById('sgProgress');
+  var label = document.getElementById('sgProgressPct');
+  if (bar) bar.style.width = pct + '%';
+  if (label) label.textContent = pct + '%';
+}
+
+for (var sf = 0; sf < SERMON_FIELDS.length; sf++) {
+  (function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateSermonProgress);
+  })(SERMON_FIELDS[sf]);
+}
+
+for (var sgf = 0; sgf < SG_FIELDS.length; sgf++) {
+  (function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateSGProgress);
+  })(SG_FIELDS[sgf]);
+}
+
+var autosaveDraft = null;
+function scheduleAutosave() {
+  clearTimeout(autosaveDraft);
+  autosaveDraft = setTimeout(function() {
+    var btn = document.getElementById('btnAutoSave');
+    if (btn) btn.innerHTML = '<span>⏳</span><span>Guardando...</span>';
+    setTimeout(function() {
+      if (btn) btn.innerHTML = '<span>✅</span><span>Guardado</span>';
+      setTimeout(function() {
+        if (btn) btn.innerHTML = '<span>💾</span><span>Guardado</span>';
+      }, 2000);
+    }, 500);
+  }, 1500);
+}
+
+var allInputs = document.querySelectorAll('textarea, input[type="text"], input[type="date"], select');
+for (var ai = 0; ai < allInputs.length; ai++) {
+  allInputs[ai].addEventListener('input', scheduleAutosave);
+}
+
+function gatherSermonData() {
+  return {
+    type: 'sermon',
+    id: Date.now(),
+    savedAt: new Date().toISOString(),
+    title: getVal('s-title') || 'Sin título',
+    date: getVal('s-date'),
+    series: getVal('s-series'),
+    msgType: getVal('s-type'),
+    verse: getVal('s-verse'),
+    bigidea: getVal('s-bigidea'),
+    hook: getVal('s-hook'),
+    context: getVal('s-context'),
+    proposition: getVal('s-proposition'),
+    p1title: getVal('s-p1title'),
+    p1verse: getVal('s-p1verse'),
+    p1content: getVal('s-p1content'),
+    p1illus: getVal('s-p1illus'),
+    p2title: getVal('s-p2title'),
+    p2verse: getVal('s-p2verse'),
+    p2content: getVal('s-p2content'),
+    p2illus: getVal('s-p2illus'),
+    p3title: getVal('s-p3title'),
+    p3verse: getVal('s-p3verse'),
+    p3content: getVal('s-p3content'),
+    p3illus: getVal('s-p3illus'),
+    apply: getVal('s-apply'),
+    challenge: getVal('s-challenge'),
+    conclusion: getVal('s-conclusion'),
+    invitation: getVal('s-invitation'),
+    prayer: getVal('s-prayer'),
+    notes: getVal('s-notes'),
+    refs: getVal('s-refs'),
+    duration: getVal('s-duration')
+  };
+}
+
+function gatherSGData() {
+  return {
+    type: 'smallgroup',
+    id: Date.now(),
+    savedAt: new Date().toISOString(),
+    title: getVal('sg-title') || 'Sin título',
+    date: getVal('sg-date'),
+    verse: getVal('sg-verse'),
+    theme: getVal('sg-theme'),
+    objective: getVal('sg-objective'),
+    iceType: getVal('sg-ice-type'),
+    iceActivity: getVal('sg-ice-activity'),
+    iceConnection: getVal('sg-ice-connection'),
+    introContext: getVal('sg-intro-context'),
+    introPassage: getVal('sg-intro-passage'),
+    introBackground: getVal('sg-intro-background'),
+    introHook: getVal('sg-intro-hook'),
+    b1title: getVal('sg-b1-title'),
+    b1content: getVal('sg-b1-content'),
+    b2title: getVal('sg-b2-title'),
+    b2content: getVal('sg-b2-content'),
+    b3title: getVal('sg-b3-title'),
+    b3content: getVal('sg-b3-content'),
+    q1: getVal('sg-q1'),
+    q1guide: getVal('sg-q1-guide'),
+    q2: getVal('sg-q2'),
+    q2guide: getVal('sg-q2-guide'),
+    q3: getVal('sg-q3'),
+    q3guide: getVal('sg-q3-guide'),
+    concSummary: getVal('sg-conc-summary'),
+    concAction: getVal('sg-conc-action'),
+    concAccountability: getVal('sg-conc-accountability'),
+    concPrayer: getVal('sg-conc-prayer'),
+    concNext: getVal('sg-conc-next')
+  };
+}
+
+function saveMessage(data) {
+  if (!data.title || data.title === 'Sin título') {
+    if (!data.verse) {
+      showToast('Por favor añade al menos un título o versículo.', 'warning');
+      return false;
+    }
+  }
+  APP_STATE.messages.unshift(data);
+  try { localStorage.setItem('sc_messages', JSON.stringify(APP_STATE.messages)); } catch(e) {}
+  updateStats();
+  updateSidebarBadge();
+  if (APP_STATE.currentView === 'dashboard') renderRecentMessages();
+  if (APP_STATE.currentView === 'library') renderLibrary();
+  return true;
+}
+
+function deleteMessage(id) {
+  APP_STATE.messages = APP_STATE.messages.filter(function(m) { return m.id !== id; });
+  try { localStorage.setItem('sc_messages', JSON.stringify(APP_STATE.messages)); } catch(e) {}
+  updateStats();
+  renderLibrary();
+  renderRecentMessages();
+  updateSidebarBadge();
+  showToast('Mensaje eliminado.', 'warning');
+}
+
+function clearSermonForm() {
+  var ids = ['s-title','s-date','s-series','s-verse','s-bigidea','s-hook','s-context','s-proposition','s-p1title','s-p1verse','s-p1content','s-p1illus','s-p2title','s-p2verse','s-p2content','s-p2illus','s-p3title','s-p3verse','s-p3content','s-p3illus','s-apply','s-challenge','s-conclusion','s-invitation','s-prayer','s-notes','s-refs'];
+  for (var i = 0; i < ids.length; i++) setVal(ids[i], '');
+  updateSermonProgress();
+  showToast('Formulario limpiado.', 'success');
+}
+
+function clearSGForm() {
+  var ids = ['sg-title','sg-date','sg-verse','sg-theme','sg-objective','sg-ice-activity','sg-ice-connection','sg-intro-context','sg-intro-passage','sg-intro-background','sg-intro-hook','sg-b1-title','sg-b1-content','sg-b2-title','sg-b2-content','sg-b3-title','sg-b3-content','sg-q1','sg-q1-guide','sg-q2','sg-q2-guide','sg-q3','sg-q3-guide','sg-conc-summary','sg-conc-action','sg-conc-accountability','sg-conc-prayer','sg-conc-next'];
+  for (var i = 0; i < ids.length; i++) setVal(ids[i], '');
+  updateSGProgress();
+  showToast('Formulario limpiado.', 'success');
+}
+
+document.getElementById('saveSermonBtn').addEventListener('click', function() {
+  if (saveMessage(gatherSermonData())) showToast('Predicación guardada exitosamente!', 'success');
+});
+document.getElementById('saveSermonBtn2').addEventListener('click', function() {
+  if (saveMessage(gatherSermonData())) showToast('Predicación guardada exitosamente!', 'success');
+});
+document.getElementById('clearSermonBtn').addEventListener('click', clearSermonForm);
+document.getElementById('clearSermonBtn2').addEventListener('click', clearSermonForm);
+
+document.getElementById('saveSGBtn').addEventListener('click', function() {
+  if (saveMessage(gatherSGData())) showToast('Mensaje de grupo pequeño guardado!', 'success');
+});
+document.getElementById('saveSGBtn2').addEventListener('click', function() {
+  if (saveMessage(gatherSGData())) showToast('Mensaje de grupo pequeño guardado!', 'success');
+});
+document.getElementById('clearSGBtn').addEventListener('click', clearSGForm);
+document.getElementById('clearSGBtn2').addEventListener('click', clearSGForm);
+
+document.getElementById('exportSermonPdfBtn').addEventListener('click', function() { openPdfModal(buildSermonHTML(gatherSermonData())); });
+document.getElementById('exportSermonPdfBtn2').addEventListener('click', function() { openPdfModal(buildSermonHTML(gatherSermonData())); });
+document.getElementById('exportSGPdfBtn').addEventListener('click', function() { openPdfModal(buildSGHTML(gatherSGData())); });
+document.getElementById('exportSGPdfBtn2').addEventListener('click', function() { openPdfModal(buildSGHTML(gatherSGData())); });
+
+document.getElementById('fabSave').addEventListener('click', function() {
+  var view = APP_STATE.currentView;
+  if (view === 'sermon') { if (saveMessage(gatherSermonData())) showToast('Predicación guardada!', 'success'); }
+  else if (view === 'smallgroup') { if (saveMessage(gatherSGData())) showToast('Mensaje guardado!', 'success'); }
+  else showToast('Navega a un formulario para guardar.', 'warning');
+});
+
+document.getElementById('btnExportPDF').addEventListener('click', function() {
+  var view = APP_STATE.currentView;
+  if (view === 'sermon') openPdfModal(buildSermonHTML(gatherSermonData()));
+  else if (view === 'smallgroup') openPdfModal(buildSGHTML(gatherSGData()));
+  else showToast('Navega a un mensaje abierto para exportarlo.', 'warning');
+});
+
+function updateStats() {
+  var sermons = APP_STATE.messages.filter(function(m) { return m.type === 'sermon'; }).length;
+  var groups = APP_STATE.messages.filter(function(m) { return m.type === 'smallgroup'; }).length;
+  var s = document.getElementById('statSermons'); if (s) s.textContent = sermons;
+  var g = document.getElementById('statGroups'); if (g) g.textContent = groups;
+  var t = document.getElementById('statTotal'); if (t) t.textContent = APP_STATE.messages.length;
+}
+
+function updateSidebarBadge() {
+  var badge = document.getElementById('sidebarBadge');
+  if (badge) badge.textContent = APP_STATE.messages.length;
+}
+
+function renderRecentMessages() {
+  var container = document.getElementById('recentMessages');
+  if (!container) return;
+  var recent = APP_STATE.messages.slice(0, 3);
+  if (recent.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><h3>No hay mensajes aún</h3><p>Crea tu primera predicación para comenzar tu biblioteca pastoral.</p></div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < recent.length; i++) html += buildMessageItemHtml(recent[i]);
+  container.innerHTML = html;
+}
+
+function initDashboard() {
+  updateStats();
+  updateSidebarBadge();
+  renderRecentMessages();
+  var tipEl = document.getElementById('tipOfDay');
+  if (tipEl) {
+    var today = new Date().getDay();
+    tipEl.textContent = TIPS[today % TIPS.length];
+  }
+}
+
+function renderLibrary() {
+  var container = document.getElementById('libraryList');
+  if (!container) return;
+  var searchEl = document.getElementById('librarySearch');
+  var searchStr = searchEl ? searchEl.value.toLowerCase() : '';
+  var filtered = APP_STATE.messages.filter(function(m) {
+    if (APP_STATE.currentFilter !== 'all' && m.type !== APP_STATE.currentFilter) return false;
+    if (searchStr) {
+      var text = ((m.title || '') + ' ' + (m.verse || '') + ' ' + (m.theme || '') + ' ' + (m.series || '')).toLowerCase();
+      if (text.indexOf(searchStr) === -1) return false;
+    }
+    return true;
+  });
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><h3>No se encontraron mensajes</h3><p>Prueba con otros términos de búsqueda o filtros.</p></div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < filtered.length; i++) html += buildMessageItemHtml(filtered[i]);
+  container.innerHTML = html;
+}
+
+function buildMessageItemHtml(msg) {
+  var icon = '📢', badgeClass = 'chip-blue', typeName = 'Sermón';
+  if (msg.type === 'smallgroup') { icon = '👥'; badgeClass = 'chip-green'; typeName = 'Grupo'; }
+  var dateStr = 'Sin fecha';
+  if (msg.date) {
+    try { dateStr = new Date(msg.date + 'T00:00:00').toLocaleDateString('es-ES'); } catch(e) { dateStr = msg.date; }
+  }
+  return '<div class="sermon-list-item" onclick="loadMessage(' + msg.id + ')" role="button" tabindex="0" aria-label="Cargar mensaje ' + escapeHtml(msg.title) + '">' +
+    '<div class="item-icon">' + icon + '</div>' +
+    '<div class="item-body">' +
+      '<div class="item-title">' + escapeHtml(msg.title) + '</div>' +
+      '<div class="item-meta">' +
+        '<span class="chip ' + badgeClass + '">' + typeName + '</span>' +
+        '<span>📅 ' + dateStr + '</span>' +
+        (msg.verse ? '<span>📖 ' + escapeHtml(msg.verse) + '</span>' : '') +
+      '</div>' +
+    '</div>' +
+    '<div class="item-actions">' +
+      '<button class="btn-icon" title="Eliminar" onclick="event.stopPropagation();deleteMessage(' + msg.id + ')" aria-label="Eliminar mensaje">🗑️</button>' +
+    '</div>' +
+  '</div>';
+}
+
+var librarySearch = document.getElementById('librarySearch');
+if (librarySearch) librarySearch.addEventListener('input', renderLibrary);
+
+var filterBtns = document.querySelectorAll('.filter-btn');
+for (var fb = 0; fb < filterBtns.length; fb++) {
+  filterBtns[fb].addEventListener('click', (function(btn) {
+    return function() {
+      APP_STATE.currentFilter = btn.dataset.filter;
+      for (var k = 0; k < filterBtns.length; k++) {
+        filterBtns[k].style.background = '';
+        filterBtns[k].style.color = '';
+        filterBtns[k].style.border = '';
+      }
+      btn.style.background = 'var(--primary)';
+      btn.style.color = '#fff';
+      btn.style.border = 'none';
+      renderLibrary();
+    };
+  })(filterBtns[fb]));
+}
+
+function loadMessage(id) {
+  var msg = null;
+  for (var i = 0; i < APP_STATE.messages.length; i++) {
+    if (APP_STATE.messages[i].id === id) { msg = APP_STATE.messages[i]; break; }
+  }
+  if (!msg) return;
+  if (msg.type === 'sermon') {
+    navigateTo('sermon');
+    setTimeout(function() {
+      setVal('s-title', msg.title); setVal('s-date', msg.date); setVal('s-series', msg.series);
+      setVal('s-verse', msg.verse); setVal('s-bigidea', msg.bigidea); setVal('s-hook', msg.hook);
+      setVal('s-context', msg.context); setVal('s-proposition', msg.proposition);
+      setVal('s-p1title', msg.p1title); setVal('s-p1verse', msg.p1verse); setVal('s-p1content', msg.p1content); setVal('s-p1illus', msg.p1illus);
+      setVal('s-p2title', msg.p2title); setVal('s-p2verse', msg.p2verse); setVal('s-p2content', msg.p2content); setVal('s-p2illus', msg.p2illus);
+      setVal('s-p3title', msg.p3title); setVal('s-p3verse', msg.p3verse); setVal('s-p3content', msg.p3content); setVal('s-p3illus', msg.p3illus);
+      setVal('s-apply', msg.apply); setVal('s-challenge', msg.challenge); setVal('s-conclusion', msg.conclusion);
+      setVal('s-invitation', msg.invitation); setVal('s-prayer', msg.prayer); setVal('s-notes', msg.notes); setVal('s-refs', msg.refs);
+      updateSermonProgress();
+    }, 100);
+  } else if (msg.type === 'smallgroup') {
+    navigateTo('smallgroup');
+    setTimeout(function() {
+      setVal('sg-title', msg.title); setVal('sg-date', msg.date); setVal('sg-verse', msg.verse);
+      setVal('sg-theme', msg.theme); setVal('sg-objective', msg.objective);
+      setVal('sg-ice-type', msg.iceType); setVal('sg-ice-activity', msg.iceActivity); setVal('sg-ice-connection', msg.iceConnection);
+      setVal('sg-intro-context', msg.introContext); setVal('sg-intro-passage', msg.introPassage);
+      setVal('sg-intro-background', msg.introBackground); setVal('sg-intro-hook', msg.introHook);
+      setVal('sg-b1-title', msg.b1title); setVal('sg-b1-content', msg.b1content);
+      setVal('sg-b2-title', msg.b2title); setVal('sg-b2-content', msg.b2content);
+      setVal('sg-b3-title', msg.b3title); setVal('sg-b3-content', msg.b3content);
+      setVal('sg-q1', msg.q1); setVal('sg-q1-guide', msg.q1guide);
+      setVal('sg-q2', msg.q2); setVal('sg-q2-guide', msg.q2guide);
+      setVal('sg-q3', msg.q3); setVal('sg-q3-guide', msg.q3guide);
+      setVal('sg-conc-summary', msg.concSummary); setVal('sg-conc-action', msg.concAction);
+      setVal('sg-conc-accountability', msg.concAccountability); setVal('sg-conc-prayer', msg.concPrayer);
+      setVal('sg-conc-next', msg.concNext);
+      updateSGProgress();
+    }, 100);
+  }
+  showToast('Mensaje cargado', 'success');
+}
+
+function applyTemplate(type) {
+  if (type === 'sg-community') {
+    navigateTo('smallgroup');
+    clearSGForm();
+    setTimeout(function() {
+      setVal('sg-title', 'Comunidad Genuina');
+      setVal('sg-theme', 'La importancia de vivir unidos');
+      setVal('sg-objective', 'Que cada miembro se comprometa a orar por otro durante la semana.');
+      setVal('sg-ice-type', 'pregunta');
+      setVal('sg-ice-activity', '¿Cuál ha sido el mejor grupo de amigos o equipo del que has formado parte y por qué era especial?');
+      setVal('sg-intro-context', 'Vivimos en la era más conectada digitalmente, pero la más solitaria emocionalmente.');
+      setVal('sg-b1-title', 'Diseñados para conectar');
+      setVal('sg-b2-title', 'El riesgo de la vulnerabilidad');
+      setVal('sg-b3-title', 'El fruto de la unidad');
+      updateSGProgress();
+    }, 150);
+    showToast('Plantilla de Grupo aplicada', 'success');
+    return;
+  }
+  navigateTo('sermon');
+  clearSermonForm();
+  setTimeout(function() {
+    if (type === 'topical') {
+      setVal('s-type', 'tematico');
+      setVal('s-p1title', 'Lo que la Biblia dice sobre el tema');
+      setVal('s-p2title', 'El obstáculo que nos impide vivirlo');
+      setVal('s-p3title', 'El camino bíblico para vencer el obstáculo');
+    } else if (type === 'expository') {
+      setVal('s-type', 'expositivo');
+      setVal('s-p1title', 'Explicación del versículo 1');
+      setVal('s-p2title', 'Explicación de los versículos 2-3');
+      setVal('s-p3title', 'Explicación del versículo 4');
+    } else if (type === 'evangelistic') {
+      setVal('s-type', 'evangelistico');
+      setVal('s-p1title', 'El problema humano (El pecado y sus consecuencias)');
+      setVal('s-p2title', 'La solución divina (La cruz y la resurrección)');
+      setVal('s-p3title', 'La respuesta necesaria (Arrepentimiento y fe)');
+    } else if (type === 'narrative') {
+      setVal('s-type', 'expositivo');
+      setVal('s-p1title', 'La Escena (El contexto de la historia)');
+      setVal('s-p2title', 'El Conflicto (El problema que enfrentan los personajes)');
+      setVal('s-p3title', 'La Resolución (Cómo interviene Dios y qué aprendemos)');
+    } else if (type === 'pastoral') {
+      setVal('s-type', 'pastoral');
+      setVal('s-p1title', 'Validación del dolor o situación');
+      setVal('s-p2title', 'La perspectiva de Dios en la crisis');
+      setVal('s-p3title', 'Pasos prácticos para avanzar en fe');
+    }
+    updateSermonProgress();
+  }, 150);
+  showToast('Plantilla aplicada. ¡Comienza a escribir!', 'success');
+}
+
+function loadIceBreaker() {
+  var type = getVal('sg-ice-type');
+  var el = document.getElementById('sg-ice-activity');
+  if (!type || !el) return;
+  var suggestions = {
+    'pregunta': 'Si pudieras tener una cena con cualquier personaje histórico, ¿quién sería y qué le preguntarías?',
+    'dinamica': 'Dos verdades y una mentira: Cada persona dice 3 cosas sobre sí mismo, 2 son ciertas y 1 es falsa. El grupo debe adivinar.',
+    'historia': 'Comparte una historia breve sobre la última vez que Dios te sorprendió.',
+    'juego': 'El grupo debe organizarse según mes de nacimiento sin hablar.',
+    'verdad-mentira': 'Cuenta el mito más divertido que creías cuando eras niño.'
+  };
+  if (suggestions[type]) {
+    el.value = suggestions[type];
+    el.dispatchEvent(new Event('input'));
+  }
+}
+
+function initCalendar() {
+  var grid = document.getElementById('weekGrid');
+  var rangeLabel = document.getElementById('weekDateRange');
+  if (!grid) return;
+  var today = new Date();
+  var currentDay = today.getDay();
+  var startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - currentDay);
+  var days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  var html = '';
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    var y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
+    var dateStr = y + '-' + m + '-' + day;
+    var isToday = d.toDateString() === today.toDateString();
+    var hasEvent = APP_STATE.plans.some(function(p) { return p.date === dateStr; });
+    html += '<div class="day-cell' + (isToday ? ' today' : '') + (hasEvent ? ' has-event' : '') + '" onclick="openPlanModal(\'' + dateStr + '\')" role="button" tabindex="0" aria-label="Día ' + day + '">' +
+      '<div class="day-name">' + days[i] + '</div>' +
+      '<div class="day-num">' + d.getDate() + '</div>' +
+      (hasEvent ? '<div class="day-dot"></div>' : '') +
+    '</div>';
+  }
+  grid.innerHTML = html;
+  if (rangeLabel) {
+    var endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    rangeLabel.textContent = startOfWeek.toLocaleDateString('es-ES') + ' - ' + endOfWeek.toLocaleDateString('es-ES');
+  }
+  renderPreachingPlan();
+}
+
+function renderPreachingPlan() {
+  var container = document.getElementById('preachingPlan');
+  if (!container) return;
+  var sorted = APP_STATE.plans.slice().sort(function(a,b) { return new Date(a.date) - new Date(b.date); });
+  if (sorted.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📆</div><h3>Sin plan de predicación</h3><p>Añade tus próximos mensajes planificados</p></div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < sorted.length; i++) {
+    var p = sorted[i];
+    var icon = p.type === 'smallgroup' ? '👥' : '📢';
+    var dateStr = p.date;
+    try { dateStr = new Date(p.date + 'T00:00:00').toLocaleDateString('es-ES'); } catch(e) {}
+    html += '<div class="sermon-list-item">' +
+      '<div class="item-icon">' + icon + '</div>' +
+      '<div class="item-body">' +
+        '<div class="item-title">' + escapeHtml(p.title || 'Sin Título') + '</div>' +
+        '<div class="item-meta"><span>📅 ' + dateStr + '</span>' + (p.verse ? '<span>📖 ' + escapeHtml(p.verse) + '</span>' : '') + '</div>' +
+      '</div>' +
+      '<div class="item-actions"><button class="btn-icon" onclick="deletePlan(' + p.id + ')" aria-label="Eliminar plan">🗑️</button></div>' +
+    '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function openPlanModal(dateStr) {
+  document.getElementById('planModal').classList.add('open');
+  setVal('plan-date', dateStr || '');
+  setVal('plan-title', '');
+  setVal('plan-verse', '');
+  setVal('plan-notes', '');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePlanModal() {
+  document.getElementById('planModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function savePlan() {
+  var plan = {
+    id: Date.now(),
+    date: getVal('plan-date'),
+    title: getVal('plan-title'),
+    type: getVal('plan-type'),
+    verse: getVal('plan-verse'),
+    notes: getVal('plan-notes')
+  };
+  if (!plan.date || !plan.title) { showToast('Fecha y título son requeridos.', 'warning'); return; }
+  APP_STATE.plans.push(plan);
+  try { localStorage.setItem('sc_plans', JSON.stringify(APP_STATE.plans)); } catch(e) {}
+  closePlanModal();
+  initCalendar();
+  showToast('Plan guardado.', 'success');
+}
+
+function deletePlan(id) {
+  APP_STATE.plans = APP_STATE.plans.filter(function(p) { return p.id !== id; });
+  try { localStorage.setItem('sc_plans', JSON.stringify(APP_STATE.plans)); } catch(e) {}
+  initCalendar();
+  showToast('Plan eliminado.', 'warning');
+}
+
+function buildSermonHTML(data) {
+  return '<div style="font-family:Georgia,serif;color:#1a2332;max-width:700px;margin:0 auto">' +
+    '<div style="text-align:center;border-bottom:2px solid #064c74;padding-bottom:1.5rem;margin-bottom:2rem">' +
+      '<h1 style="font-size:1.8rem;color:#064c74;margin-bottom:0.5rem">' + escapeHtml(data.title) + '</h1>' +
+      (data.verse ? '<p style="font-size:1rem;color:#4a5568;font-style:italic">Pasaje: ' + escapeHtml(data.verse) + '</p>' : '') +
+      (data.date ? '<p style="font-size:0.85rem;color:#718096">Fecha: ' + escapeHtml(data.date) + '</p>' : '') +
+      (data.series ? '<p style="font-size:0.85rem;color:#718096">Serie: ' + escapeHtml(data.series) + '</p>' : '') +
+      (data.bigidea ? '<div style="margin-top:1rem;padding:0.75rem 1rem;background:#e8f4fd;border-radius:8px;border-left:4px solid #064c74"><p style="font-weight:700;color:#064c74;font-size:0.9rem">Gran Idea: ' + escapeHtml(data.bigidea) + '</p></div>' : '') +
+    '</div>' +
+    '<h2 style="color:#064c74;font-size:1.1rem;margin:1.5rem 0 0.5rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.3rem">Introducción</h2>' +
+    (data.hook ? '<p style="margin-bottom:0.75rem"><strong>Apertura:</strong> ' + nl2br(data.hook) + '</p>' : '') +
+    (data.context ? '<p style="margin-bottom:0.75rem"><strong>Contexto:</strong> ' + nl2br(data.context) + '</p>' : '') +
+    (data.proposition ? '<p style="margin-bottom:0.75rem"><strong>Proposición:</strong> ' + escapeHtml(data.proposition) + '</p>' : '') +
+    (data.p1title ? '<h2 style="color:#8b5cf6;font-size:1.1rem;margin:1.5rem 0 0.5rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.3rem">Punto 1: ' + escapeHtml(data.p1title) + '</h2>' + (data.p1verse ? '<p style="color:#064c74;font-weight:600;font-size:0.85rem;margin-bottom:0.5rem">' + escapeHtml(data.p1verse) + '</p>' : '') + (data.p1content ? '<p style="margin-bottom:0.75rem">' + nl2br(data.p1content) + '</p>' : '') + (data.p1illus ? '<blockquote style="border-left:3px solid #8b5cf6;padding:0.5rem 1rem;color:#4a5568;font-style:italic;background:#f9f5ff">' + nl2br(data.p1illus) + '</blockquote>' : '') : '') +
+    (data.p2title ? '<h2 style="color:#ec4899;font-size:1.1rem;margin:1.5rem 0 0.5rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.3rem">Punto 2: ' + escapeHtml(data.p2title) + '</h2>' + (data.p2verse ? '<p style="color:#064c74;font-weight:600;font-size:0.85rem;margin-bottom:0.5rem">' + escapeHtml(data.p2verse) + '</p>' : '') + (data.p2content ? '<p style="margin-bottom:0.75rem">' + nl2br(data.p2content) + '</p>' : '') + (data.p2illus ? '<blockquote style="border-left:3px solid #ec4899;padding:0.5rem 1rem;color:#4a5568;font-style:italic;background:#fff0f7">' + nl2br(data.p2illus) + '</blockquote>' : '') : '') +
+    (data.p3title ? '<h2 style="color:#f59e0b;font-size:1.1rem;margin:1.5rem 0 0.5rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.3rem">Punto 3: ' + escapeHtml(data.p3title) + '</h2>' + (data.p3verse ? '<p style="color:#064c74;font-weight:600;font-size:0.85rem;margin-bottom:0.5rem">' + escapeHtml(data.p3verse) + '</p>' : '') + (data.p3content ? '<p style="margin-bottom:0.75rem">' + nl2br(data.p3content) + '</p>' : '') + (data.p3illus ? '<blockquote style="border-left:3px solid #f59e0b;padding:0.5rem 1rem;color:#4a5568;font-style:italic;background:#fffbf0">' + nl2br(data.p3illus) + '</blockquote>' : '') : '') +
+    (data.apply ? '<h2 style="color:#10b981;font-size:1.1rem;margin:1.5rem 0 0.5rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.3rem">Aplicación Práctica</h2><p style="margin-bottom:0.75rem">' + nl2br(data.apply) + '</p>' : '') +
+    (data.challenge ? '<div style="padding:0.75rem 1rem;background:#e8fdf0;border-radius:8px;border-left:4px solid #10b981;margin:0.75rem 0"><p><strong>Desafío Semanal:</strong> ' + escapeHtml(data.challenge) + '</p></div>' : '') +
+    (data.conclusion ? '<h2 style="color:#ef4444;font-size:1.1rem;margin:1.5rem 0 0.5rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.3rem">Conclusión</h2><p style="margin-bottom:0.75rem">' + nl2br(data.conclusion) + '</p>' : '') +
+    (data.invitation ? '<p style="margin-bottom:0.75rem"><strong>Llamado:</strong> ' + nl2br(data.invitation) + '</p>' : '') +
+    (data.prayer ? '<p style="font-style:italic;color:#4a5568"><strong>Oración:</strong> ' + nl2br(data.prayer) + '</p>' : '') +
+    (data.notes ? '<div style="margin-top:2rem;padding:1rem;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0"><h3 style="font-size:0.9rem;margin-bottom:0.5rem;color:#718096">Notas del Predicador</h3><p style="font-size:0.85rem;color:#4a5568">' + nl2br(data.notes) + '</p></div>' : '') +
+    '<div style="margin-top:2rem;padding-top:1rem;border-top:1px solid #e2e8f0;text-align:center;color:#a0aec0;font-size:0.75rem">SermonCraft – Herramienta Pastoral</div>' +
+  '</div>';
+}
+
+function buildSGHTML(data) {
+  return '<div style="font-family:Georgia,serif;color:#1a2332;max-width:700px;margin:0 auto">' +
+    '<div style="text-align:center;border-bottom:2px solid #064c74;padding-bottom:1.5rem;margin-bottom:2rem">' +
+      '<div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;color:#064c74;margin-bottom:0.5rem">MENSAJE PARA GRUPO PEQUEÑO</div>' +
+      '<h1 style="font-size:1.8rem;color:#064c74;margin-bottom:0.5rem">' + escapeHtml(data.title) + '</h1>' +
+      (data.verse ? '<p style="font-size:1rem;color:#4a5568;font-style:italic">Pasaje: ' + escapeHtml(data.verse) + '</p>' : '') +
+      (data.date ? '<p style="font-size:0.85rem;color:#718096">Fecha: ' + escapeHtml(data.date) + '</p>' : '') +
+      (data.objective ? '<div style="margin-top:1rem;padding:0.75rem 1rem;background:#e8f4fd;border-radius:8px;border-left:4px solid #064c74"><p style="font-weight:700;color:#064c74;font-size:0.9rem">Objetivo: ' + escapeHtml(data.objective) + '</p></div>' : '') +
+    '</div>' +
+    (data.iceActivity ? '<div style="background:#fff8e6;border:1.5px solid #fde68a;border-radius:12px;padding:1.25rem;margin-bottom:1.5rem"><h2 style="color:#b07800;font-size:1rem;margin-bottom:0.75rem">ROMPEHIELO</h2><p>' + nl2br(data.iceActivity) + '</p>' + (data.iceConnection ? '<p style="margin-top:0.75rem;color:#4a5568"><em>Transición: ' + escapeHtml(data.iceConnection) + '</em></p>' : '') + '</div>' : '') +
+    (data.introContext ? '<h2 style="color:#3b82f6;font-size:1rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.4rem;margin-bottom:0.75rem">INTRODUCCIÓN</h2><p style="margin-bottom:0.75rem">' + nl2br(data.introContext) + '</p>' : '') +
+    ((data.b1title || data.b2title || data.b3title) ? '<h2 style="color:#8b5cf6;font-size:1rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.4rem;margin-bottom:0.75rem">CUERPO DEL MENSAJE</h2>' +
+      (data.b1title ? '<div style="margin-bottom:1rem;padding:0.875rem;background:#f9f5ff;border-radius:8px;border-left:3px solid #8b5cf6"><h3 style="font-size:0.9rem;color:#5b21b6;margin-bottom:0.4rem">Punto 1: ' + escapeHtml(data.b1title) + '</h3>' + (data.b1content ? '<p>' + nl2br(data.b1content) + '</p>' : '') + '</div>' : '') +
+      (data.b2title ? '<div style="margin-bottom:1rem;padding:0.875rem;background:#fff0f7;border-radius:8px;border-left:3px solid #ec4899"><h3 style="font-size:0.9rem;color:#9b1c3d;margin-bottom:0.4rem">Punto 2: ' + escapeHtml(data.b2title) + '</h3>' + (data.b2content ? '<p>' + nl2br(data.b2content) + '</p>' : '') + '</div>' : '') +
+      (data.b3title ? '<div style="padding:0.875rem;background:#fff8e6;border-radius:8px;border-left:3px solid #f59e0b"><h3 style="font-size:0.9rem;color:#b07800;margin-bottom:0.4rem">Punto 3: ' + escapeHtml(data.b3title) + '</h3>' + (data.b3content ? '<p>' + nl2br(data.b3content) + '</p>' : '') + '</div>' : '') : '') +
+    ((data.q1 || data.q2 || data.q3) ? '<h2 style="color:#10b981;font-size:1rem;border-bottom:1px solid #e2e8f0;padding-bottom:0.4rem;margin:1.5rem 0 0.75rem">PREGUNTAS PARTICIPATIVAS</h2>' +
+      (data.q1 ? '<div style="margin-bottom:0.875rem;padding:0.875rem;background:#e8fdf0;border-radius:8px;border-left:3px solid #10b981"><p><strong>P1 – Observación:</strong></p><p>' + nl2br(data.q1) + '</p>' + (data.q1guide ? '<p style="font-size:0.82rem;color:#4a5568"><em>Guía: ' + escapeHtml(data.q1guide) + '</em></p>' : '') + '</div>' : '') +
+      (data.q2 ? '<div style="margin-bottom:0.875rem;padding:0.875rem;background:#f3eeff;border-radius:8px;border-left:3px solid #8b5cf6"><p><strong>P2 – Interpretación:</strong></p><p>' + nl2br(data.q2) + '</p>' + (data.q2guide ? '<p style="font-size:0.82rem;color:#4a5568"><em>Guía: ' + escapeHtml(data.q2guide) + '</em></p>' : '') + '</div>' : '') +
+      (data.q3 ? '<div style="padding:0.875rem;background:#fff8e6;border-radius:8px;border-left:3px solid #f59e0b"><p><strong>P3 – Aplicación:</strong></p><p>' + nl2br(data.q3) + '</p>' + (data.q3guide ? '<p style="font-size:0.82rem;color:#4a5568"><em>Guía: ' + escapeHtml(data.q3guide) + '</em></p>' : '') + '</div>' : '') : '') +
+    (data.concSummary ? '<div style="background:#e8f4fd;border:1.5px solid #b3d9f0;border-radius:12px;padding:1.25rem;margin-top:1.5rem"><h2 style="color:#064c74;font-size:1rem;margin-bottom:0.75rem">CONCLUSIÓN PRÁCTICA</h2><p style="margin-bottom:0.75rem"><strong>Resumen:</strong> ' + nl2br(data.concSummary) + '</p>' + (data.concAction ? '<p style="margin-bottom:0.5rem"><strong>Paso de Acción:</strong> ' + nl2br(data.concAction) + '</p>' : '') + (data.concPrayer ? '<p><strong>Oración:</strong> ' + nl2br(data.concPrayer) + '</p>' : '') + '</div>' : '') +
+    '<div style="margin-top:2rem;padding-top:1rem;border-top:1px solid #e2e8f0;text-align:center;color:#a0aec0;font-size:0.75rem">SermonCraft – Herramienta Pastoral</div>' +
+  '</div>';
+}
+
+function openPdfModal(htmlContent) {
+  document.getElementById('pdfPreviewContent').innerHTML = htmlContent;
+  document.getElementById('pdfModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePdfModal() {
+  document.getElementById('pdfModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function triggerPrint() {
+  var content = document.getElementById('pdfPreviewContent').innerHTML;
+  var printWin = window.open('', '_blank', 'width=800,height=600');
+  if (printWin) {
+    printWin.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>SermonCraft</title><style>body{font-family:Georgia,serif;color:#1a2332;margin:2cm 1.5cm;line-height:1.7}h1,h2,h3{margin-bottom:0.5em}p{margin-bottom:0.75em}@media print{body{margin:1.5cm}}</style></head><body>' + content + '</body></html>');
+    printWin.document.close();
+    printWin.focus();
+    setTimeout(function() { printWin.print(); }, 500);
+  } else {
+    showToast('Permite las ventanas emergentes para imprimir.', 'error');
+  }
+}
+
+// Cerrar modales con Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closePdfModal();
+    closePlanModal();
+    closeSidebar();
+  }
+});
+
+// Cerrar modales al hacer clic fuera
+document.getElementById('planModal').addEventListener('click', function(e) {
+  if (e.target === this) closePlanModal();
+});
+document.getElementById('pdfModal').addEventListener('click', function(e) {
+  if (e.target === this) closePdfModal();
+});
+
+// Inicializar
+initDashboard();
+</script>
+</body>
+</html>'''        const manifestURL = URL.createObjectURL(blob);
         document.querySelector('#my-manifest-placeholder').setAttribute('href', manifestURL);
     </script>
 
